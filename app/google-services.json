@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "75035760504",
+    "project_id": "lunchbuddy-9d812",
+    "storage_bucket": "lunchbuddy-9d812.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75035760504:android:bc7795d6c32fbbd6475a8d",
+        "android_client_info": {
+          "package_name": "com.example.lunch_buddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75035760504-82jtgccu5b0sv7p10ho32qs1ou6bperu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv_lEKaavYgneYFfbbX33CziC6r0uiPpw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75035760504-82jtgccu5b0sv7p10ho32qs1ou6bperu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
