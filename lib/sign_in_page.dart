@@ -16,6 +16,7 @@ class SignInPage extends StatelessWidget {
           TextField(
             controller: emailController,
             decoration: const InputDecoration(
+              contentPadding: const EdgeInsets.all(20), isDense: true,
               labelText: "Email",
             ),
           ),
