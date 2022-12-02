@@ -1,5 +1,6 @@
 import 'package:lunch_buddy/authentication_service.dart';
 import 'package:flutter/material.dart';
+import 'package:lunch_buddy/sign_up_page.dart';
 import 'package:provider/provider.dart';
 
 class SignInPage extends StatelessWidget {
@@ -32,7 +33,15 @@ class SignInPage extends StatelessWidget {
                 password: passwordController.text.trim(),
               );
             },
-            child: const Text("Sign in"),
+            child: const Text("Sign In"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUpPage())
+              );
+            }, child: const Text("Register")
           )
         ],
       ),
