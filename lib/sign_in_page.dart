@@ -12,34 +12,34 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  contentPadding: const EdgeInsets.all(12), isDense: true,
-                  labelText: "Email",
-                ),
-              ),
-              TextField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                ),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  context.read<AuthenticationService>().signIn(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            controller: emailController,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.all(12),
+              isDense: true,
+              labelText: "Email",
+            ),
+          ),
+          TextField(
+            controller: passwordController,
+            decoration: const InputDecoration(
+              labelText: "Password",
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.read<AuthenticationService>().signIn(
                     email: emailController.text.trim(),
                     password: passwordController.text.trim(),
                   );
-                },
-                child: const Text("Sign in"),
-              )
-            ],
-          ),
-        )
-    );
+            },
+            child: const Text("Sign in"),
+          )
+        ],
+      ),
+    ));
   }
 }
