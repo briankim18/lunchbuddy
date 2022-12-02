@@ -19,63 +19,90 @@ class _HomePageState extends State<HomePage> {
   List<Widget> pages = const [
     PublicRequestPage(),
     MessagingPage(),
+    HomePage(),
     UserProfilePage(),
     SettingsPage(),
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter'),
-      ),
-      body: pages[currentPage],
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     debugPrint('Floating Action');
-      //   },
-      //   child: const Icon(Icons.add),
+      // appBar: AppBar(
+      //   title: const Text('Flutter'),
       // ),
-
+      extendBody: true,
+      body: pages[currentPage],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => const PublicRequestPage()),
+          // );
           context.read<AuthenticationService>().signOut();
         },
+        backgroundColor: MyApp.bGreen,
         elevation: 4.0,
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: NavigationBar(
-        destinations: const [
-          NavigationDestination(
-              icon: ImageIcon(
-                AssetImage('images/RequestBoard.png'),
-                color: MyApp.dGreen,
-              ),
-              label: 'Request Board'),
-          NavigationDestination(
-              icon: ImageIcon(
-                AssetImage('images/Messaging.png'),
-                color: MyApp.dGreen,
-              ),
-              label: 'Settings'),
-          NavigationDestination(
-              icon: ImageIcon(
-                AssetImage('images/UserIcon.png'),
-                color: MyApp.dGreen,
-              ),
-              label: 'Request Board'),
-          NavigationDestination(
-              icon: ImageIcon(
-                AssetImage('images/Settings.png'),
-                color: MyApp.bGreen,
-              ),
-              label: 'Settings'),
-        ],
-        onDestinationSelected: (int index) {
-          setState(() {
-            currentPage = index;
-          });
-        },
-        selectedIndex: currentPage,
+      bottomNavigationBar: BottomAppBar(
+        // ****** APP BAR ******************
+        shape:
+            const CircularNotchedRectangle(), // ← carves notch for FAB in BottomAppBar
+        color: MyApp.bGreen,
+        // ↑ use .withAlpha(0) to debug/peek underneath ↑ BottomAppBar
+        elevation: 0, // ← removes slight shadow under FAB, hardly noticeable
+        // ↑ default elevation is 8. Peek it by setting color ↑ alpha to 0
+        child: NavigationBar(
+          backgroundColor: Theme.of(context).primaryColor.withAlpha(0),
+          surfaceTintColor: MyApp.dGreen,
+          height: 64,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          destinations: const [
+            NavigationDestination(
+                icon: ImageIcon(
+                  AssetImage('images/RequestBoard.png'),
+                  color: MyApp.dGreen,
+                  size: 40,
+                ),
+                label: 'Request Board'),
+            NavigationDestination(
+                icon: ImageIcon(
+                  AssetImage('images/Messaging.png'),
+                  color: MyApp.dGreen,
+                  size: 40,
+                ),
+                label: 'Settings'),
+            Visibility(
+              visible: false,
+              child: NavigationDestination(
+                  icon: ImageIcon(
+                    AssetImage('images/Messaging.png'),
+                    color: MyApp.dGreen,
+                    size: 40,
+                  ),
+                  label: 'Settings'),
+            ),
+            NavigationDestination(
+                icon: ImageIcon(
+                  AssetImage('images/UserIcon.png'),
+                  color: MyApp.dGreen,
+                  size: 40,
+                ),
+                label: 'Request Board'),
+            NavigationDestination(
+                icon: ImageIcon(
+                  AssetImage('images/Settings.png'),
+                  color: MyApp.dGreen,
+                  size: 40,
+                ),
+                label: 'Settings'),
+          ],
+          onDestinationSelected: (int index) {
+            setState(() {
+              currentPage = index;
+            });
+          },
+          selectedIndex: currentPage,
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
