@@ -12,11 +12,15 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+        body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextField(
             controller: emailController,
             decoration: const InputDecoration(
+              contentPadding: EdgeInsets.all(12),
+              isDense: true,
               labelText: "Email",
             ),
           ),
@@ -29,9 +33,9 @@ class SignInPage extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               context.read<AuthenticationService>().signIn(
-                email: emailController.text.trim(),
-                password: passwordController.text.trim(),
-              );
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                  );
             },
             child: const Text("Sign In"),
           ),
@@ -45,6 +49,6 @@ class SignInPage extends StatelessWidget {
           )
         ],
       ),
-    );
+    ));
   }
 }
