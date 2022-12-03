@@ -276,12 +276,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         });
                       }
                     },
-                    child: const Text("Sign Up"),
+                    child: const Text("Sign Up")
+                  ),
                   ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Go Back")
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Go Back"),
                   )
                 ],
               ),
