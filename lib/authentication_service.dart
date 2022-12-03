@@ -26,14 +26,36 @@ class AuthenticationService {
     }
   }
 
-  Future<UserCredential?> signUp(
+  Future<String?> signUp(
       {required String email, required String password}) async {
+    UserCredential? credential;
+    String? errorMessage;
+
     try {
-      return await _firebaseAuth.createUserWithEmailAndPassword(
+      credential = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      print(e.message);
-      return null;
+      switch (e.code) {
+        case "email-already-in-use":
+          errorMessage =
+              "ERROR: This email is already being used. Please try again.";
+          break;
+        case "invalid-email":
+          errorMessage = "ERROR: This is not a valid email. Please try again.";
+          break;
+        case "operation-not-allowed":
+          errorMessage =
+              "ERROR: Developers: Please enable email/password accounts in Firebase.";
+          break;
+        default:
+          errorMessage = "ERROR: Unknown sign up error. Please try again.";
+      }
     }
+
+    if (errorMessage != null) {
+      return errorMessage;
+    }
+
+    return credential?.user?.uid;
   }
 }
