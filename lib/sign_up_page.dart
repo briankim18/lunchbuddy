@@ -136,6 +136,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 if (value != null && value.isEmpty) {
                   return "Password cannot be empty.";
                 }
+
+                if (value != null && value.length < 6) {
+                  return "Password must be longer than 6 characters.";
+                }
+
                 return null;
               },
               decoration: const InputDecoration(
@@ -163,19 +168,29 @@ class _SignUpPageState extends State<SignUpPage> {
                 // Only allow signing up when all validations passed
                 if (_formKey.currentState!.validate()) {
                   context.read<AuthenticationService>().signUp(
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim()).then((credential) {
-                    db.collection("users").doc(credential?.user?.uid).set(
-                        {"email": credential?.user?.email,
-                         "username": usernameController.text.trim(),
-                         "first_name": firstnameController.text.trim(),
-                         "last_name": lastnameController.text.trim(),
-                         "age": ageController.text.trim(),
-                         "gender": gender}
-                    );
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim()
+                  )
+                  .then((String? result) => {
+                    if (result != null && result.startsWith("ERROR")) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(result)
+                        )
+                      )
+                    }
+                    else {
+                      db.collection("users").doc(result).set(
+                        {"email": emailController.text.trim(),
+                          "username": usernameController.text.trim(),
+                          "first_name": firstnameController.text.trim(),
+                          "last_name": lastnameController.text.trim(),
+                          "age": ageController.text.trim(),
+                          "gender": gender}
+                      ),
+                      Navigator.pop(context)
+                    }
                   });
-
-                  Navigator.pop(context);
                 }
               },
               child: const Text("Sign Up"),
