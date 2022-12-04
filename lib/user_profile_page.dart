@@ -23,13 +23,20 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Widget build(BuildContext context) {
     String? id = context.read<AuthenticationService>().getCurrentUser()?.uid;
     final db = FirebaseFirestore.instance.collection("users").doc(id);
-    String value = "";
 
-    db.get().then((DocumentSnapshot doc) {
-      final data = doc.data() as Map<String, dynamic>;
+    var data = <String, dynamic>{};
 
-      value = data['first_name'];
-    });
+    db.get().then(
+      (DocumentSnapshot doc) {
+        data = doc.data() as Map<String, dynamic>;
+        debugPrint(data.toString());
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
+
+    getData(String field) {
+      return data[field];
+    }
 
     return GestureDetector(
       onTap: () {
@@ -41,7 +48,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Public Requests'),
+          title: const Text('User Profile'),
           backgroundColor: MyApp.bGreen,
           elevation: 4,
         ),
@@ -52,12 +59,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
             child: Column(
               children: [
                 ListTile(
-                  title: Text('Cool ${(value)}'),
+                  title: Text('yo'),
                   leading: const Icon(Icons.person),
                   trailing: const Icon(Icons.select_all),
                   onTap: () {
-                    debugPrint(
-                        'Item ${(context.read<AuthenticationService>().getCurrentUser()?.email)}');
+                    debugPrint('Item ${(data['last_name'])}');
                   },
                 ),
                 Container(
@@ -72,8 +78,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         }
                         return null;
                       },
-                      decoration: const InputDecoration(
-                        labelText: 'Bio',
+                      decoration: InputDecoration(
+                        labelText: '${(getData('last_name'))}',
                         prefixIcon: Icon(Icons.person),
                         border: OutlineInputBorder(),
                       ),
