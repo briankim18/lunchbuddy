@@ -30,6 +30,7 @@ class SignInPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 30),
                 Row(
                   children: [
                     SizedBox(
@@ -205,7 +206,7 @@ class SignInPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 50),
+                SizedBox(height: 20),
                 Align(
                     alignment: Alignment.centerLeft,
                     child: Image.asset(
