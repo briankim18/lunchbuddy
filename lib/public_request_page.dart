@@ -52,9 +52,6 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                 (index) => Padding(
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, top: 8, bottom: 8),
-                  // index == 0
-                  //     ? const EdgeInsets.only(left: 20, right: 20)
-                  //     : const EdgeInsets.only(right: 20),
                   child: GestureDetector(
                       child: PublicRequestItem(
                           publicRequestItem: publicRequests[index])),
