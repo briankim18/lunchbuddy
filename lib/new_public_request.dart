@@ -172,7 +172,7 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                         db.collection("users").doc(currentUserID)
                             .update({'posted_requests': FieldValue.arrayUnion([documentSnapshot.id])})
                       );
-
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: MyApp.bYellow,
