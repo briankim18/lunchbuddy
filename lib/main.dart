@@ -1,9 +1,17 @@
+import 'package:android_intent/android_intent.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lunch_buddy/blocs/autocomplete/autocomplete_event.dart';
+import 'package:lunch_buddy/blocs/geolocation_bloc.dart';
+import 'package:lunch_buddy/blocs/geolocation_event.dart';
+import 'package:lunch_buddy/places/places_repository.dart';
+import 'package:lunch_buddy/repositories/geolocation/geolocation_repository.dart';
+import 'blocs/autocomplete/autocomplete_bloc.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:permission_handler/permission_handler.dart';
 import 'package:lunch_buddy/authentication_service.dart';
 import 'package:lunch_buddy/home_page.dart';
 import 'package:lunch_buddy/sign_in_page.dart';
@@ -37,9 +45,51 @@ class MyApp extends StatelessWidget {
     bYellow,
     silv,
   ];
-
+  void openLocationSetting() async {
+    final AndroidIntent intent = new AndroidIntent(
+      action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+    );
+    await intent.launch();
+  }
   @override
   Widget build(BuildContext context) {
+    openLocationSetting();
+    return MultiRepositoryProvider(providers: [
+      RepositoryProvider<GeolocationRepository>(
+        create: (_) => GeolocationRepository(),
+      ),
+      RepositoryProvider<PlacesRepository>(
+        create: (_) => PlacesRepository(),
+      ),
+    ], child: MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) =>  GeolocationBloc(geolocationRepository: context.read<GeolocationRepository>())
+          ..add(LoadGeolocation())),
+        BlocProvider(create: (context) =>  AutocompleteBloc(placesRepository: context.read<PlacesRepository>())
+          ..add(LoadAutocomplete())),
+
+
+      ], child: MultiProvider(
+      providers: [
+        Provider<AuthenticationService>(
+          create: (_) => AuthenticationService(FirebaseAuth.instance),
+        ),
+        StreamProvider(
+          create: (context) =>
+          context.read<AuthenticationService>().authStateChanges,
+          initialData: null,
+        )
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: const AuthenticationWrapper(),
+      ),
+    ),
+    ));
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(
