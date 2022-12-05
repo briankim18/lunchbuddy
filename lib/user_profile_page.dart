@@ -7,6 +7,7 @@ import 'package:lunch_buddy/public_request_page.dart';
 import 'package:lunch_buddy/user.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -16,12 +17,26 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  final bioController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+
+  String firstName = '';
+
+  void fetchData() async {
+    User? user = _firebaseAuth.currentUser;
+    FirebaseFirestore.instance.collection("users").doc(user?.uid).snapshots()
+    .listen((document) {
+      setState(() {
+        firstName = document.data()!['first_name'];
+      });
+    }
+    );
+  }
 
   @override
   void initState() {
     super.initState();
+    fetchData();
   }
 
   @override
@@ -43,7 +58,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     getData(String field) {
       return data[field];
     }
-
+    
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);

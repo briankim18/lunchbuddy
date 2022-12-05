@@ -448,7 +448,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                             "last_name":
                                                 lastnameController.text.trim(),
                                             "age": ageController.text.trim(),
-                                            "gender": gender
+                                            "gender": gender,
+                                            "location": '',
+                                            "bio": '',
+                                            "posted_requests": [],
+                                            "taken_requests": []
                                           }),
                                           Navigator.pop(context)
                                         }

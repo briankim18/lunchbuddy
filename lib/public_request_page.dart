@@ -56,7 +56,9 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                       left: 20, right: 20, top: 8, bottom: 8),
                   child: GestureDetector(
                       child: PublicRequestItem(
-                          publicRequestItem: publicRequests[index])),
+                          publicRequestItem: publicRequests[index]
+                      )
+                  ),
                 ),
               ),
             ),
