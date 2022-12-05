@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:lunch_buddy/user.dart';
 
 class PublicRequest {

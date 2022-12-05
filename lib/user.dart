@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class User {
   final String firstName, lastName, location, gender, image, bio;
   final int age;
