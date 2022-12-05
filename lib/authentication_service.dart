@@ -7,25 +7,55 @@ class AuthenticationService {
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
+  User? getCurrentUser() {
+    return _firebaseAuth.currentUser;
+  }
+
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
 
-  Future<String?> signIn({required String email, required String password}) async {
+  Future<String?> signIn(
+      {required String email, required String password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
       return "Signed in";
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
   }
 
-  Future<UserCredential?> signUp({required String email, required String password}) async {
+  Future<String?> signUp(
+      {required String email, required String password}) async {
+    UserCredential? credential;
+    String? errorMessage;
+
     try {
-      return await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      credential = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
     } on FirebaseAuthException catch (e) {
-      print(e.message);
-      return null;
+      switch (e.code) {
+        case "email-already-in-use":
+          errorMessage =
+              "ERROR: This email is already being used. Please try again.";
+          break;
+        case "invalid-email":
+          errorMessage = "ERROR: This is not a valid email. Please try again.";
+          break;
+        case "operation-not-allowed":
+          errorMessage =
+              "ERROR: Developers: Please enable email/password accounts in Firebase.";
+          break;
+        default:
+          errorMessage = "ERROR: Unknown sign up error. Please try again.";
+      }
     }
+
+    if (errorMessage != null) {
+      return errorMessage;
+    }
+
+    return credential?.user?.uid;
   }
 }

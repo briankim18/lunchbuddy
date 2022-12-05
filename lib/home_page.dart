@@ -1,12 +1,11 @@
-import 'package:lunch_buddy/authentication_service.dart';
 import 'package:flutter/material.dart';
 import 'package:lunch_buddy/location_screen.dart';
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/messaging_page.dart';
+import 'package:lunch_buddy/new_public_request.dart';
 import 'package:lunch_buddy/public_request_page.dart';
 import 'package:lunch_buddy/settings_page.dart';
 import 'package:lunch_buddy/user_profile_page.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,18 +28,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('Flutter'),
-      // ),
+      resizeToAvoidBottomInset: false,
       extendBody: true,
       body: pages[currentPage],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => const PublicRequestPage()),
-          // );
-          context.read<AuthenticationService>().signOut();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const NewPublicRequestPage()),
+          );
         },
         backgroundColor: MyApp.bGreen,
         elevation: 4.0,

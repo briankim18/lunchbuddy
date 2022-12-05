@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:android_intent/android_intent.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -125,4 +127,9 @@ class AuthenticationWrapper extends StatelessWidget {
     }
     return SignInPage();
   }
+}
+
+// Picks a random light color
+randomColor() {
+  return MyApp.bColors[Random().nextInt(6)];
 }

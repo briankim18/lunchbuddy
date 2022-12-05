@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
+import 'package:lunch_buddy/user.dart';
 
 class PublicRequestPage extends StatefulWidget {
   const PublicRequestPage({Key? key}) : super(key: key);
@@ -45,21 +45,23 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            Container(height: 16, color: Colors.transparent),
+            const SizedBox(
+              height: 16,
+            ),
             Column(
               children: List.generate(
                 publicRequests.length,
                 (index) => Padding(
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, top: 8, bottom: 8),
-                  // index == 0
-                  //     ? const EdgeInsets.only(left: 20, right: 20)
-                  //     : const EdgeInsets.only(right: 20),
                   child: GestureDetector(
                       child: PublicRequestItem(
                           publicRequestItem: publicRequests[index])),
                 ),
               ),
+            ),
+            SizedBox(
+              height: 96,
             ),
           ],
         ),
@@ -81,7 +83,7 @@ class PublicRequestItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         color: randomColor(),
-        height: MediaQuery.of(context).size.height * 0.20,
+        height: MediaQuery.of(context).size.height * 0.22,
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
@@ -134,7 +136,7 @@ class PublicRequestItem extends StatelessWidget {
                               padding: const EdgeInsets.only(
                                   right: 8.0, bottom: 8.0),
                               child: Image.asset(
-                                genderSymbol(publicRequestItem),
+                                genderSymbol(publicRequestItem.user),
                                 height: 20,
                                 width: 20,
                               ),
@@ -150,12 +152,14 @@ class PublicRequestItem extends StatelessWidget {
                         ),
                         Text(
                           publicRequestItem.restName,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 18,
                           ),
                         ),
                         Text(
                           '(${publicRequestItem.city}, ${publicRequestItem.state})',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
                             height: 1,
@@ -194,45 +198,5 @@ class PublicRequestItem extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static const List<String> daysOfWeek = [
-    "Empty Day",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
-  ];
-
-  // Returns the weekday
-  getMeetWeekday(PublicRequest publicRequest) {
-    return daysOfWeek[publicRequest.dateToMeet.weekday];
-  }
-
-  // Hour:Minute AM/PM
-  getMeetTime(PublicRequest publicRequest) {
-    return publicRequest.dateToMeet.hour > 12
-        ? "${publicRequestItem.dateToMeet.hour - 12}:${publicRequestItem.dateToMeet.minute} PM"
-        : "${publicRequestItem.dateToMeet.hour}:${publicRequestItem.dateToMeet.minute}AM";
-  }
-
-  // Picks a random light color
-  randomColor() {
-    return MyApp.bColors[Random().nextInt(6)];
-  }
-
-  // Changes symbol based on gender
-  genderSymbol(PublicRequest publicRequest) {
-    var g = publicRequest.user.gender;
-    if (g == 'M') {
-      return 'images/Male.png';
-    } else if (g == 'F') {
-      return 'images/Female.png';
-    } else {
-      return 'images/LGBTQ.png';
-    }
   }
 }

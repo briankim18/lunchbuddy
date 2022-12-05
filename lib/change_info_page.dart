@@ -6,19 +6,19 @@ import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class ChangeInfoPage extends StatefulWidget {
+  const ChangeInfoPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<ChangeInfoPage> createState() => _ChangeInfoPageState();
 }
 
 class DummyWidget extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => SignUpPage();
+  Widget build(BuildContext context) => ChangeInfoPage();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _ChangeInfoPageState extends State<ChangeInfoPage> {
   late String gender;
 
   final List<String> genderList = <String>["Male", "Female", "Other"];
@@ -30,7 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController ageController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
-      TextEditingController();
+  TextEditingController();
 
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
@@ -77,9 +77,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     Row(
                       children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.33,
-                        ),
                         ClipRRect(
                           borderRadius: const BorderRadius.only(
                             topLeft: Radius.circular(4),
@@ -94,42 +91,11 @@ class _SignUpPageState extends State<SignUpPage> {
                             style: ElevatedButton.styleFrom(
                               // padding: const EdgeInsets.all(10),
                               fixedSize: const Size(100, 40),
-                              backgroundColor: MyApp.bGreen,
-                              elevation: 4,
-                            ),
-                            child: Text(
-                              "Sign In",
-                              style: GoogleFonts.indieFlower(
-                                  fontSize: 20, color: MyApp.dGreen),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(4),
-                            topRight: Radius.circular(16),
-                            bottomLeft: Radius.circular(16),
-                            bottomRight: Radius.circular(4),
-                          ),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignUpPage()));
-                            },
-                            style: ElevatedButton.styleFrom(
-                              // padding: const EdgeInsets.all(10),
-                              fixedSize: const Size(100, 40),
                               backgroundColor: MyApp.aqua,
                               elevation: 4,
                             ),
                             child: Text(
-                              "Sign Up",
+                              "Exit",
                               style: GoogleFonts.indieFlower(
                                   fontSize: 20, color: MyApp.dGreen),
                             ),
@@ -140,45 +106,15 @@ class _SignUpPageState extends State<SignUpPage> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("Lunch Buddy",
+                    Text("New User Info",
                         style: GoogleFonts.indieFlower(
                             fontSize: 50, color: MyApp.dGreen)),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Email",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
-                      ),
-                      child: TextFormField(
-                        controller: emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (String? value) {
-                          if (value != null && value.isEmpty) {
-                            return "Email cannot be empty.";
-                          }
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          labelText: "Email",
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
-                    ),
                     SizedBox(height: 10),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text("Username",
                           style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
+                          GoogleFonts.indieFlower(fontSize: 20, height: 2)),
                     ),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -208,7 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       alignment: Alignment.centerLeft,
                       child: Text("First Name",
                           style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
+                          GoogleFonts.indieFlower(fontSize: 20, height: 2)),
                     ),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -238,7 +174,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       alignment: Alignment.centerLeft,
                       child: Text("Last Name",
                           style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
+                          GoogleFonts.indieFlower(fontSize: 20, height: 2)),
                     ),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -268,7 +204,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       alignment: Alignment.centerLeft,
                       child: Text("Age",
                           style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
+                          GoogleFonts.indieFlower(fontSize: 20, height: 2)),
                     ),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -307,7 +243,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       alignment: Alignment.centerLeft,
                       child: Text("Gender",
                           style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
+                          GoogleFonts.indieFlower(fontSize: 20, height: 2)),
                     ),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -338,76 +274,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Password",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
-                      ),
-                      child: TextFormField(
-                        controller: passwordController,
-                        obscureText: true,
-                        validator: (String? value) {
-                          if (value != null && value.isEmpty) {
-                            return "Password cannot be empty.";
-                          }
 
-                          if (value != null && value.length < 6) {
-                            return "Password must be longer than 6 characters.";
-                          }
-
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          labelText: "Password",
-                          border: InputBorder.none,
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Confirm Password",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
-                      ),
-                      child: TextFormField(
-                        controller: confirmPasswordController,
-                        obscureText: true,
-                        validator: (String? value) {
-                          if (value != null && value.isEmpty) {
-                            return "Please re-enter your password.";
-                          }
-                          if (passwordController.text != value) {
-                            return "Password does not match.";
-                          }
-                          return null;
-                        },
-                        decoration: const InputDecoration(
-                          labelText: "Confirm Password",
-                          border: InputBorder.none,
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
-                    ),
                     SizedBox(height: 10),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -423,36 +290,37 @@ class _SignUpPageState extends State<SignUpPage> {
                             context
                                 .read<AuthenticationService>()
                                 .signUp(
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim())
-                                .then((String? result) => {
-                                      if (result != null &&
-                                          result.startsWith("ERROR"))
-                                        {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content: Text(result)))
-                                        }
-                                      else
-                                        {
-                                          db
-                                              .collection("users")
-                                              .doc(result)
-                                              .set({
-                                            "email":
-                                                emailController.text.trim(),
-                                            "username":
-                                                usernameController.text.trim(),
-                                            "first_name":
-                                                firstnameController.text.trim(),
-                                            "last_name":
-                                                lastnameController.text.trim(),
-                                            "age": ageController.text.trim(),
-                                            "gender": gender
-                                          }),
-                                          Navigator.pop(context)
-                                        }
-                                    });
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim())
+                                .then((String? result) =>
+                            {
+                              if (result != null &&
+                                  result.startsWith("ERROR"))
+                                {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                      content: Text(result)))
+                                }
+                              else
+                                {
+                                  db
+                                      .collection("users")
+                                      .doc(result)
+                                      .set({
+                                    "email":
+                                    emailController.text.trim(),
+                                    "username":
+                                    usernameController.text.trim(),
+                                    "first_name":
+                                    firstnameController.text.trim(),
+                                    "last_name":
+                                    lastnameController.text.trim(),
+                                    "age": ageController.text.trim(),
+                                    "gender": gender
+                                  }),
+                                  Navigator.pop(context)
+                                }
+                            });
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -460,18 +328,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           elevation: 4,
                         ),
                         child: Text(
-                          "Create New Account",
+                          "Submit Changes",
                           style: GoogleFonts.indieFlower(
                               fontSize: 24, color: MyApp.dGreen),
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
                   ],
                 ),
               ),
             ),
-          )),
+          )
+      ),
     );
   }
 }
