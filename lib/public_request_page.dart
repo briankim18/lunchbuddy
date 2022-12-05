@@ -19,12 +19,39 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
 
   List<PublicRequest> realRequests = [];
 
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+  void fetchData() async {
+    Map<String, dynamic> requestInfo;
+
+    await FirebaseFirestore.instance.collection("public_requests").get()
+        .then((QuerySnapshot qSnap) => {
+          for (QueryDocumentSnapshot doc in qSnap.docs) {
+            requestInfo = doc.data() as Map<String, dynamic>,
+            realRequests.add(
+                PublicRequest(
+                  restName: requestInfo['restaurant_name'],
+                  restImage: "images/PandaExpress.png",
+                  restAddress: requestInfo['restaurant_street_address'],
+                  city: requestInfo['restaurant_city'],
+                  state: requestInfo['restaurant_state'],
+                  datePosted: DateTime.parse(requestInfo['date_posted'].toDate().toString()),
+                  dateToMeet: DateTime.parse(requestInfo['meeting_datetime'].toDate().toString()),
+                  user: users[0],
+                  acceptedUsers: []
+                )
+            )
+          }
+        });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
+    debugPrint(realRequests.toString());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Public Requests'),
@@ -57,13 +84,13 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
             ),
             Column(
               children: List.generate(
-                publicRequests.length,
+                realRequests.length,
                 (index) => Padding(
                   padding: const EdgeInsets.only(
                       left: 20, right: 20, top: 8, bottom: 8),
                   child: GestureDetector(
                       child: PublicRequestItem(
-                          publicRequestItem: publicRequests[index]
+                          publicRequestItem: realRequests[index]
                       )
                   ),
                 ),
