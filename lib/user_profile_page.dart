@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lunch_buddy/main.dart';
-import 'package:lunch_buddy/authentication_service.dart';
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -12,32 +11,31 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   final _bioController = TextEditingController();
+
+  String firstName = '';
+
+  void fetchData() async {
+    User? user = _firebaseAuth.currentUser;
+    FirebaseFirestore.instance.collection("users").doc(user?.uid).snapshots()
+    .listen((document) {
+      setState(() {
+        firstName = document.data()!['first_name'];
+      });
+    }
+    );
+  }
 
   @override
   void initState() {
     super.initState();
+    fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
-    String? id = context.read<AuthenticationService>().getCurrentUser()?.uid;
-    final db = FirebaseFirestore.instance.collection("users").doc(id);
-
-    var data = <String, dynamic>{};
-
-    db.get().then(
-      (DocumentSnapshot doc) {
-        data = doc.data() as Map<String, dynamic>;
-        debugPrint(data.toString());
-      },
-      onError: (e) => print("Error getting document: $e"),
-    );
-
-    getData(String field) {
-      return data[field];
-    }
-
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -59,11 +57,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
             child: Column(
               children: [
                 ListTile(
-                  title: Text('yo'),
+                  title: Text(firstName),
                   leading: const Icon(Icons.person),
                   trailing: const Icon(Icons.select_all),
                   onTap: () {
-                    debugPrint('Item ${(data['last_name'])}');
+                    debugPrint('');
                   },
                 ),
                 Container(
@@ -78,8 +76,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
-                        labelText: '${(getData('last_name'))}',
+                      decoration: const InputDecoration(
+                        labelText: "Yo",
                         prefixIcon: Icon(Icons.person),
                         border: OutlineInputBorder(),
                       ),
