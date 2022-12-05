@@ -164,8 +164,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           padding: const EdgeInsets.only(
                               left: 20, right: 20, top: 8, bottom: 8),
                           child: GestureDetector(
-                              child: TakenRequestItem(
-                                  takenRequestItem: publicRequests[index])),
+                              child: MyRequestItem(
+                                  myRequestItem: publicRequests[index])),
                         ),
                       ),
                     ),
@@ -183,11 +183,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 }
 
-class TakenRequestItem extends StatelessWidget {
-  final PublicRequest takenRequestItem;
-  const TakenRequestItem({
+class MyRequestItem extends StatelessWidget {
+  final PublicRequest myRequestItem;
+  const MyRequestItem({
     Key? key,
-    required this.takenRequestItem,
+    required this.myRequestItem,
   }) : super(key: key);
 
   @override
@@ -207,7 +207,7 @@ class TakenRequestItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
-                  takenRequestItem.restImage,
+                  myRequestItem.restImage,
                   height: 64,
                   width: 64,
                 ),
@@ -220,7 +220,7 @@ class TakenRequestItem extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
                 child: Image.asset(
-                  takenRequestItem.user.image,
+                  myRequestItem.user.image,
                   height: 64,
                   width: 64,
                 ),
@@ -237,7 +237,7 @@ class TakenRequestItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${takenRequestItem.user.firstName} ${takenRequestItem.user.lastName}',
+                          '${myRequestItem.user.firstName} ${myRequestItem.user.lastName}',
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: .5,
@@ -249,13 +249,13 @@ class TakenRequestItem extends StatelessWidget {
                               padding: const EdgeInsets.only(
                                   right: 8.0, bottom: 8.0),
                               child: Image.asset(
-                                genderSymbol(takenRequestItem.user),
+                                genderSymbol(myRequestItem.user),
                                 height: 20,
                                 width: 20,
                               ),
                             ),
                             Text(
-                              '${takenRequestItem.user.gender} ${takenRequestItem.user.age}',
+                              '${myRequestItem.user.gender} ${myRequestItem.user.age}',
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
                                 height: .5,
@@ -264,20 +264,20 @@ class TakenRequestItem extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          takenRequestItem.restName,
+                          myRequestItem.restName,
                           style: GoogleFonts.indieFlower(
                             fontSize: 18,
                           ),
                         ),
                         Text(
-                          '(${takenRequestItem.city}, ${takenRequestItem.state})',
+                          '(${myRequestItem.city}, ${myRequestItem.state})',
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
                             height: 1,
                           ),
                         ),
                         Text(
-                          '${getMeetWeekday(takenRequestItem)} ${takenRequestItem.dateToMeet.month}/${takenRequestItem.dateToMeet.day} ${getMeetTime(takenRequestItem)}',
+                          '${getMeetWeekday(myRequestItem)} ${myRequestItem.dateToMeet.month}/${myRequestItem.dateToMeet.day} ${getMeetTime(myRequestItem)}',
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: 1.6,

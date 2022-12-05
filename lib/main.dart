@@ -48,50 +48,75 @@ class MyApp extends StatelessWidget {
     silv,
   ];
   void openLocationSetting() async {
-    final AndroidIntent intent = new AndroidIntent(
-      action: 'android.settings.LOCATION_SOURCE_SETTINGS',
-    );
-    await intent.launch();
+    // final AndroidIntent intent = new AndroidIntent(
+    //   action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+    // );
+    // await intent.launch();
+    // permi
+    var status = await Permission.location.status;
+    if (status.isDenied) {
+      // We didn't ask for permission yet or the permission has been denied before but not permanently.
+      final AndroidIntent intent = new AndroidIntent(
+        action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+      );
+      await intent.launch();
+    }
+
+// You can can also directly ask the permission about its status.
+// if (await Permission.location.isRestricted) {
+    // The OS restricts access, for example because of parental controls.
+// }
+    //     final AndroidIntent intent = new AndroidIntent(
+    //   action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+    // );
+    // await intent.launch();
   }
+
   @override
   Widget build(BuildContext context) {
     openLocationSetting();
-    return MultiRepositoryProvider(providers: [
-      RepositoryProvider<GeolocationRepository>(
-        create: (_) => GeolocationRepository(),
-      ),
-      RepositoryProvider<PlacesRepository>(
-        create: (_) => PlacesRepository(),
-      ),
-    ], child: MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) =>  GeolocationBloc(geolocationRepository: context.read<GeolocationRepository>())
-          ..add(LoadGeolocation())),
-        BlocProvider(create: (context) =>  AutocompleteBloc(placesRepository: context.read<PlacesRepository>())
-          ..add(LoadAutocomplete())),
-
-
-      ], child: MultiProvider(
-      providers: [
-        Provider<AuthenticationService>(
-          create: (_) => AuthenticationService(FirebaseAuth.instance),
-        ),
-        StreamProvider(
-          create: (context) =>
-          context.read<AuthenticationService>().authStateChanges,
-          initialData: null,
-        )
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: const AuthenticationWrapper(),
-      ),
-    ),
-    ));
+    return MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<GeolocationRepository>(
+            create: (_) => GeolocationRepository(),
+          ),
+          RepositoryProvider<PlacesRepository>(
+            create: (_) => PlacesRepository(),
+          ),
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+                create: (context) => GeolocationBloc(
+                    geolocationRepository:
+                        context.read<GeolocationRepository>())
+                  ..add(LoadGeolocation())),
+            BlocProvider(
+                create: (context) => AutocompleteBloc(
+                    placesRepository: context.read<PlacesRepository>())
+                  ..add(LoadAutocomplete())),
+          ],
+          child: MultiProvider(
+            providers: [
+              Provider<AuthenticationService>(
+                create: (_) => AuthenticationService(FirebaseAuth.instance),
+              ),
+              StreamProvider(
+                create: (context) =>
+                    context.read<AuthenticationService>().authStateChanges,
+                initialData: null,
+              )
+            ],
+            child: MaterialApp(
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              ),
+              home: const AuthenticationWrapper(),
+            ),
+          ),
+        ));
     return MultiProvider(
       providers: [
         Provider<AuthenticationService>(
