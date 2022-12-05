@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:lunch_buddy/location_screen.dart';
 import 'package:lunch_buddy/main.dart';
-import 'package:lunch_buddy/messaging_page.dart';
 import 'package:lunch_buddy/new_public_request.dart';
+import 'package:lunch_buddy/page/messages_page.dart';
+
 import 'package:lunch_buddy/public_request_page.dart';
 import 'package:lunch_buddy/settings_page.dart';
 import 'package:lunch_buddy/user_profile_page.dart';
@@ -17,7 +19,11 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 0;
   List<Widget> pages = const [
     PublicRequestPage(),
-    MessagingPage(),
+  //  MessagingPage(),
+    //MapSampleState(),
+    LocationScreen(),
+    MessagesPage(),
+  //  MessagingPage(),
     HomePage(),
     UserProfilePage(),
     SettingsPage(),
