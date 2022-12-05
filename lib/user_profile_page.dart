@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lunch_buddy/main.dart';
+import 'package:lunch_buddy/authentication_service.dart';
+import 'package:lunch_buddy/public_request.dart';
+import 'package:lunch_buddy/public_request_page.dart';
+import 'package:lunch_buddy/user.dart';
+import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,7 +19,6 @@ class UserProfilePage extends StatefulWidget {
 class _UserProfilePageState extends State<UserProfilePage> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  final _bioController = TextEditingController();
 
   String firstName = '';
 
@@ -36,6 +41,24 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    String? id = context.read<AuthenticationService>().getCurrentUser()?.uid;
+    final db = FirebaseFirestore.instance.collection("users").doc(id);
+    User currUser = users[0];
+
+    var data = <String, dynamic>{};
+
+    db.get().then(
+      (DocumentSnapshot doc) {
+        data = doc.data() as Map<String, dynamic>;
+        debugPrint(data.toString());
+      },
+      onError: (e) => print("Error getting document: $e"),
+    );
+
+    getData(String field) {
+      return data[field];
+    }
+    
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -45,60 +68,263 @@ class _UserProfilePageState extends State<UserProfilePage> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('User Profile'),
-          backgroundColor: MyApp.bGreen,
-          elevation: 4,
-        ),
-        body: Container(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                ListTile(
-                  title: Text(firstName),
-                  leading: const Icon(Icons.person),
-                  trailing: const Icon(Icons.select_all),
-                  onTap: () {
-                    debugPrint('');
-                  },
-                ),
-                Container(
-                  color: MyApp.aqua,
-                  child: Expanded(
-                    child: TextFormField(
-                      maxLines: null,
-                      controller: _bioController,
-                      validator: (String? value) {
-                        if (value != null && value.isEmpty) {
-                          return "Bio";
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: "Yo",
-                        prefixIcon: Icon(Icons.person),
-                        border: OutlineInputBorder(),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(top: 36, left: 20, right: 20),
+                height: MediaQuery.of(context).size.height * 0.45,
+                width: MediaQuery.of(context).size.width,
+                color: MyApp.bGreen,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.asset(
+                            currUser.image,
+                            height: MediaQuery.of(context).size.height * 0.2,
+                            width: MediaQuery.of(context).size.height * 0.2,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 16,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              '${currUser.firstName} ${currUser.lastName}',
+                              style: GoogleFonts.indieFlower(
+                                fontSize: 36,
+                                color: MyApp.dGreen,
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 8.0, bottom: 8.0),
+                                  child: Image.asset(
+                                    genderSymbol(currUser),
+                                    height: 20,
+                                    width: 20,
+                                  ),
+                                ),
+                                Text(
+                                  '${currUser.gender} ${currUser.age}',
+                                  style: GoogleFonts.indieFlower(
+                                    fontSize: 20,
+                                    height: .5,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              currUser.location,
+                              style: GoogleFonts.indieFlower(
+                                fontSize: 20,
+                                color: MyApp.dGreen,
+                                height: .5,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'Bio:',
+                      style: GoogleFonts.indieFlower(
+                        fontSize: 20,
+                        color: MyApp.dGreen,
                       ),
                     ),
-                  ),
+                    Text(
+                      currUser.bio,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.indieFlower(
+                        fontSize: 20,
+                        color: MyApp.dGreen,
+                      ),
+                    ),
+                  ],
                 ),
-                Container(
-                  padding: const EdgeInsets.only(top: 300.0),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                'Your Requests',
+                style: GoogleFonts.indieFlower(
+                  fontSize: 24,
+                  color: MyApp.dGreen,
                 ),
-              ],
-            ),
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    Column(
+                      children: List.generate(
+                        publicRequests.length,
+                        (index) => Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, top: 8, bottom: 8),
+                          child: GestureDetector(
+                              child: TakenRequestItem(
+                                  takenRequestItem: publicRequests[index])),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 96,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     debugPrint(_bioController.text);
-        //   },
-        //   backgroundColor: MyApp.bGreen,
-        //   elevation: 4.0,
-        //   child: const Icon(Icons.add),
-        // ),
+      ),
+    );
+  }
+}
+
+class TakenRequestItem extends StatelessWidget {
+  final PublicRequest takenRequestItem;
+  const TakenRequestItem({
+    Key? key,
+    required this.takenRequestItem,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(12),
+      child: Container(
+        color: randomColor(),
+        height: MediaQuery.of(context).size.height * 0.22,
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            // This is for the image 1
+            Positioned(
+              top: 24,
+              left: 280,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  takenRequestItem.restImage,
+                  height: 64,
+                  width: 64,
+                ),
+              ),
+            ),
+            // This is for the image 2
+            Positioned(
+              top: 24,
+              left: 200,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.asset(
+                  takenRequestItem.user.image,
+                  height: 64,
+                  width: 64,
+                ),
+              ),
+            ),
+            // This is for Name/Distance/Favorite Info
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${takenRequestItem.user.firstName} ${takenRequestItem.user.lastName}',
+                          style: GoogleFonts.indieFlower(
+                            fontSize: 20,
+                            height: .5,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 8.0, bottom: 8.0),
+                              child: Image.asset(
+                                genderSymbol(takenRequestItem.user),
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                            Text(
+                              '${takenRequestItem.user.gender} ${takenRequestItem.user.age}',
+                              style: GoogleFonts.indieFlower(
+                                fontSize: 20,
+                                height: .5,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          takenRequestItem.restName,
+                          style: GoogleFonts.indieFlower(
+                            fontSize: 18,
+                          ),
+                        ),
+                        Text(
+                          '(${takenRequestItem.city}, ${takenRequestItem.state})',
+                          style: GoogleFonts.indieFlower(
+                            fontSize: 16,
+                            height: 1,
+                          ),
+                        ),
+                        Text(
+                          '${getMeetWeekday(takenRequestItem)} ${takenRequestItem.dateToMeet.month}/${takenRequestItem.dateToMeet.day} ${getMeetTime(takenRequestItem)}',
+                          style: GoogleFonts.indieFlower(
+                            fontSize: 20,
+                            height: 1.6,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // This is button that we can later change to take request
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 220,
+                top: 100,
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: MyApp.bGreen,
+                ),
+                onPressed: () {
+                  debugPrint("YO");
+                },
+                child: const Text('Delete Request'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

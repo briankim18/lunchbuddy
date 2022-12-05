@@ -4,7 +4,6 @@ const int itemCount = 20;
 
 class MessagingPage extends StatelessWidget {
   const MessagingPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -21,4 +20,6 @@ class MessagingPage extends StatelessWidget {
       },
     );
   }
+
+
 }
