@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -16,8 +17,14 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
   bool isSwitch = false;
   bool? isCheckbox = false;
 
+  List<PublicRequest> realRequests = [];
+
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Public Requests'),
@@ -62,9 +69,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                 ),
               ),
             ),
-            SizedBox(
-              height: 96,
-            ),
+            const SizedBox(height: 96,),
           ],
         ),
       ),
