@@ -254,7 +254,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           bottomRight: Radius.circular(4),
                         ),
                         child: TextFormField(
-                          autofocus: true,
                           controller: lastnameController,
                           validator: (String? value) {
                             if (value != null && value.isEmpty) {

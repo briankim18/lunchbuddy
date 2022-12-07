@@ -90,6 +90,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           children: [
                             Text(
                               '${currUser.firstName} ${currUser.lastName}',
+                              overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 36,
                                 color: MyApp.dGreen,
@@ -108,6 +109,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                 ),
                                 Text(
                                   '${currUser.gender} ${currUser.age}',
+                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.indieFlower(
                                     fontSize: 20,
                                     height: .5,
@@ -117,6 +119,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             ),
                             Text(
                               currUser.location,
+                              overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
                                 color: MyApp.dGreen,
@@ -130,6 +133,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     const SizedBox(height: 12),
                     Text(
                       'Bio:',
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.indieFlower(
                         fontSize: 20,
                         color: MyApp.dGreen,
@@ -151,6 +155,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               ),
               Text(
                 'Your Requests',
+                overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.indieFlower(
                   fontSize: 24,
                   color: MyApp.dGreen,
@@ -241,6 +246,7 @@ class MyRequestItem extends StatelessWidget {
                       children: [
                         Text(
                           '${myRequestItem.user.firstName} ${myRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: .5,
@@ -259,6 +265,7 @@ class MyRequestItem extends StatelessWidget {
                             ),
                             Text(
                               '${myRequestItem.user.gender} ${myRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
                                 height: .5,
@@ -268,12 +275,14 @@ class MyRequestItem extends StatelessWidget {
                         ),
                         Text(
                           myRequestItem.restName,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 18,
                           ),
                         ),
                         Text(
                           '(${myRequestItem.city}, ${myRequestItem.state})',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
                             height: 1,
@@ -281,6 +290,7 @@ class MyRequestItem extends StatelessWidget {
                         ),
                         Text(
                           '${getMeetWeekday(myRequestItem)} ${myRequestItem.dateToMeet.month}/${myRequestItem.dateToMeet.day} ${getMeetTime(myRequestItem)}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: 1.6,
