@@ -30,7 +30,6 @@ class SignInPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 30),
                 Row(
                   children: [
                     SizedBox(
@@ -101,7 +100,7 @@ class SignInPage extends StatelessWidget {
                     style: GoogleFonts.indieFlower(fontSize: 50)),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Username",
+                  child: Text("Email",
                       style: GoogleFonts.indieFlower(fontSize: 20, height: 2)),
                 ),
                 ClipRRect(
@@ -116,7 +115,7 @@ class SignInPage extends StatelessWidget {
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.all(12),
                       isDense: true,
-                      labelText: "Username",
+                      labelText: "Email",
                       border: InputBorder.none,
                       filled: true,
                       fillColor: Colors.white,
