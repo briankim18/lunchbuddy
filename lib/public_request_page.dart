@@ -20,9 +20,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
   late Future<List<PublicRequest>> realRequests;
 
   Future<List<PublicRequest>> fetchData() async {
-    await Future.delayed(
-        const Duration(seconds:1)
-    );
+    await Future.delayed(const Duration(seconds: 1));
 
     Map<String, dynamic> requestInfo;
     Map<String, dynamic> publisherInfo;
@@ -67,7 +65,6 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
             ),
           }
         });
-
     return requestList;
   }
 
@@ -110,31 +107,29 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
               height: 16,
             ),
             FutureBuilder<List<PublicRequest>>(
-              future: realRequests,
-              builder: (context, snapshot) {
-                return snapshot.connectionState == ConnectionState.waiting
-                    ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.3,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
+                future: realRequests,
+                builder: (context, snapshot) {
+                  return snapshot.connectionState == ConnectionState.waiting
+                      ? SizedBox(
+                          height: MediaQuery.of(context).size.height / 1.3,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
                           ),
-                      )
-                    : Column(
-                        children: List.generate(
-                          snapshot.data!.length,
-                              (index) => Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 8, bottom: 8),
-                            child: GestureDetector(
-                                child: PublicRequestItem(
-                                    publicRequestItem: snapshot.data![index]
-                                )
+                        )
+                      : Column(
+                          children: List.generate(
+                            snapshot.data!.length,
+                            (index) => Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 8, bottom: 8),
+                              child: GestureDetector(
+                                  child: PublicRequestItem(
+                                      publicRequestItem:
+                                          snapshot.data![index])),
                             ),
                           ),
-                        ),
-                    );
-              }
-            ),
+                        );
+                }),
             const SizedBox(height: 96),
           ],
         ),
@@ -162,7 +157,7 @@ class PublicRequestItem extends StatelessWidget {
           children: [
             // This is for the image 1
             Positioned(
-              top: 12,
+              top: 40,
               left: 280,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -175,7 +170,7 @@ class PublicRequestItem extends StatelessWidget {
             ),
             // This is for the image 2
             Positioned(
-              top: 12,
+              top: 40,
               left: 200,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -188,7 +183,7 @@ class PublicRequestItem extends StatelessWidget {
             ),
             // This is for Name/Distance/Favorite Info
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -196,35 +191,6 @@ class PublicRequestItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.indieFlower(
-                            fontSize: 20,
-                            height: .5,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 2.0, right: 8.0, bottom: 8.0),
-                              child: Image.asset(
-                                genderSymbol(publicRequestItem.user),
-                                height: 20,
-                                width: 20,
-                              ),
-                            ),
-                            Text(
-                              '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.indieFlower(
-                                fontSize: 20,
-                                height: 1,
-                              ),
-                            ),
-                          ],
-                        ),
                         Text(
                           publicRequestItem.restName,
                           overflow: TextOverflow.ellipsis,
@@ -237,15 +203,47 @@ class PublicRequestItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
-                            height: 1,
+                            height: .5,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 0, right: 8.0, bottom: 8.0),
+                              child: Image.asset(
+                                genderSymbol(publicRequestItem.user),
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                            Text(
+                              '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.indieFlower(
+                                fontSize: 20,
+                                height: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.indieFlower(
+                            fontSize: 24,
+                            height: .5,
                           ),
                         ),
                         Text(
                           '${getMeetWeekday(publicRequestItem)} ${publicRequestItem.dateToMeet.month}/${publicRequestItem.dateToMeet.day} ${getMeetTime(publicRequestItem)}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
-                            fontSize: 20,
-                            height: 1.6,
+                            fontSize: 18,
+                            height: 2,
                           ),
                         ),
                       ],
@@ -258,7 +256,7 @@ class PublicRequestItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 left: 220,
-                top: 90,
+                top: 104,
               ),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
