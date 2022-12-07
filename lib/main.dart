@@ -31,6 +31,8 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   static const silv = Color.fromARGB(255, 139, 148, 163);
   static const aqua = Color.fromARGB(255, 140, 251, 221);
+  static const mRed = Color.fromARGB(255, 194, 1, 20);
+
   static const bRed = Color.fromARGB(255, 250, 117, 112);
   static const bPurple = Color.fromARGB(255, 178, 202, 228);
   static const bYellow = Color.fromARGB(255, 255, 255, 122);
@@ -56,20 +58,11 @@ class MyApp extends StatelessWidget {
     var status = await Permission.location.status;
     if (status.isDenied) {
       // We didn't ask for permission yet or the permission has been denied before but not permanently.
-      final AndroidIntent intent = new AndroidIntent(
+      const AndroidIntent intent = AndroidIntent(
         action: 'android.settings.LOCATION_SOURCE_SETTINGS',
       );
       await intent.launch();
     }
-
-// You can can also directly ask the permission about its status.
-// if (await Permission.location.isRestricted) {
-    // The OS restricts access, for example because of parental controls.
-// }
-    //     final AndroidIntent intent = new AndroidIntent(
-    //   action: 'android.settings.LOCATION_SOURCE_SETTINGS',
-    // );
-    // await intent.launch();
   }
 
   @override
@@ -117,26 +110,6 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ));
-    return MultiProvider(
-      providers: [
-        Provider<AuthenticationService>(
-          create: (_) => AuthenticationService(FirebaseAuth.instance),
-        ),
-        StreamProvider(
-          create: (context) =>
-              context.read<AuthenticationService>().authStateChanges,
-          initialData: null,
-        )
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: const AuthenticationWrapper(),
-      ),
-    );
   }
 }
 
