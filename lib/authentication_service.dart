@@ -71,12 +71,14 @@ class AuthenticationService {
   }
 
   Future<String?> updatePassword({required String password}) async {
+    print("oh no");
     try {
       await getCurrentUser()?.updatePassword(password);
     } on FirebaseAuthException catch (e) {
       print(e.message);
       return "ERROR: Reauthentication required";
     }
+    print("Successful password change!");
     return "Updated password";
   }
 
