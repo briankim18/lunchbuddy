@@ -17,30 +17,29 @@ class _UserProfilePageState extends State<UserProfilePage> {
   late Future<Person?> currUser;
 
   Future<Person?> fetchData() async {
-    await Future.delayed(
-        const Duration(seconds:1)
-    );
+    await Future.delayed(const Duration(seconds: 1));
 
-    final currentUserID =  FirebaseAuth.instance.currentUser?.uid;
+    final currentUserID = FirebaseAuth.instance.currentUser?.uid;
     var currentPerson;
 
-    await FirebaseFirestore.instance.collection("users").doc(currentUserID).get().then(
-        (DocumentSnapshot doc) {
-          final data = doc.data() as Map<String, dynamic>;
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(currentUserID)
+        .get()
+        .then((DocumentSnapshot doc) {
+      final data = doc.data() as Map<String, dynamic>;
 
-          return Person(
-            firstName: data['first_name'],
-            lastName: data['last_name'],
-            location: data['location'],
-            gender: data['gender'],
-            image: 'images/Kevin.png',
-            bio: data['bio'],
-            age: data['age'],
-            myRequests: data['posted_requests'],
-            takenRequests: data['taken_requests']
-          );
-        }
-    );
+      return Person(
+          firstName: data['first_name'],
+          lastName: data['last_name'],
+          location: data['location'],
+          gender: data['gender'],
+          image: 'images/Kevin.png',
+          bio: data['bio'],
+          age: data['age'],
+          myRequests: data['posted_requests'],
+          takenRequests: data['taken_requests']);
+    });
     return currentPerson;
   }
 
@@ -78,9 +77,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     FutureBuilder<Person?>(
                         future: currUser,
                         builder: (context, snapshot) {
-                          return snapshot.connectionState == ConnectionState.waiting
+                          return snapshot.connectionState ==
+                                  ConnectionState.waiting
                               ? SizedBox(
-                                  height: MediaQuery.of(context).size.height / 1.3,
+                                  height:
+                                      MediaQuery.of(context).size.height / 1.3,
                                   child: const Center(
                                     child: CircularProgressIndicator(),
                                   ),
@@ -102,9 +103,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                       width: 16,
                                     ),
                                     Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Text(
                                           '${snapshot.data?.firstName} ${snapshot.data?.lastName}',
@@ -145,9 +148,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                     ),
                                   ],
                                 );
-                        }
-
-                    ),
+                        }),
                     const SizedBox(height: 12),
                     Text(
                       'Bio:',
@@ -158,25 +159,26 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       ),
                     ),
                     FutureBuilder<Person?>(
-                      future: currUser,
-                      builder: (context, snapshot) {
-                        return snapshot.connectionState == ConnectionState.waiting
-                            ? SizedBox(
-                                height: MediaQuery.of(context).size.height / 1.3,
-                                child: const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                            : Text(
-                                snapshot.data?.bio ?? "",
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.indieFlower(
-                                  fontSize: 20,
-                                  color: MyApp.dGreen,
-                                ),
-                              );
-                      }
-                    )
+                        future: currUser,
+                        builder: (context, snapshot) {
+                          return snapshot.connectionState ==
+                                  ConnectionState.waiting
+                              ? SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height / 1.3,
+                                  child: const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                )
+                              : Text(
+                                  snapshot.data?.bio ?? "",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.indieFlower(
+                                    fontSize: 20,
+                                    color: MyApp.dGreen,
+                                  ),
+                                );
+                        })
                   ],
                 ),
               ),
@@ -207,7 +209,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 96,),
+                    const SizedBox(
+                      height: 96,
+                    ),
                   ],
                 ),
               ),
@@ -238,7 +242,7 @@ class MyRequestItem extends StatelessWidget {
           children: [
             // This is for the image 1
             Positioned(
-              top: 12,
+              top: 40,
               left: 280,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -251,7 +255,7 @@ class MyRequestItem extends StatelessWidget {
             ),
             // This is for the image 2
             Positioned(
-              top: 12,
+              top: 40,
               left: 200,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -264,7 +268,7 @@ class MyRequestItem extends StatelessWidget {
             ),
             // This is for Name/Distance/Favorite Info
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -272,35 +276,6 @@ class MyRequestItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${myRequestItem.user.firstName} ${myRequestItem.user.lastName}',
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.indieFlower(
-                            fontSize: 20,
-                            height: .5,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 8.0, bottom: 8.0),
-                              child: Image.asset(
-                                genderSymbol(myRequestItem.user),
-                                height: 20,
-                                width: 20,
-                              ),
-                            ),
-                            Text(
-                              '${myRequestItem.user.gender} ${myRequestItem.user.age}',
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.indieFlower(
-                                fontSize: 20,
-                                height: .5,
-                              ),
-                            ),
-                          ],
-                        ),
                         Text(
                           myRequestItem.restName,
                           overflow: TextOverflow.ellipsis,
@@ -313,7 +288,39 @@ class MyRequestItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
-                            height: 1,
+                            height: .5,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 0, right: 8.0, bottom: 8.0),
+                              child: Image.asset(
+                                genderSymbol(myRequestItem.user),
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                            Text(
+                              '${myRequestItem.user.gender} ${myRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.indieFlower(
+                                fontSize: 20,
+                                height: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '${myRequestItem.user.firstName} ${myRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.indieFlower(
+                            fontSize: 24,
+                            height: .5,
                           ),
                         ),
                         Text(
@@ -334,7 +341,7 @@ class MyRequestItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 left: 220,
-                top: 90,
+                top: 104,
               ),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
