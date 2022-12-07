@@ -20,32 +20,32 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
   late Future<List<PublicRequest>> realRequests;
 
   Future<List<PublicRequest>> fetchData() async {
-    await Future.delayed(
-        const Duration(seconds:1)
-    );
+    await Future.delayed(const Duration(seconds: 1));
 
     Map<String, dynamic> requestInfo;
     List<PublicRequest> requestList = [];
 
-    await FirebaseFirestore.instance.collection("public_requests").get()
+    await FirebaseFirestore.instance
+        .collection("public_requests")
+        .get()
         .then((QuerySnapshot qSnap) => {
-          for (QueryDocumentSnapshot doc in qSnap.docs) {
-            requestInfo = doc.data() as Map<String, dynamic>,
-            requestList.add(
-                PublicRequest(
-                  restName: requestInfo['restaurant_name'],
-                  restImage: "images/PandaExpress.png",
-                  restAddress: requestInfo['restaurant_street_address'],
-                  city: requestInfo['restaurant_city'],
-                  state: requestInfo['restaurant_state'],
-                  datePosted: DateTime.parse(requestInfo['date_posted'].toDate().toString()),
-                  dateToMeet: DateTime.parse(requestInfo['meeting_datetime'].toDate().toString()),
-                  user: users[0],
-                  acceptedUsers: []
-                )
-            ),
-          }
-        });
+              for (QueryDocumentSnapshot doc in qSnap.docs)
+                {
+                  requestInfo = doc.data() as Map<String, dynamic>,
+                  requestList.add(PublicRequest(
+                      restName: requestInfo['restaurant_name'],
+                      restImage: "images/PandaExpress.png",
+                      restAddress: requestInfo['restaurant_street_address'],
+                      city: requestInfo['restaurant_city'],
+                      state: requestInfo['restaurant_state'],
+                      datePosted: DateTime.parse(
+                          requestInfo['date_posted'].toDate().toString()),
+                      dateToMeet: DateTime.parse(
+                          requestInfo['meeting_datetime'].toDate().toString()),
+                      user: users[0],
+                      acceptedUsers: [])),
+                }
+            });
     return requestList;
   }
 
@@ -88,31 +88,29 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
               height: 16,
             ),
             FutureBuilder<List<PublicRequest>>(
-              future: realRequests,
-              builder: (context, snapshot) {
-                return snapshot.connectionState == ConnectionState.waiting
-                    ? SizedBox(
-                        height: MediaQuery.of(context).size.height / 1.3,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
+                future: realRequests,
+                builder: (context, snapshot) {
+                  return snapshot.connectionState == ConnectionState.waiting
+                      ? SizedBox(
+                          height: MediaQuery.of(context).size.height / 1.3,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
                           ),
-                      )
-                    : Column(
-                        children: List.generate(
-                          snapshot.data!.length,
-                              (index) => Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 8, bottom: 8),
-                            child: GestureDetector(
-                                child: PublicRequestItem(
-                                    publicRequestItem: snapshot.data![index]
-                                )
+                        )
+                      : Column(
+                          children: List.generate(
+                            snapshot.data!.length,
+                            (index) => Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 8, bottom: 8),
+                              child: GestureDetector(
+                                  child: PublicRequestItem(
+                                      publicRequestItem:
+                                          snapshot.data![index])),
                             ),
                           ),
-                        ),
-                    );
-              }
-            ),
+                        );
+                }),
             const SizedBox(height: 96),
           ],
         ),
@@ -222,7 +220,7 @@ class PublicRequestItem extends StatelessWidget {
                           '${getMeetWeekday(publicRequestItem)} ${publicRequestItem.dateToMeet.month}/${publicRequestItem.dateToMeet.day} ${getMeetTime(publicRequestItem)}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
-                            fontSize: 20,
+                            fontSize: 18,
                             height: 1.6,
                           ),
                         ),
