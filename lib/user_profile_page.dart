@@ -172,7 +172,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 96,
                     ),
                   ],
@@ -199,13 +199,13 @@ class MyRequestItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         color: randomColor(),
-        height: MediaQuery.of(context).size.height * 0.22,
+        height: MediaQuery.of(context).size.height * 0.2,
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
             // This is for the image 1
             Positioned(
-              top: 24,
+              top: 12,
               left: 280,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -218,7 +218,7 @@ class MyRequestItem extends StatelessWidget {
             ),
             // This is for the image 2
             Positioned(
-              top: 24,
+              top: 12,
               left: 200,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -296,11 +296,11 @@ class MyRequestItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 left: 220,
-                top: 100,
+                top: 90,
               ),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: MyApp.bGreen,
+                  backgroundColor: MyApp.mGreen,
                 ),
                 onPressed: () {
                   debugPrint("YO");

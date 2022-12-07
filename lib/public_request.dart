@@ -5,6 +5,7 @@ class PublicRequest {
   final DateTime datePosted, dateToMeet;
   final User user;
   final List<User> acceptedUsers;
+  bool going, here;
 
   PublicRequest({
     required this.restName,
@@ -16,6 +17,8 @@ class PublicRequest {
     required this.dateToMeet,
     required this.user,
     required this.acceptedUsers,
+    this.going = true,
+    this.here = false,
   });
 }
 
