@@ -1,13 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
-import 'package:lunch_buddy/user.dart';
 import 'package:intl/intl.dart';
+import 'package:lunch_buddy/person.dart';
 
 final _formKey = GlobalKey<FormState>();
-
 
 class PublicRequestPage extends StatefulWidget {
   const PublicRequestPage({Key? key}) : super(key: key);
@@ -24,6 +24,44 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
   TextEditingController ageController = TextEditingController();
 
 
+
+  late Future<List<PublicRequest>> realRequests;
+
+  Future<List<PublicRequest>> fetchData() async {
+    await Future.delayed(const Duration(seconds: 1));
+
+    Map<String, dynamic> requestInfo;
+    List<PublicRequest> requestList = [];
+
+    await FirebaseFirestore.instance
+        .collection("public_requests")
+        .get()
+        .then((QuerySnapshot qSnap) => {
+              for (QueryDocumentSnapshot doc in qSnap.docs)
+                {
+                  requestInfo = doc.data() as Map<String, dynamic>,
+                  requestList.add(PublicRequest(
+                      restName: requestInfo['restaurant_name'],
+                      restImage: "images/PandaExpress.png",
+                      restAddress: requestInfo['restaurant_street_address'],
+                      city: requestInfo['restaurant_city'],
+                      state: requestInfo['restaurant_state'],
+                      datePosted: DateTime.parse(
+                          requestInfo['date_posted'].toDate().toString()),
+                      dateToMeet: DateTime.parse(
+                          requestInfo['meeting_datetime'].toDate().toString()),
+                      user: users[0],
+                      acceptedUsers: [])),
+                }
+            });
+    return requestList;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    realRequests = fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -213,24 +251,31 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
             const SizedBox(
               height: 16,
             ),
-            Column(
-              children: List.generate(
-                publicRequests.length,
-                    (index) =>
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, top: 8, bottom: 8),
-                      child: GestureDetector(
-                          child: PublicRequestItem(
-                              publicRequestItem: publicRequests[index]
-                          )
-                      ),
-                    ),
-              ),
-            ),
-            SizedBox(
-              height: 96,
-            ),
+            FutureBuilder<List<PublicRequest>>(
+                future: realRequests,
+                builder: (context, snapshot) {
+                  return snapshot.connectionState == ConnectionState.waiting
+                      ? SizedBox(
+                          height: MediaQuery.of(context).size.height / 1.3,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : Column(
+                          children: List.generate(
+                            snapshot.data!.length,
+                            (index) => Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 8, bottom: 8),
+                              child: GestureDetector(
+                                  child: PublicRequestItem(
+                                      publicRequestItem:
+                                          snapshot.data![index])),
+                            ),
+                          ),
+                        );
+                }),
+            const SizedBox(height: 96),
           ],
         ),
       ),
@@ -252,19 +297,13 @@ class PublicRequestItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         color: randomColor(),
-        height: MediaQuery
-            .of(context)
-            .size
-            .height * 0.22,
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
+        height: MediaQuery.of(context).size.height * 0.2,
+        width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
             // This is for the image 1
             Positioned(
-              top: 24,
+              top: 40,
               left: 280,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -277,7 +316,7 @@ class PublicRequestItem extends StatelessWidget {
             ),
             // This is for the image 2
             Positioned(
-              top: 24,
+              top: 40,
               left: 200,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -290,7 +329,7 @@ class PublicRequestItem extends StatelessWidget {
             ),
             // This is for Name/Distance/Favorite Info
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -299,35 +338,6 @@ class PublicRequestItem extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '${publicRequestItem.user
-                              .firstName} ${publicRequestItem.user.lastName}',
-                          style: GoogleFonts.indieFlower(
-                            fontSize: 20,
-                            height: .5,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 8.0, bottom: 8.0),
-                              child: Image.asset(
-                                genderSymbol(publicRequestItem.user),
-                                height: 20,
-                                width: 20,
-                              ),
-                            ),
-                            Text(
-                              '${publicRequestItem.user
-                                  .gender} ${publicRequestItem.user.age}',
-                              style: GoogleFonts.indieFlower(
-                                fontSize: 20,
-                                height: .5,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Text(
                           publicRequestItem.restName,
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
@@ -335,22 +345,51 @@ class PublicRequestItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '(${publicRequestItem.city}, ${publicRequestItem
-                              .state})',
+                          '(${publicRequestItem.city}, ${publicRequestItem.state})',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
-                            height: 1,
+                            height: .5,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 0, right: 8.0, bottom: 8.0),
+                              child: Image.asset(
+                                genderSymbol(publicRequestItem.user),
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                            Text(
+                              '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.indieFlower(
+                                fontSize: 20,
+                                height: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.indieFlower(
+                            fontSize: 24,
+                            height: .5,
                           ),
                         ),
                         Text(
-                          '${getMeetWeekday(
-                              publicRequestItem)} ${publicRequestItem.dateToMeet
-                              .month}/${publicRequestItem.dateToMeet
-                              .day} ${getMeetTime(publicRequestItem)}',
+                          '${getMeetWeekday(publicRequestItem)} ${publicRequestItem.dateToMeet.month}/${publicRequestItem.dateToMeet.day} ${getMeetTime(publicRequestItem)}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
-                            fontSize: 20,
-                            height: 1.6,
+                            fontSize: 18,
+                            height: 2,
                           ),
                         ),
                       ],
@@ -363,11 +402,11 @@ class PublicRequestItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 left: 220,
-                top: 100,
+                top: 104,
               ),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: MyApp.bGreen,
+                  backgroundColor: MyApp.mGreen,
                 ),
                 onPressed: () {
                   debugPrint("YO");
