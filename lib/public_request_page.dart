@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
-import 'package:lunch_buddy/user.dart';
+import 'package:lunch_buddy/person.dart';
 
 class PublicRequestPage extends StatefulWidget {
   const PublicRequestPage({Key? key}) : super(key: key);
@@ -17,16 +17,21 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
   bool isSwitch = false;
   bool? isCheckbox = false;
 
-  List<PublicRequest> realRequests = [];
+  late Future<List<PublicRequest>> realRequests;
 
-  void fetchData() async {
+  Future<List<PublicRequest>> fetchData() async {
+    await Future.delayed(
+        const Duration(seconds:1)
+    );
+
     Map<String, dynamic> requestInfo;
+    List<PublicRequest> requestList = [];
 
     await FirebaseFirestore.instance.collection("public_requests").get()
         .then((QuerySnapshot qSnap) => {
           for (QueryDocumentSnapshot doc in qSnap.docs) {
             requestInfo = doc.data() as Map<String, dynamic>,
-            realRequests.add(
+            requestList.add(
                 PublicRequest(
                   restName: requestInfo['restaurant_name'],
                   restImage: "images/PandaExpress.png",
@@ -38,20 +43,20 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                   user: users[0],
                   acceptedUsers: []
                 )
-            )
+            ),
           }
         });
+    return requestList;
   }
 
   @override
   void initState() {
     super.initState();
-    fetchData();
+    realRequests = fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(realRequests.toString());
     return Scaffold(
       appBar: AppBar(
         title: const Text('Public Requests'),
@@ -82,21 +87,33 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
             const SizedBox(
               height: 16,
             ),
-            Column(
-              children: List.generate(
-                realRequests.length,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(
-                      left: 20, right: 20, top: 8, bottom: 8),
-                  child: GestureDetector(
-                      child: PublicRequestItem(
-                          publicRequestItem: realRequests[index]
+            FutureBuilder<List<PublicRequest>>(
+              future: realRequests,
+              builder: (context, snapshot) {
+                return snapshot.connectionState == ConnectionState.waiting
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height / 1.3,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                          ),
                       )
-                  ),
-                ),
-              ),
+                    : Column(
+                        children: List.generate(
+                          snapshot.data!.length,
+                              (index) => Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 8, bottom: 8),
+                            child: GestureDetector(
+                                child: PublicRequestItem(
+                                    publicRequestItem: snapshot.data![index]
+                                )
+                            ),
+                          ),
+                        ),
+                    );
+              }
             ),
-            const SizedBox(height: 96,),
+            const SizedBox(height: 96),
           ],
         ),
       ),
