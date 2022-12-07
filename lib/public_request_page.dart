@@ -138,7 +138,7 @@ class PublicRequestItem extends StatelessWidget {
           children: [
             // This is for the image 1
             Positioned(
-              top: 12,
+              top: 40,
               left: 280,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -151,7 +151,7 @@ class PublicRequestItem extends StatelessWidget {
             ),
             // This is for the image 2
             Positioned(
-              top: 12,
+              top: 40,
               left: 200,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -164,7 +164,7 @@ class PublicRequestItem extends StatelessWidget {
             ),
             // This is for Name/Distance/Favorite Info
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -172,35 +172,6 @@ class PublicRequestItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.indieFlower(
-                            fontSize: 20,
-                            height: .5,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 2.0, right: 8.0, bottom: 8.0),
-                              child: Image.asset(
-                                genderSymbol(publicRequestItem.user),
-                                height: 20,
-                                width: 20,
-                              ),
-                            ),
-                            Text(
-                              '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.indieFlower(
-                                fontSize: 20,
-                                height: 1,
-                              ),
-                            ),
-                          ],
-                        ),
                         Text(
                           publicRequestItem.restName,
                           overflow: TextOverflow.ellipsis,
@@ -213,7 +184,39 @@ class PublicRequestItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
-                            height: 1,
+                            height: .5,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 0, right: 8.0, bottom: 8.0),
+                              child: Image.asset(
+                                genderSymbol(publicRequestItem.user),
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                            Text(
+                              '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.indieFlower(
+                                fontSize: 20,
+                                height: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.indieFlower(
+                            fontSize: 24,
+                            height: .5,
                           ),
                         ),
                         Text(
@@ -221,7 +224,7 @@ class PublicRequestItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 18,
-                            height: 1.6,
+                            height: 2,
                           ),
                         ),
                       ],
@@ -234,7 +237,7 @@ class PublicRequestItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 left: 220,
-                top: 90,
+                top: 104,
               ),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(

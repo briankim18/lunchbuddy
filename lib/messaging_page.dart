@@ -99,7 +99,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
           children: [
             // This is for the image 1
             Positioned(
-              top: 12,
+              top: 40,
               left: 280,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -112,7 +112,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
             ),
             // This is for the image 2
             Positioned(
-              top: 12,
+              top: 40,
               left: 200,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -125,7 +125,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
             ),
             // This is for Name/Distance/Favorite Info
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -133,35 +133,6 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '${takenRequestItem.user.firstName} ${takenRequestItem.user.lastName}',
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.indieFlower(
-                            fontSize: 20,
-                            height: .5,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  right: 8.0, bottom: 8.0),
-                              child: Image.asset(
-                                genderSymbol(takenRequestItem.user),
-                                height: 20,
-                                width: 20,
-                              ),
-                            ),
-                            Text(
-                              '${takenRequestItem.user.gender} ${takenRequestItem.user.age}',
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.indieFlower(
-                                fontSize: 20,
-                                height: .5,
-                              ),
-                            ),
-                          ],
-                        ),
                         Text(
                           takenRequestItem.restName,
                           overflow: TextOverflow.ellipsis,
@@ -174,7 +145,39 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
-                            height: 1,
+                            height: .5,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 0, right: 8.0, bottom: 8.0),
+                              child: Image.asset(
+                                genderSymbol(takenRequestItem.user),
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                            Text(
+                              '${takenRequestItem.user.gender} ${takenRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.indieFlower(
+                                fontSize: 20,
+                                height: 0,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          '${takenRequestItem.user.firstName} ${takenRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.indieFlower(
+                            fontSize: 24,
+                            height: .5,
                           ),
                         ),
                         Text(
