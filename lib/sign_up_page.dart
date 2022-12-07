@@ -141,25 +141,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10,),
-                    Text("Lunch Buddy",
-                        style: GoogleFonts.indieFlower(
-                            fontSize: 50, color: MyApp.dGreen)),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Email",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
+                        ],
                       ),
                       const SizedBox(
                         height: 10,
@@ -197,20 +179,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Username",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Username",
+                            style: GoogleFonts.indieFlower(
+                                fontSize: 20, height: 2)),
                       ),
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -235,20 +209,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("First Name",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("First Name",
+                            style: GoogleFonts.indieFlower(
+                                fontSize: 20, height: 2)),
                       ),
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -273,21 +239,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Last Name",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
-
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Last Name",
+                            style: GoogleFonts.indieFlower(
+                                fontSize: 20, height: 2)),
                       ),
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -312,21 +269,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Age",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
-
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Age",
+                            style: GoogleFonts.indieFlower(
+                                fontSize: 20, height: 2)),
                       ),
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -360,20 +308,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Gender",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Gender",
+                            style: GoogleFonts.indieFlower(
+                                fontSize: 20, height: 2)),
                       ),
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -404,21 +344,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Password",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
-
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Password",
+                            style: GoogleFonts.indieFlower(
+                                fontSize: 20, height: 2)),
                       ),
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -449,20 +380,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text("Confirm Password",
-                          style:
-                              GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Confirm Password",
+                            style: GoogleFonts.indieFlower(
+                                fontSize: 20, height: 2)),
                       ),
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -491,62 +414,14 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Only allow signing up when all validations passed
-                          if (_formKey.currentState!.validate()) {
-                            context
-                                .read<AuthenticationService>()
-                                .signUp(
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim())
-                                .then((String? result) => {
-                                      if (result != null &&
-                                          result.startsWith("ERROR"))
-                                        {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content: Text(result)))
-                                        }
-                                      else
-                                        {
-                                          db
-                                              .collection("users")
-                                              .doc(result)
-                                              .set({
-                                            "email":
-                                                emailController.text.trim(),
-                                            "username":
-                                                usernameController.text.trim(),
-                                            "first_name":
-                                                firstnameController.text.trim(),
-                                            "last_name":
-                                                lastnameController.text.trim(),
-                                            "age": ageController.text.trim(),
-                                            "gender": gender,
-                                            "location": '',
-                                            "bio": '',
-                                            "posted_requests": [],
-                                            "taken_requests": []
-                                          }),
-                                          Navigator.pop(context)
-                                        }
-                                    });
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MyApp.bYellow,
-                          elevation: 4,
-                          ),
+                      SizedBox(height: 10),
+                      ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(4),
+                          topRight: Radius.circular(16),
+                          bottomLeft: Radius.circular(16),
+                          bottomRight: Radius.circular(4),
+                        ),
                         child: ElevatedButton(
                           onPressed: () {
                             // Only allow signing up when all validations passed
@@ -582,7 +457,11 @@ class _SignUpPageState extends State<SignUpPage> {
                                                   .text
                                                   .trim(),
                                               "age": ageController.text.trim(),
-                                              "gender": gender
+                                              "gender": gender,
+                                              "location": '',
+                                              "bio": '',
+                                              "posted_requests": [],
+                                              "taken_requests": []
                                             }),
                                             Navigator.pop(context)
                                           }
@@ -593,16 +472,65 @@ class _SignUpPageState extends State<SignUpPage> {
                             backgroundColor: MyApp.bYellow,
                             elevation: 4,
                           ),
-                          child: Text(
-                            "Create New Account",
-                            style: GoogleFonts.indieFlower(
-                                fontSize: 24, color: MyApp.dGreen),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Only allow signing up when all validations passed
+                              if (_formKey.currentState!.validate()) {
+                                context
+                                    .read<AuthenticationService>()
+                                    .signUp(
+                                        email: emailController.text.trim(),
+                                        password:
+                                            passwordController.text.trim())
+                                    .then((String? result) => {
+                                          if (result != null &&
+                                              result.startsWith("ERROR"))
+                                            {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(SnackBar(
+                                                      content: Text(result)))
+                                            }
+                                          else
+                                            {
+                                              db
+                                                  .collection("users")
+                                                  .doc(result)
+                                                  .set({
+                                                "email":
+                                                    emailController.text.trim(),
+                                                "username": usernameController
+                                                    .text
+                                                    .trim(),
+                                                "first_name":
+                                                    firstnameController.text
+                                                        .trim(),
+                                                "last_name": lastnameController
+                                                    .text
+                                                    .trim(),
+                                                "age":
+                                                    ageController.text.trim(),
+                                                "gender": gender
+                                              }),
+                                              Navigator.pop(context)
+                                            }
+                                        });
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: MyApp.bYellow,
+                              elevation: 4,
+                            ),
+                            child: Text(
+                              "Create New Account",
+                              style: GoogleFonts.indieFlower(
+                                  fontSize: 24, color: MyApp.dGreen),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                  ],
+                      const SizedBox(height: 10),
+                    ],
+                  ),
                 ),
               ),
             ),
