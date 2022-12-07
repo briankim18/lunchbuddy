@@ -22,26 +22,25 @@ class _UserProfilePageState extends State<UserProfilePage> {
     );
 
     final currentUserID =  FirebaseAuth.instance.currentUser?.uid;
-    var currentPerson;
+    Map<String, dynamic> data = {};
 
     await FirebaseFirestore.instance.collection("users").doc(currentUserID).get().then(
         (DocumentSnapshot doc) {
-          final data = doc.data() as Map<String, dynamic>;
-
-          return Person(
-            firstName: data['first_name'],
-            lastName: data['last_name'],
-            location: data['location'],
-            gender: data['gender'],
-            image: 'images/Kevin.png',
-            bio: data['bio'],
-            age: data['age'],
-            myRequests: data['posted_requests'],
-            takenRequests: data['taken_requests']
-          );
+          data = doc.data() as Map<String, dynamic>;
         }
     );
-    return currentPerson;
+
+    return Person(
+        firstName: data['first_name'],
+        lastName: data['last_name'],
+        location: data['location'],
+        gender: data['gender'],
+        image: 'images/Kevin.png',
+        bio: data['bio'],
+        age: int.parse(data['age']),
+        myRequests: data['posted_requests'].cast<PublicRequest>(),
+        takenRequests: data['taken_requests'].cast<PublicRequest>()
+    );
   }
 
   @override
@@ -90,14 +89,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                     const SizedBox(
                                       height: 16,
                                     ),
-                                    // ClipRRect(
-                                    //   borderRadius: BorderRadius.circular(12),
-                                    //   child: Image.asset(
-                                    //     snapshot.data?.image ?? "",
-                                    //     height: MediaQuery.of(context).size.height * 0.2,
-                                    //     width: MediaQuery.of(context).size.height * 0.2,
-                                    //   ),
-                                    // ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.asset(
+                                        snapshot.data?.image ?? "",
+                                        height: MediaQuery.of(context).size.height * 0.2,
+                                        width: MediaQuery.of(context).size.height * 0.2,
+                                      ),
+                                    ),
                                     const SizedBox(
                                       width: 16,
                                     ),
