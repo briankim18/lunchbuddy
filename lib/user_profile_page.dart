@@ -146,10 +146,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                   ],
                                 );
                         }
+
                     ),
                     const SizedBox(height: 12),
                     Text(
                       'Bio:',
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.indieFlower(
                         fontSize: 20,
                         color: MyApp.dGreen,
@@ -183,6 +185,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
               ),
               Text(
                 'Your Requests',
+                overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.indieFlower(
                   fontSize: 24,
                   color: MyApp.dGreen,
@@ -229,13 +232,13 @@ class MyRequestItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         color: randomColor(),
-        height: MediaQuery.of(context).size.height * 0.22,
+        height: MediaQuery.of(context).size.height * 0.2,
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
             // This is for the image 1
             Positioned(
-              top: 24,
+              top: 12,
               left: 280,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -248,7 +251,7 @@ class MyRequestItem extends StatelessWidget {
             ),
             // This is for the image 2
             Positioned(
-              top: 24,
+              top: 12,
               left: 200,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -271,6 +274,7 @@ class MyRequestItem extends StatelessWidget {
                       children: [
                         Text(
                           '${myRequestItem.user.firstName} ${myRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: .5,
@@ -289,6 +293,7 @@ class MyRequestItem extends StatelessWidget {
                             ),
                             Text(
                               '${myRequestItem.user.gender} ${myRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
                                 height: .5,
@@ -298,12 +303,14 @@ class MyRequestItem extends StatelessWidget {
                         ),
                         Text(
                           myRequestItem.restName,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 18,
                           ),
                         ),
                         Text(
                           '(${myRequestItem.city}, ${myRequestItem.state})',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
                             height: 1,
@@ -311,6 +318,7 @@ class MyRequestItem extends StatelessWidget {
                         ),
                         Text(
                           '${getMeetWeekday(myRequestItem)} ${myRequestItem.dateToMeet.month}/${myRequestItem.dateToMeet.day} ${getMeetTime(myRequestItem)}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: 1.6,
@@ -326,11 +334,11 @@ class MyRequestItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 left: 220,
-                top: 100,
+                top: 90,
               ),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: MyApp.bGreen,
+                  backgroundColor: MyApp.mGreen,
                 ),
                 onPressed: () {
                   debugPrint("YO");
