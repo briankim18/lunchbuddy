@@ -1,10 +1,10 @@
-import 'package:lunch_buddy/user.dart';
+import 'package:lunch_buddy/person.dart';
 
 class PublicRequest {
   final String restName, restImage, restAddress, city, state;
   final DateTime datePosted, dateToMeet;
-  final User user;
-  final List<User> acceptedUsers;
+  final Person user;
+  final List<Person> acceptedUsers;
 
   PublicRequest({
     required this.restName,

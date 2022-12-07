@@ -189,18 +189,6 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
               ),
             ),
           )),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     // if (_formKey.currentState!.validate()) {
-      //     debugPrint(
-      //         '${_restNameController.text.trim()} ${_lastNameController.text.trim()}');
-      //     Navigator.pop(context);
-      //     // }
-      //   },
-      //   backgroundColor: MyApp.bGreen,
-      //   elevation: 4.0,
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }
