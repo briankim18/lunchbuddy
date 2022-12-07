@@ -79,4 +79,47 @@ class AuthenticationService {
 
     return credential?.user?.uid;
   }
+
+  Future<String?> updateEmail({required String email}) async {
+    try {
+      await getCurrentUser()?.updateEmail(email);
+    } on FirebaseAuthException catch (e) {
+      print("Fail");
+      return "ERROR: Reauthentication required";
+    }
+    print("Successful email update!");
+    return "Updated email";
+  }
+
+  Future<String?> updatePassword({required String password}) async {
+    try {
+      await getCurrentUser()?.updatePassword(password);
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      return "ERROR: Reauthentication required";
+    }
+    return "Updated password";
+  }
+
+  Future<String?> deleteUser() async {
+    try {
+      await getCurrentUser()?.delete();
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      return "ERROR: Reauthentication required";
+    }
+    return "Deleted user";
+  }
+
+  Future<String?> reauthenticate({required String email, required String password}) async {
+    try {
+      AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
+      await getCurrentUser()?.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      print(e.message);
+      return "ERROR: Invalid credentials";
+    }
+    print("Successful authenticate!");
+    return "Reauthenticated";
+  }
 }
