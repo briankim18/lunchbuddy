@@ -127,6 +127,7 @@ class PublicRequestItem extends StatelessWidget {
                       children: [
                         Text(
                           '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: .5,
@@ -145,6 +146,7 @@ class PublicRequestItem extends StatelessWidget {
                             ),
                             Text(
                               '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
                                 height: 1,
@@ -169,6 +171,7 @@ class PublicRequestItem extends StatelessWidget {
                         ),
                         Text(
                           '${getMeetWeekday(publicRequestItem)} ${publicRequestItem.dateToMeet.month}/${publicRequestItem.dateToMeet.day} ${getMeetTime(publicRequestItem)}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: 1.6,

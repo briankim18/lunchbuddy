@@ -21,7 +21,7 @@ class _MessagingPageState extends State<MessagingPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Taken Requests'),
-        backgroundColor: MyApp.bGreen,
+        backgroundColor: MyApp.mGreen,
         elevation: 4,
         // automaticallyImplyLeading: false,
         leading: IconButton(
@@ -135,6 +135,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                       children: [
                         Text(
                           '${takenRequestItem.user.firstName} ${takenRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: .5,
@@ -153,6 +154,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                             ),
                             Text(
                               '${takenRequestItem.user.gender} ${takenRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
                                 height: .5,
@@ -177,6 +179,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                         ),
                         Text(
                           '${getMeetWeekday(takenRequestItem)} ${takenRequestItem.dateToMeet.month}/${takenRequestItem.dateToMeet.day} ${getMeetTime(takenRequestItem)}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                           ),
