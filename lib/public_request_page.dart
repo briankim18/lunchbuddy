@@ -156,13 +156,13 @@ class PublicRequestItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         color: randomColor(),
-        height: MediaQuery.of(context).size.height * 0.22,
+        height: MediaQuery.of(context).size.height * 0.2,
         width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
             // This is for the image 1
             Positioned(
-              top: 24,
+              top: 12,
               left: 280,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -175,7 +175,7 @@ class PublicRequestItem extends StatelessWidget {
             ),
             // This is for the image 2
             Positioned(
-              top: 24,
+              top: 12,
               left: 200,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
@@ -198,6 +198,7 @@ class PublicRequestItem extends StatelessWidget {
                       children: [
                         Text(
                           '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: .5,
@@ -207,7 +208,7 @@ class PublicRequestItem extends StatelessWidget {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                  right: 8.0, bottom: 8.0),
+                                  top: 2.0, right: 8.0, bottom: 8.0),
                               child: Image.asset(
                                 genderSymbol(publicRequestItem.user),
                                 height: 20,
@@ -216,9 +217,10 @@ class PublicRequestItem extends StatelessWidget {
                             ),
                             Text(
                               '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
+                              overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
-                                height: .5,
+                                height: 1,
                               ),
                             ),
                           ],
@@ -240,6 +242,7 @@ class PublicRequestItem extends StatelessWidget {
                         ),
                         Text(
                           '${getMeetWeekday(publicRequestItem)} ${publicRequestItem.dateToMeet.month}/${publicRequestItem.dateToMeet.day} ${getMeetTime(publicRequestItem)}',
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 20,
                             height: 1.6,
@@ -255,11 +258,11 @@ class PublicRequestItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 left: 220,
-                top: 100,
+                top: 90,
               ),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: MyApp.bGreen,
+                  backgroundColor: MyApp.mGreen,
                 ),
                 onPressed: () {
                   debugPrint("YO");
