@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:lunch_buddy/public_request.dart';
 
-class User {
+class Person {
   final String firstName, lastName, location, gender, image, bio;
   final int age;
   final List<PublicRequest> myRequests;
   final List<PublicRequest> takenRequests;
   // List of publicRequests taken
 
-  User({
+  Person({
     required this.firstName,
     required this.lastName,
     required this.location,
@@ -22,8 +21,8 @@ class User {
 }
 
 // Changes symbol based on gender
-genderSymbol(User user) {
-  var g = user.gender;
+genderSymbol(Person? user) {
+  var g = user?.gender;
   if (g == 'M') {
     return 'images/Male.png';
   } else if (g == 'F') {
@@ -33,8 +32,8 @@ genderSymbol(User user) {
   }
 }
 
-List<User> users = [
-  User(
+List<Person> users = [
+  Person(
     firstName: "Kevin",
     lastName: "Vu",
     location: "Centreville, VA",
@@ -55,7 +54,7 @@ List<User> users = [
         restAddress: "Panda Express, Prices Fork Road, Blacksburg, VA",
         datePosted: DateTime.parse('2022-10-20 20:18:04Z'),
         dateToMeet: DateTime.parse('2022-11-14 20:18:04Z'),
-        user: User(
+        user: Person(
           firstName: "Ryan",
           lastName: "Le",
           location: "Mechanicsville, VA",
@@ -76,7 +75,7 @@ List<User> users = [
         restAddress: "Panda Express, Prices Fork Road, Blacksburg, VA",
         datePosted: DateTime.parse('2022-10-20 10:18:04Z'),
         dateToMeet: DateTime.parse('2022-11-14 10:18:04Z'),
-        user: User(
+        user: Person(
           firstName: "Ryan",
           lastName: "Le",
           location: "Mechanicsville, VA",
@@ -92,7 +91,7 @@ List<User> users = [
     ],
     takenRequests: [],
   ),
-  User(
+  Person(
     firstName: "Ryan",
     lastName: "Le",
     location: "Mechanicsville, VA",
@@ -103,7 +102,7 @@ List<User> users = [
     myRequests: [],
     takenRequests: [],
   ),
-  User(
+  Person(
     firstName: "Emily",
     lastName: "Lu",
     location: "Westminster, CA",
@@ -114,7 +113,7 @@ List<User> users = [
     myRequests: [],
     takenRequests: [],
   ),
-  User(
+  Person(
     firstName: "Jessie",
     lastName: "Jess",
     location: "New York City, NY",
