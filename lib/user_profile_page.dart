@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/authentication_service.dart';
 import 'package:lunch_buddy/public_request.dart';
-import 'package:lunch_buddy/public_request_page.dart';
 import 'package:lunch_buddy/user.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,8 +15,6 @@ class UserProfilePage extends StatefulWidget {
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
-  final bioController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -43,7 +40,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
     getData(String field) {
       return data[field];
     }
-
+    
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
