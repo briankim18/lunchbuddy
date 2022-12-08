@@ -34,48 +34,47 @@ class _UserProfilePageState extends State<UserProfilePage> {
         .doc(currUserID)
         .get()
         .then((DocumentSnapshot doc) async {
-      userInfo = doc.data() as Map<String, dynamic>;
+          userInfo = doc.data() as Map<String, dynamic>;
 
-      for (String myRequestID in userInfo['posted_requests']) {
-        await FirebaseFirestore.instance
-            .collection("public_requests")
-            .doc(myRequestID)
-            .get()
-            .then((DocumentSnapshot docSnap) async {
-          requestInfo = docSnap.data() as Map<String, dynamic>;
+          for (String myRequestID in userInfo['posted_requests']) {
+            await FirebaseFirestore.instance
+                .collection("public_requests")
+                .doc(myRequestID)
+                .get()
+                .then((DocumentSnapshot docSnap) async {
+                  requestInfo = docSnap.data() as Map<String, dynamic>;
 
-          publisher = Person(
-              firstName: userInfo['first_name'],
-              lastName: userInfo['last_name'],
-              location: userInfo['location'],
-              gender: userInfo['gender'],
-              image: 'images/Kevin.png',
-              bio: userInfo['bio'],
-              age: int.parse(userInfo['age']),
-              myRequests:
-              userInfo['posted_requests'].cast<PublicRequest>(),
-              takenRequests:
-              userInfo['taken_requests'].cast<PublicRequest>()
-          );
-          myRequestList.add(PublicRequest(
-              id: docSnap.id,
-              restName: requestInfo['restaurant_name'],
-              restImage: "images/PandaExpress.png",
-              restAddress: requestInfo['restaurant_street_address'],
-              city: requestInfo['restaurant_city'],
-              state: requestInfo['restaurant_state'],
-              datePosted: DateTime.parse(
-                  requestInfo['date_posted'].toDate().toString()),
-              dateToMeet: DateTime.parse(
-                  requestInfo['meeting_datetime'].toDate().toString()),
-              user: publisher,
-              acceptedUsers: []
-          )
-          );
+                publisher = Person(
+                    firstName: userInfo['first_name'],
+                    lastName: userInfo['last_name'],
+                    location: userInfo['location'],
+                    gender: userInfo['gender'],
+                    image: 'images/Kevin.png',
+                    bio: userInfo['bio'],
+                    age: int.parse(userInfo['age']),
+                    myRequests:
+                    userInfo['posted_requests'].cast<PublicRequest>(),
+                    takenRequests:
+                    userInfo['taken_requests'].cast<PublicRequest>()
+                );
+                  myRequestList.add(PublicRequest(
+                      id: docSnap.id,
+                      restName: requestInfo['restaurant_name'],
+                      restImage: "images/PandaExpress.png",
+                      restAddress: requestInfo['restaurant_street_address'],
+                      city: requestInfo['restaurant_city'],
+                      state: requestInfo['restaurant_state'],
+                      datePosted: DateTime.parse(
+                          requestInfo['date_posted'].toDate().toString()),
+                      dateToMeet: DateTime.parse(
+                          requestInfo['meeting_datetime'].toDate().toString()),
+                      user: publisher,
+                      acceptedUsers: []
+                  )
+                  );
+                });
+          }
         });
-      }
-    });
-
     return myRequestList;
   }
 
