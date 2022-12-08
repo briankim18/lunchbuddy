@@ -45,7 +45,7 @@ getMeetTime(PublicRequest publicRequest) {
 List<PublicRequest> kevinTakenRequests = [
   PublicRequest(
     restName: "Panda Express",
-    restImage: "images/PandaExpress.png",
+    restImage: "www.google.com",
     city: "Blacksburg",
     state: "VA",
     restAddress: "Panda Express, Prices Fork Road, Blacksburg, VA",

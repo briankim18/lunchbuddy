@@ -1,16 +1,8 @@
 import 'dart:math';
-
 import 'package:android_intent/android_intent.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lunch_buddy/blocs/autocomplete/autocomplete_event.dart';
-import 'package:lunch_buddy/blocs/geolocation_bloc.dart';
-import 'package:lunch_buddy/blocs/geolocation_event.dart';
-import 'package:lunch_buddy/places/places_repository.dart';
-import 'package:lunch_buddy/repositories/geolocation/geolocation_repository.dart';
-import 'blocs/autocomplete/autocomplete_bloc.dart';
-import 'blocs/place/place_bloc.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,71 +41,53 @@ class MyApp extends StatelessWidget {
     silv,
   ];
   void openLocationSetting() async {
-    final AndroidIntent intent = new AndroidIntent(
-      action: 'android.settings.LOCATION_SOURCE_SETTINGS',
-    );
-    await intent.launch();
+    // final AndroidIntent intent = new AndroidIntent(
+    //   action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+    // );
+    // await intent.launch();
+    // permi
+    var status = await Permission.location.status;
+    if (status.isDenied) {
+      // We didn't ask for permission yet or the permission has been denied before but not permanently.
+      final AndroidIntent intent = new AndroidIntent(
+        action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+      );
+      await intent.launch();
+    }
+
+// You can can also directly ask the permission about its status.
+// if (await Permission.location.isRestricted) {
+    // The OS restricts access, for example because of parental controls.
+// }
+    //     final AndroidIntent intent = new AndroidIntent(
+    //   action: 'android.settings.LOCATION_SOURCE_SETTINGS',
+    // );
+    // await intent.launch();
   }
+
   @override
   Widget build(BuildContext context) {
     openLocationSetting();
-    return MultiRepositoryProvider(providers: [
-      RepositoryProvider<GeolocationRepository>(
-        create: (_) => GeolocationRepository(),
-      ),
-      RepositoryProvider<PlacesRepository>(
-        create: (_) => PlacesRepository(),
-      ),
-    ], child: MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) =>  GeolocationBloc(geolocationRepository: context.read<GeolocationRepository>())
-          ..add(LoadGeolocation())),
-        BlocProvider(create: (context) =>  AutocompleteBloc(placesRepository: context.read<PlacesRepository>())
-          ..add(LoadAutocomplete())),
-        BlocProvider(create: (context) =>  PlaceBloc(placesRepository: context.read<PlacesRepository>())),
-
-
-      ], child: MultiProvider(
-      providers: [
-        Provider<AuthenticationService>(
-          create: (_) => AuthenticationService(FirebaseAuth.instance),
-        ),
-        StreamProvider(
-          create: (context) =>
-          context.read<AuthenticationService>().authStateChanges,
-          initialData: null,
-        )
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: const AuthenticationWrapper(),
-      ),
-    ),
-    ));
     return MultiProvider(
-      providers: [
-        Provider<AuthenticationService>(
-          create: (_) => AuthenticationService(FirebaseAuth.instance),
-        ),
-        StreamProvider(
-          create: (context) =>
-              context.read<AuthenticationService>().authStateChanges,
-          initialData: null,
-        )
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-        ),
-        home: const AuthenticationWrapper(),
-      ),
-    );
+            providers: [
+              Provider<AuthenticationService>(
+                create: (_) => AuthenticationService(FirebaseAuth.instance),
+              ),
+              StreamProvider(
+                create: (context) =>
+                    context.read<AuthenticationService>().authStateChanges,
+                initialData: null,
+              )
+            ],
+            child: MaterialApp(
+              title: 'Flutter Demo',
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              ),
+              home: const AuthenticationWrapper(),
+            ),
+          );
   }
 }
 
