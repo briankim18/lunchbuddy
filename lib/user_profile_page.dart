@@ -20,7 +20,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
   late Future<Person?> currUser;
   late Future<List<PublicRequest>> myRequests;
   File? image;
-  String biog = "";
+  String bio = "";
+  final TextEditingController bioController = TextEditingController();
+
 
   Future pickImage() async {
     try {
@@ -36,8 +38,39 @@ class _UserProfilePageState extends State<UserProfilePage> {
     }
   }
 
+  String getImage() {
+    final currUserID = FirebaseAuth.instance.currentUser?.uid;
+    String imageURL = "";
+    Map<String,dynamic> data;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(currUserID)
+        .get().then((DocumentSnapshot snap) {
+      data = snap.data() as Map<String, dynamic>;
+      imageURL = data['image'];
+    });
+
+    return imageURL;
+  }
+
+  String getBio() {
+    final currUserID = FirebaseAuth.instance.currentUser?.uid;
+    String bio = "";
+    Map<String,dynamic> data;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(currUserID)
+        .get().then((DocumentSnapshot snap) {
+      data = snap.data() as Map<String, dynamic>;
+      bio = data['bio'];
+    });
+
+    return bio;
+  }
+
   Future<void> updateBio(String bio) {
     final currUserID = FirebaseAuth.instance.currentUser?.uid;
+    setState(() => this.bio = bio);
     return FirebaseFirestore.instance
         .collection("users")
         .doc(currUserID)
@@ -98,9 +131,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 bio: publisherInfo['bio'],
                 age: int.parse(publisherInfo['age']),
                 myRequests:
-                    publisherInfo['posted_requests'].cast<PublicRequest>(),
+                publisherInfo['posted_requests'].cast<PublicRequest>(),
                 takenRequests:
-                    publisherInfo['taken_requests'].cast<PublicRequest>());
+                publisherInfo['taken_requests'].cast<PublicRequest>());
+
           });
 
           myRequestList.add(PublicRequest(
@@ -157,6 +191,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    //image = File(getImage());
+    bio = getBio();
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -186,10 +222,80 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           return snapshot.connectionState ==
                                   ConnectionState.waiting
                               ? SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 1.3,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
+                            height:
+                            MediaQuery.of(context).size.height / 1.3,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
+                              : Row(
+                            children: [
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              Stack(children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: image != null ? Image.file(
+                                    image!,
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.2,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.2,
+                                  ) :
+                                  Image.asset(
+                                    snapshot.data?.image ?? "",
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.2,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.2,
+                                  ),
+                                ),
+                                Positioned(
+                                    bottom: 0,
+                                    right: 4,
+                                    child: IconButton(
+                                      icon: ClipOval(
+                                        child: Container(
+                                          padding:
+                                          const EdgeInsets.all(4),
+                                          color: Colors.blue,
+                                          child: const Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        pickImage();
+                                      },
+                                    )),
+                              ]),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${snapshot.data?.firstName} ${snapshot.data?.lastName}',
+                                    style: GoogleFonts.indieFlower(
+                                      fontSize: 36,
+                                      color: MyApp.dGreen,
+                                    ),
                                   ),
                                 )
                               : Row(
@@ -310,9 +416,32 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           Icons.edit,
                           size: 20,
                         ),
-                        onPressed: () {},
+                        onPressed: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    title: const Text('Edit Bio'),
+                                    content: Column(
+                                      children: [
+                                        TextFormField(
+                                          controller: bioController,
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              updateBio(bioController.text);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Comfirm Bio'))
+                                      ],
+                                    )
+                                );
+                              }
+                          );
+                        },
                       ),
                     ]),
+                    Text(bio),
                     FutureBuilder<Person?>(
                         future: currUser,
                         builder: (context, snapshot) {

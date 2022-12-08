@@ -366,6 +366,7 @@ class TakenRequestItem extends StatefulWidget {
     Key? key,
     required this.publicRequestItem,
   }) : super(key: key);
+
   @override
   State<TakenRequestItem> createState() =>
       _TakenRequestItemState(publicRequestItem);
