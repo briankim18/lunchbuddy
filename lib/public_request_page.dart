@@ -39,43 +39,43 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
         .collection("public_requests")
         .get()
         .then((QuerySnapshot qSnap) async => {
-      for (QueryDocumentSnapshot doc in qSnap.docs)
-        {
-          requestInfo = doc.data() as Map<String, dynamic>,
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(requestInfo['publisher_id'])
-              .get()
-              .then((DocumentSnapshot userDoc) {
-            publisherInfo = userDoc.data() as Map<String, dynamic>;
-            publisher = Person(
-                firstName: publisherInfo['first_name'],
-                lastName: publisherInfo['last_name'],
-                location: publisherInfo['location'],
-                gender: publisherInfo['gender'],
-                image: 'images/Kevin.png',
-                bio: publisherInfo['bio'],
-                age: int.parse(publisherInfo['age']),
-                myRequests: publisherInfo['posted_requests']
-                    .cast<PublicRequest>(),
-                takenRequests: publisherInfo['taken_requests']
-                    .cast<PublicRequest>());
-          }),
-          requestList.add(PublicRequest(
-              id: doc.id,
-              restName: requestInfo['restaurant_name'],
-              restImage: requestInfo['restaurant_image'],
-              restAddress: requestInfo['restaurant_street_address'],
-              city: requestInfo['restaurant_city'],
-              state: requestInfo['restaurant_state'],
-              datePosted: DateTime.parse(
-                  requestInfo['date_posted'].toDate().toString()),
-              dateToMeet: DateTime.parse(
-                  requestInfo['meeting_datetime'].toDate().toString()),
-              user: publisher,
-              acceptedUsers: [])),
-        }
-    });
+              for (QueryDocumentSnapshot doc in qSnap.docs)
+                {
+                  requestInfo = doc.data() as Map<String, dynamic>,
+                  await FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(requestInfo['publisher_id'])
+                      .get()
+                      .then((DocumentSnapshot userDoc) {
+                    publisherInfo = userDoc.data() as Map<String, dynamic>;
+                    publisher = Person(
+                        firstName: publisherInfo['first_name'],
+                        lastName: publisherInfo['last_name'],
+                        location: publisherInfo['location'],
+                        gender: publisherInfo['gender'],
+                        image: 'images/Kevin.png',
+                        bio: publisherInfo['bio'],
+                        age: int.parse(publisherInfo['age']),
+                        myRequests: publisherInfo['posted_requests']
+                            .cast<PublicRequest>(),
+                        takenRequests: publisherInfo['taken_requests']
+                            .cast<PublicRequest>());
+                  }),
+                  requestList.add(PublicRequest(
+                      id: doc.id,
+                      restName: requestInfo['restaurant_name'],
+                      restImage: requestInfo['restaurant_image'],
+                      restAddress: requestInfo['restaurant_street_address'],
+                      city: requestInfo['restaurant_city'],
+                      state: requestInfo['restaurant_state'],
+                      datePosted: DateTime.parse(
+                          requestInfo['date_posted'].toDate().toString()),
+                      dateToMeet: DateTime.parse(
+                          requestInfo['meeting_datetime'].toDate().toString()),
+                      user: publisher,
+                      acceptedUsers: [])),
+                }
+            });
     return requestList;
   }
 

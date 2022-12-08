@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lunch_buddy/authentication_service.dart';
 import 'package:lunch_buddy/main.dart';
+import 'package:lunch_buddy/reviews.dart';
+import 'package:lunch_buddy/widgets/WriteReviewScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -340,7 +342,7 @@ class _SettingsPage extends State<SettingsPage> {
                   children: [
                     // TextField to allow the user to enter the review message
                     TextField(
-                        controller: newReviewController
+                      controller: newReviewController
                     ),
                     // Button to submit the review message
                     ElevatedButton(
