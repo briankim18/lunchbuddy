@@ -21,7 +21,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
     await Future.delayed(const Duration(seconds: 1));
 
     Map<String, dynamic> requestInfo;
-    Map<String, dynamic> publisherInfo;
     Map<String, dynamic> userInfo;
 
     var publisher;
@@ -36,36 +35,27 @@ class _UserProfilePageState extends State<UserProfilePage> {
         .get()
         .then((DocumentSnapshot doc) async {
       userInfo = doc.data() as Map<String, dynamic>;
-      for (String takenRequestID in userInfo['posted_requests']) {
+
+      for (String myRequestID in userInfo['posted_requests']) {
         await FirebaseFirestore.instance
             .collection("public_requests")
-            .doc(takenRequestID)
+            .doc(myRequestID)
             .get()
             .then((DocumentSnapshot docSnap) async {
           requestInfo = docSnap.data() as Map<String, dynamic>;
 
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(requestInfo['publisher_id'])
-              .get()
-              .then((DocumentSnapshot userDoc) {
-            publisherInfo = userDoc.data() as Map<String, dynamic>;
-            publisher = Person(
-                firstName: publisherInfo['first_name'],
-                lastName: publisherInfo['last_name'],
-                location: publisherInfo['location'],
-                gender: publisherInfo['gender'],
-                image: 'images/Kevin.png',
-                bio: publisherInfo['bio'],
-                age: int.parse(publisherInfo['age']),
-                myRequests:
-                    publisherInfo['posted_requests'].cast<PublicRequest>(),
-                takenRequests:
-                    publisherInfo['taken_requests'].cast<PublicRequest>());
-          });
-
+          publisher = Person(
+              firstName: userInfo['first_name'],
+              lastName: userInfo['last_name'],
+              location: userInfo['location'],
+              gender: userInfo['gender'],
+              image: 'images/Kevin.png',
+              bio: userInfo['bio'],
+              age: int.parse(userInfo['age']),
+              myRequests: userInfo['posted_requests'].cast<PublicRequest>(),
+              takenRequests: userInfo['taken_requests'].cast<PublicRequest>());
           myRequestList.add(PublicRequest(
-              id: doc.id,
+              id: docSnap.id,
               restName: requestInfo['restaurant_name'],
               restImage: "images/PandaExpress.png",
               restAddress: requestInfo['restaurant_street_address'],
@@ -80,6 +70,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
         });
       }
     });
+
     return myRequestList;
   }
 
@@ -271,6 +262,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     FutureBuilder<List<PublicRequest>>(
                         future: myRequests,
                         builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            debugPrint(snapshot.error.toString());
+                          }
+
                           return snapshot.connectionState ==
                                   ConnectionState.waiting
                               ? SizedBox(
@@ -303,29 +298,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   ],
                 ),
               ),
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.vertical,
-              //   child: Column(
-              //     children: [
-              //       Column(
-              //         children:
-              //         List.generate(
-              //           myRequests.length,
-              //           (index) => Padding(
-              //             padding: const EdgeInsets.only(
-              //                 left: 20, right: 20, top: 8, bottom: 8),
-              //             child: GestureDetector(
-              //                 child: MyRequestItem(
-              //                     myRequestItem: myRequests[index])),
-              //           ),
-              //         ),
-              //       ),
-              //       const SizedBox(
-              //         height: 96,
-              //       ),
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -430,7 +402,7 @@ class MyRequestItem extends StatelessWidget {
                           '${myRequestItem.user.firstName} ${myRequestItem.user.lastName}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
-                            fontSize: 20,
+                            fontSize: 24,
                             height: .5,
                           ),
                         ),

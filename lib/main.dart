@@ -44,11 +44,6 @@ class MyApp extends StatelessWidget {
     silv,
   ];
   void openLocationSetting() async {
-    // final AndroidIntent intent = new AndroidIntent(
-    //   action: 'android.settings.LOCATION_SOURCE_SETTINGS',
-    // );
-    // await intent.launch();
-    // permi
     var status = await Permission.location.status;
     if (status.isDenied) {
       // We didn't ask for permission yet or the permission has been denied before but not permanently.
