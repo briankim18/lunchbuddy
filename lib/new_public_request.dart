@@ -203,32 +203,7 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                           bottomRight: Radius.circular(4),
                         ),
                         child: ElevatedButton(
-                          onPressed: () {
-                            db.collection("public_requests").add({
-                              "restaurant_name": restaurantName,
-                              "restaurant_image": "",
-                              "restaurant_street_address": formattedAddress,
-                              "restaurant_city": globalCity,
-                              "restaurant_state": globalState.trimLeft(),
-                              "date_posted": Timestamp.now(),
-                              "meeting_datetime": meetingDateTime,
-                              "publisher_id": currentUserID,
-                              "accepted_users_id": [],
-                              "going": true,
-                              "here": false
-                            }).then((documentSnapshot) => db
-                                    .collection("users")
-                                    .doc(currentUserID)
-                                    .update({
-                                  'posted_requests': FieldValue.arrayUnion(
-                                      [documentSnapshot.id])
-                                }));
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const HomePage()),
-                            );
-                          },
+                            onPressed: pickDateTime,
                           style: ElevatedButton.styleFrom(
                               backgroundColor: MyApp.aqua, elevation: 4),
                           child: Text("Pick a Date/Time",
