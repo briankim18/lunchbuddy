@@ -191,28 +191,28 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   color: MyApp.dGreen,
                 ),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    Column(
-                      children: List.generate(
-                        publicRequests.length,
-                        (index) => Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 8, bottom: 8),
-                          child: GestureDetector(
-                              child: MyRequestItem(
-                                  myRequestItem: publicRequests[index])),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 96,
-                    ),
-                  ],
-                ),
-              ),
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.vertical,
+              //   child: Column(
+              //     children: [
+              //       Column(
+              //         children: List.generate(
+              //           publicRequests.length,
+              //           (index) => Padding(
+              //             padding: const EdgeInsets.only(
+              //                 left: 20, right: 20, top: 8, bottom: 8),
+              //             child: GestureDetector(
+              //                 child: MyRequestItem(
+              //                     myRequestItem: publicRequests[index])),
+              //           ),
+              //         ),
+              //       ),
+              //       const SizedBox(
+              //         height: 96,
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -289,7 +289,7 @@ class MyRequestItem extends StatelessWidget {
                             height: .5,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         Row(

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -61,6 +62,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
 
             requestList.add(
                 PublicRequest(
+                  id: doc.id,
                   restName: requestInfo['restaurant_name'],
                   restImage: "images/PandaExpress.png",
                   restAddress: requestInfo['restaurant_street_address'],
@@ -442,7 +444,7 @@ class PublicRequestItem extends StatelessWidget {
                             height: .5,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         Row(
@@ -504,7 +506,13 @@ class PublicRequestItem extends StatelessWidget {
                   backgroundColor: MyApp.mGreen,
                 ),
                 onPressed: () {
-                  debugPrint("YO");
+                  final currID = FirebaseAuth.instance.currentUser?.uid;
+
+                  FirebaseFirestore.instance.collection("users").doc(currID)
+                  .update({'taken_requests': FieldValue.arrayUnion([publicRequestItem.id])});
+
+                  FirebaseFirestore.instance.collection("public_requests").doc(publicRequestItem.id)
+                  .update({'accepted_users_id': FieldValue.arrayUnion([currID])});
                 },
                 child: const Text('Take Request'),
               ),
