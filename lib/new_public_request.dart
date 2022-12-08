@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lunch_buddy/authentication_service.dart';
+import 'package:lunch_buddy/globals/restaurant_coords.dart';
+import 'package:lunch_buddy/home_page.dart';
+import 'package:lunch_buddy/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:lunch_buddy/nearby/custom_marker_info_window.dart';
+import 'package:lunch_buddy/public_request_page.dart';
 import 'package:lunch_buddy/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -76,81 +83,38 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
               child: Column(
                 children: [
                   Container(
-                    color: MyApp.aqua,
-                    child: TextFormField(
-                      controller: _restNameController,
-                      validator: (String? value) {
-                        if (value != null && value.isEmpty) {
-                          return "The restaurant name cannot be empty.";
-                        }
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Restaurant Name',
-                        prefixIcon: Icon(Icons.restaurant),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                  ),
+                      color: MyApp.aqua,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CustomMarketInfoWindow()),
+                          );
+                        },
+                        child: Text("Pick a Restaurant"),
+                      )),
+                  Text("Picked Restaurant Name: "),
+                  Text(restaurantName),
+                  Text("Picked Restaurant Address: "),
+                  Text(formattedAddress),
                   Container(
                     padding: const EdgeInsets.all(10.0),
                   ),
-                  TextFormField(
-                    controller: _restAddressController,
-                    validator: (String? value) {
-                      if (value != null && value.isEmpty) {
-                        return "Restaurant street address cannot be empty.";
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'Street Address',
-                      prefixIcon: Icon(Icons.map),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: _restCityController,
-                    validator: (String? value) {
-                      if (value != null && value.isEmpty) {
-                        return "Restaurant city cannot be empty.";
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'City',
-                      prefixIcon: Icon(Icons.location_city),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  TextFormField(
-                    controller: _restStateController,
-                    validator: (String? value) {
-                      if (value != null && value.isEmpty) {
-                        return "Restaurant state cannot be empty.";
-                      }
-                      return null;
-                    },
-                    decoration: const InputDecoration(
-                      labelText: 'State',
-                      prefixIcon: Icon(Icons.location_city),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
                   ElevatedButton(
                       onPressed: pickDateTime,
-                      child: Text(
-                          '${meetingDateTime.month}/${meetingDateTime.day}/${meetingDateTime.year}'
-                          ' ${meetingDateTime.hour}:${meetingDateTime.minute}')),
+                      child: Text("Pick a Time And Date")),
+                  Text("Picked Time:  " +
+                      '${meetingDateTime.month}/${meetingDateTime.day}/${meetingDateTime.year}'
+                          ' ${meetingDateTime.hour}:${meetingDateTime.minute}'),
                   ElevatedButton(
                       onPressed: () {
                         db.collection("public_requests").add({
-                          "restaurant_name": _restNameController.text.trim(),
-                          "restaurant_image": '',
-                          "restaurant_street_address":
-                              _restAddressController.text.trim(),
-                          "restaurant_city": _restCityController.text.trim(),
-                          "restaurant_state": _restStateController.text.trim(),
+                          "restaurant_name": restaurantName,
+                          "restaurant_image": Image.network(photoUrl),
+                          "restaurant_street_address": formattedAddress,
+                          "restaurant_city": globalCity,
+                          "restaurant_state": globalState.trimLeft(),
                           "date_posted": Timestamp.now(),
                           "meeting_datetime": meetingDateTime,
                           "publisher_id": currentUserID,
@@ -160,7 +124,10 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                               'posted_requests':
                                   FieldValue.arrayUnion([documentSnapshot.id])
                             }));
-                        Navigator.pop(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: MyApp.bYellow, elevation: 4),
