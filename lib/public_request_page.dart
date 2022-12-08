@@ -85,6 +85,44 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
     realRequests = fetchData();
   }
 
+  late Future<List<PublicRequest>> realRequests;
+
+  Future<List<PublicRequest>> fetchData() async {
+    await Future.delayed(
+        const Duration(seconds:1)
+    );
+
+    Map<String, dynamic> requestInfo;
+    List<PublicRequest> requestList = [];
+
+    await FirebaseFirestore.instance.collection("public_requests").get()
+        .then((QuerySnapshot qSnap) => {
+      for (QueryDocumentSnapshot doc in qSnap.docs) {
+        requestInfo = doc.data() as Map<String, dynamic>,
+        requestList.add(
+            PublicRequest(
+                restName: requestInfo['restaurant_name'],
+                restImage: "images/PandaExpress.png",
+                restAddress: requestInfo['restaurant_street_address'],
+                city: requestInfo['restaurant_city'],
+                state: requestInfo['restaurant_state'],
+                datePosted: DateTime.parse(requestInfo['date_posted'].toDate().toString()),
+                dateToMeet: DateTime.parse(requestInfo['meeting_datetime'].toDate().toString()),
+                user: users[0],
+                acceptedUsers: []
+            )
+        ),
+      }
+    });
+    return requestList;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    realRequests = fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -337,10 +375,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                 builder: (context, snapshot) {
                   return snapshot.connectionState == ConnectionState.waiting
                       ? SizedBox(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height / 1.3,
+                    height: MediaQuery.of(context).size.height / 1.3,
                     child: const Center(
                       child: CircularProgressIndicator(),
                     ),
@@ -348,18 +383,19 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                       : Column(
                     children: List.generate(
                       snapshot.data!.length,
-                          (index) =>
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 20, right: 20, top: 8, bottom: 8),
-                            child: GestureDetector(
-                                child: PublicRequestItem(
-                                    publicRequestItem:
-                                    snapshot.data![index])),
-                          ),
+                          (index) => Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, top: 8, bottom: 8),
+                        child: GestureDetector(
+                            child: PublicRequestItem(
+                                publicRequestItem: snapshot.data![index]
+                            )
+                        ),
+                      ),
                     ),
                   );
-                }),
+                }
+            ),
             const SizedBox(height: 96),
           ],
         ),
