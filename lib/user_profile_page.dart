@@ -59,7 +59,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
     await Future.delayed(const Duration(seconds: 1));
 
     Map<String, dynamic> requestInfo;
-    Map<String, dynamic> publisherInfo;
     Map<String, dynamic> userInfo;
 
     var publisher;
@@ -73,51 +72,48 @@ class _UserProfilePageState extends State<UserProfilePage> {
         .doc(currUserID)
         .get()
         .then((DocumentSnapshot doc) async {
-      userInfo = doc.data() as Map<String, dynamic>;
-      for (String takenRequestID in userInfo['posted_requests']) {
-        await FirebaseFirestore.instance
-            .collection("public_requests")
-            .doc(takenRequestID)
-            .get()
-            .then((DocumentSnapshot docSnap) async {
-          requestInfo = docSnap.data() as Map<String, dynamic>;
+          userInfo = doc.data() as Map<String, dynamic>;
 
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(requestInfo['publisher_id'])
-              .get()
-              .then((DocumentSnapshot userDoc) {
-            publisherInfo = userDoc.data() as Map<String, dynamic>;
-            publisher = Person(
-                firstName: publisherInfo['first_name'],
-                lastName: publisherInfo['last_name'],
-                location: publisherInfo['location'],
-                gender: publisherInfo['gender'],
-                image: 'images/Kevin.png',
-                bio: publisherInfo['bio'],
-                age: int.parse(publisherInfo['age']),
-                myRequests:
-                    publisherInfo['posted_requests'].cast<PublicRequest>(),
-                takenRequests:
-                    publisherInfo['taken_requests'].cast<PublicRequest>());
-          });
+          for (String myRequestID in userInfo['posted_requests']) {
+            await FirebaseFirestore.instance
+                .collection("public_requests")
+                .doc(myRequestID)
+                .get()
+                .then((DocumentSnapshot docSnap) async {
+                  requestInfo = docSnap.data() as Map<String, dynamic>;
 
-          myRequestList.add(PublicRequest(
-              id: doc.id,
-              restName: requestInfo['restaurant_name'],
-              restImage: "images/PandaExpress.png",
-              restAddress: requestInfo['restaurant_street_address'],
-              city: requestInfo['restaurant_city'],
-              state: requestInfo['restaurant_state'],
-              datePosted: DateTime.parse(
-                  requestInfo['date_posted'].toDate().toString()),
-              dateToMeet: DateTime.parse(
-                  requestInfo['meeting_datetime'].toDate().toString()),
-              user: publisher,
-              acceptedUsers: []));
+                publisher = Person(
+                    firstName: userInfo['first_name'],
+                    lastName: userInfo['last_name'],
+                    location: userInfo['location'],
+                    gender: userInfo['gender'],
+                    image: 'images/Kevin.png',
+                    bio: userInfo['bio'],
+                    age: int.parse(userInfo['age']),
+                    myRequests:
+                    userInfo['posted_requests'].cast<PublicRequest>(),
+                    takenRequests:
+                    userInfo['taken_requests'].cast<PublicRequest>()
+                );
+                  myRequestList.add(PublicRequest(
+                      id: docSnap.id,
+                      restName: requestInfo['restaurant_name'],
+                      restImage: "images/PandaExpress.png",
+                      restAddress: requestInfo['restaurant_street_address'],
+                      city: requestInfo['restaurant_city'],
+                      state: requestInfo['restaurant_state'],
+                      datePosted: DateTime.parse(
+                          requestInfo['date_posted'].toDate().toString()),
+                      dateToMeet: DateTime.parse(
+                          requestInfo['meeting_datetime'].toDate().toString()),
+                      user: publisher,
+                      acceptedUsers: []
+                  )
+                  );
+                });
+          }
         });
-      }
-    });
+
     return myRequestList;
   }
 
@@ -340,31 +336,35 @@ class _UserProfilePageState extends State<UserProfilePage> {
                     FutureBuilder<List<PublicRequest>>(
                         future: myRequests,
                         builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            debugPrint(snapshot.error.toString());
+                          }
+
                           return snapshot.connectionState ==
-                                  ConnectionState.waiting
+                              ConnectionState.waiting
                               ? SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 1.3,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )
+                            height:
+                            MediaQuery.of(context).size.height / 1.3,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
                               : Column(
-                                  children: List.generate(
-                                    snapshot.data!.length,
-                                    (index) => Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 20,
-                                          right: 20,
-                                          top: 8,
-                                          bottom: 8),
-                                      child: GestureDetector(
-                                          child: MyRequestItem(
-                                              myRequestItem:
-                                                  snapshot.data![index])),
-                                    ),
-                                  ),
-                                );
+                            children: List.generate(
+                              snapshot.data!.length,
+                                  (index) => Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20,
+                                    right: 20,
+                                    top: 8,
+                                    bottom: 8),
+                                child: GestureDetector(
+                                    child: MyRequestItem(
+                                        myRequestItem:
+                                        snapshot.data![index])),
+                              ),
+                            ),
+                          );
                         }),
                     const SizedBox(
                       height: 96,
