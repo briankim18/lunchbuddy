@@ -65,7 +65,7 @@ class _MessagingPageState extends State<MessagingPage> {
 
           takenRequestList.add(
               PublicRequest(
-                  id: doc.id,
+                  id: docSnap.id,
                   restName: requestInfo['restaurant_name'],
                   restImage: "images/PandaExpress.png",
                   restAddress: requestInfo['restaurant_street_address'],
@@ -557,7 +557,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                                     !takenRequestItem.here;
                                   });
                                 },
-                                child: const Text('At Resturant'),
+                                child: const Text('At Restaurant'),
                               ),
                             ],
                           ),
@@ -590,10 +590,32 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: MyApp.mRed,
                                           ),
-                                          onPressed: () {
-                                            // Add stuff to delete context
+                                          onPressed: () async {
+                                            final currUserID = FirebaseAuth
+                                                .instance.currentUser?.uid;
+                                            final db =
+                                                FirebaseFirestore.instance;
 
-                                            Navigator.pop(context);
+                                            await db
+                                                .collection("users")
+                                                .doc(currUserID)
+                                                .update({
+                                              'taken_requests':
+                                              FieldValue.arrayRemove(
+                                                  [takenRequestItem.id])
+                                            });
+
+                                            await db
+                                                .collection("public_requests")
+                                                .doc(takenRequestItem.id)
+                                                .update({
+                                              'accepted_users_id':
+                                              FieldValue.arrayRemove(
+                                                  [currUserID])
+                                            });
+                                            setState(() {
+                                              Navigator.pop(context);
+                                            });
                                           },
                                           child: const Text('Delete'),
                                         ),
