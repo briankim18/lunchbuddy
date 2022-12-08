@@ -106,16 +106,26 @@ class SettingsPage extends StatelessWidget {
                                   child: ElevatedButton(
                                     onPressed: () {
                                       // Only allow signing up when all validations passed
-                                      if (_formKey.currentState!.validate()) {
-                                        context
-                                            .read<AuthenticationService>()
-                                            .reauthenticate(
-                                            email: emailController.text.trim(), 
-                                            password: passwordController.text.trim());
+                                      bool valid = false;
+                                      if (_formKey.currentState!.validate())
+                                        {
+                                          context
+                                              .read<AuthenticationService>()
+                                              .reauthenticate(
+                                              email: emailController.text.trim(),
+                                              password: passwordController.text
+                                                  .trim()).then((String? result) =>
+                                              (String? result) =>
+                                          {
+                                            valid = true
+                                          });
+                                        }
+                                      if (valid) {
                                         context
                                             .read<AuthenticationService>()
                                             .updateEmail(
-                                            email: newEmailController.text.trim())
+                                            email: newEmailController.text
+                                                .trim())
                                             .then((String? result) =>
                                             (String? result) =>
                                         {
@@ -257,34 +267,39 @@ class SettingsPage extends StatelessWidget {
                                             .read<AuthenticationService>()
                                             .reauthenticate(
                                             email: emailController.text.trim(),
-                                            password: passwordController.text.trim());
-                                        context
-                                            .read<AuthenticationService>()
-                                            .updatePassword(
-                                            password: newPasswordController.text
+                                            password: passwordController.text
                                                 .trim())
                                             .then((String? result) =>
                                             (String? result) =>
-                                        {
-                                          if (result != null &&
-                                              result.startsWith("ERROR"))
+                                            context
+                                                .read<AuthenticationService>()
+                                                .updatePassword(
+                                                password: newPasswordController
+                                                    .text
+                                                    .trim())
+                                                .then((String? r) =>
+                                                (String? r) =>
                                             {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                  content: Text(result)))
-                                            }
-                                          else
-                                            {
-                                              db
-                                                  .collection("users")
-                                                  .doc(result)
-                                                  .set({
-                                                "password":
-                                                newPasswordController.text.trim()
-                                              }),
-                                              Navigator.pop(context)
-                                            }
-                                        });
+                                              if (r != null &&
+                                                  r.startsWith("ERROR"))
+                                                {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(SnackBar(
+                                                      content: Text(r)))
+                                                }
+                                              else
+                                                {
+                                                  db
+                                                      .collection("users")
+                                                      .doc(result)
+                                                      .set({
+                                                    "password":
+                                                    newPasswordController.text
+                                                        .trim()
+                                                  }),
+                                                  Navigator.pop(context)
+                                                }
+                                            }));
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(

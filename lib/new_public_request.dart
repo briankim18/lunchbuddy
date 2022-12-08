@@ -172,7 +172,7 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                         db.collection("users").doc(currentUserID)
                             .update({'posted_requests': FieldValue.arrayUnion([documentSnapshot.id])})
                       );
-
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: MyApp.bYellow,
@@ -189,18 +189,6 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
               ),
             ),
           )),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     // if (_formKey.currentState!.validate()) {
-      //     debugPrint(
-      //         '${_restNameController.text.trim()} ${_lastNameController.text.trim()}');
-      //     Navigator.pop(context);
-      //     // }
-      //   },
-      //   backgroundColor: MyApp.bGreen,
-      //   elevation: 4.0,
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }

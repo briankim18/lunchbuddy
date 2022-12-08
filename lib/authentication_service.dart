@@ -17,12 +17,33 @@ class AuthenticationService {
 
   Future<String?> signIn(
       {required String email, required String password}) async {
+    String? errorMessage;
+
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       return "Signed in";
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      switch (e.code) {
+        case "invalid-email":
+          errorMessage = "ERROR: This is not a valid email. Please try again.";
+          break;
+        case "user-disabled":
+          errorMessage = "ERROR: This user is disabled. Please try again.";
+          break;
+        case "user-not-found":
+          errorMessage = "ERROR: This user is not found. Please try again.";
+          break;
+        case "invalid-password":
+          errorMessage = "ERROR: This password is incorrect. Please try again.";
+          break;
+        default:
+          errorMessage = "ERROR: Unknown sign in error. Please try again.";
+      }
+    }
+
+    if (errorMessage != null) {
+      return errorMessage;
     }
   }
 
@@ -71,12 +92,14 @@ class AuthenticationService {
   }
 
   Future<String?> updatePassword({required String password}) async {
+    print("oh no");
     try {
       await getCurrentUser()?.updatePassword(password);
     } on FirebaseAuthException catch (e) {
       print(e.message);
       return "ERROR: Reauthentication required";
     }
+    print("Successful password change!");
     return "Updated password";
   }
 
