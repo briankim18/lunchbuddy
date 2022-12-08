@@ -30,6 +30,7 @@ genderSymbol(Person? user) {
   } else {
     return 'images/LGBTQ.png';
   }
+<<<<<<< HEAD
 }
 
 List<Person> users = [
@@ -125,3 +126,6 @@ List<Person> users = [
     takenRequests: [],
   ),
 ];
+=======
+}
+>>>>>>> 6659c194bbf4e9bab9d77ec6970653d3dae9b310

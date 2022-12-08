@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:android_intent/android_intent.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lunch_buddy/googlesearch/googlesearch.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +31,6 @@ class MyApp extends StatelessWidget {
   static const bRed = Color.fromARGB(255, 250, 117, 112);
   static const bPurple = Color.fromARGB(255, 178, 202, 228);
   static const bYellow = Color.fromARGB(255, 255, 255, 122);
-
   static const bGreen = Color.fromARGB(255, 15, 255, 151);
   static const mGreen = Color.fromARGB(255, 6, 186, 99);
   static const dGreen = Color.fromARGB(255, 16, 57, 0);

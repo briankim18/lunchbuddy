@@ -6,6 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
 import 'package:lunch_buddy/person.dart';
+import 'package:lunch_buddy/public_request.dart';
+
+import 'globals/restaurant_coords.dart';
+
 
 final _formKey = GlobalKey<FormState>();
 
@@ -371,7 +375,7 @@ class PublicRequestItem extends StatelessWidget {
               left: 280,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: Image.asset(
+                child: Image.network(
                   publicRequestItem.restImage,
                   height: 64,
                   width: 64,
