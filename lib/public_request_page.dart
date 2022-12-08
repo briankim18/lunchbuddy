@@ -215,7 +215,7 @@ class PublicRequestItem extends StatelessWidget {
                           '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
-                            fontSize: 24,
+                            fontSize: 20,
                             height: .5,
                           ),
                         ),

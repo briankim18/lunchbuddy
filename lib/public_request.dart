@@ -5,9 +5,8 @@ class PublicRequest {
   final DateTime datePosted, dateToMeet;
 
   final Person user;
-  final List<Person> acceptedUsers;
+  final List<String> acceptedUsers;
   bool going, here;
-
 
   PublicRequest({
     required this.restName,

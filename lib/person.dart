@@ -3,8 +3,8 @@ import 'package:lunch_buddy/public_request.dart';
 class Person {
   final String firstName, lastName, location, gender, image, bio;
   final int age;
-  final List<PublicRequest> myRequests;
-  final List<PublicRequest> takenRequests;
+  final List<String> myRequests;
+  final List<String> takenRequests;
   // List of publicRequests taken
 
   Person({
@@ -23,9 +23,9 @@ class Person {
 // Changes symbol based on gender
 genderSymbol(Person? user) {
   var g = user?.gender;
-  if (g == 'M') {
+  if (g == 'Male') {
     return 'images/Male.png';
-  } else if (g == 'F') {
+  } else if (g == 'Female') {
     return 'images/Female.png';
   } else {
     return 'images/LGBTQ.png';
@@ -46,48 +46,48 @@ List<Person> users = [
     ''',
     age: 21,
     myRequests: [
-      PublicRequest(
-        restName: "Panda Express",
-        restImage: "images/PandaExpress.png",
-        city: "Blacksburg",
-        state: "VA",
-        restAddress: "Panda Express, Prices Fork Road, Blacksburg, VA",
-        datePosted: DateTime.parse('2022-10-20 20:18:04Z'),
-        dateToMeet: DateTime.parse('2022-11-14 20:18:04Z'),
-        user: Person(
-          firstName: "Ryan",
-          lastName: "Le",
-          location: "Mechanicsville, VA",
-          gender: "M",
-          image: 'images/Ryan.png',
-          bio: "",
-          age: 22,
-          myRequests: [],
-          takenRequests: [],
-        ),
-        acceptedUsers: [],
-      ),
-      PublicRequest(
-        restName: "Panda Express",
-        restImage: "images/PandaExpress.png",
-        city: "Blacksburg",
-        state: "VA",
-        restAddress: "Panda Express, Prices Fork Road, Blacksburg, VA",
-        datePosted: DateTime.parse('2022-10-20 10:18:04Z'),
-        dateToMeet: DateTime.parse('2022-11-14 10:18:04Z'),
-        user: Person(
-          firstName: "Ryan",
-          lastName: "Le",
-          location: "Mechanicsville, VA",
-          gender: "M",
-          image: 'images/Ryan.png',
-          bio: "",
-          age: 22,
-          myRequests: [],
-          takenRequests: [],
-        ),
-        acceptedUsers: [],
-      ),
+      // PublicRequest(
+      //   restName: "Panda Express",
+      //   restImage: "images/PandaExpress.png",
+      //   city: "Blacksburg",
+      //   state: "VA",
+      //   restAddress: "Panda Express, Prices Fork Road, Blacksburg, VA",
+      //   datePosted: DateTime.parse('2022-10-20 20:18:04Z'),
+      //   dateToMeet: DateTime.parse('2022-11-14 20:18:04Z'),
+      //   user: Person(
+      //     firstName: "Ryan",
+      //     lastName: "Le",
+      //     location: "Mechanicsville, VA",
+      //     gender: "M",
+      //     image: 'images/Ryan.png',
+      //     bio: "",
+      //     age: 22,
+      //     myRequests: [],
+      //     takenRequests: [],
+      //   ),
+      //   acceptedUsers: [],
+      // ),
+      // PublicRequest(
+      //   restName: "Panda Express",
+      //   restImage: "images/PandaExpress.png",
+      //   city: "Blacksburg",
+      //   state: "VA",
+      //   restAddress: "Panda Express, Prices Fork Road, Blacksburg, VA",
+      //   datePosted: DateTime.parse('2022-10-20 10:18:04Z'),
+      //   dateToMeet: DateTime.parse('2022-11-14 10:18:04Z'),
+      //   user: Person(
+      //     firstName: "Ryan",
+      //     lastName: "Le",
+      //     location: "Mechanicsville, VA",
+      //     gender: "M",
+      //     image: 'images/Ryan.png',
+      //     bio: "",
+      //     age: 22,
+      //     myRequests: [],
+      //     takenRequests: [],
+      //   ),
+      //   acceptedUsers: [],
+      // ),
     ],
     takenRequests: [],
   ),

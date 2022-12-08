@@ -29,23 +29,17 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
     super.initState();
   }
 
-  Future<DateTime?> pickDate()
-    =>  showDatePicker(
-          context: context,
-          initialDate: meetingDateTime,
-          firstDate: DateTime.now(),
-          lastDate: DateTime(
-            meetingDateTime.year,
-            meetingDateTime.month + 1,
-            meetingDateTime.day
-          )
-        );
+  Future<DateTime?> pickDate() => showDatePicker(
+      context: context,
+      initialDate: meetingDateTime,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(meetingDateTime.year, meetingDateTime.month + 1,
+          meetingDateTime.day));
 
-  Future<TimeOfDay?> pickTime()
-    =>  showTimePicker(
-          context: context,
-          initialTime: TimeOfDay(hour: meetingDateTime.hour, minute: meetingDateTime.minute)
-        );
+  Future<TimeOfDay?> pickTime() => showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(
+          hour: meetingDateTime.hour, minute: meetingDateTime.minute));
 
   Future pickDateTime() async {
     DateTime? date = await pickDate();
@@ -54,13 +48,8 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
     TimeOfDay? time = await pickTime();
     if (time == null) return; //  pressed CANCEL
 
-    final dateTime = DateTime(
-      date.year,
-      date.month,
-      date.day,
-      time.hour,
-      time.minute
-    );
+    final dateTime =
+        DateTime(date.year, date.month, date.day, time.hour, time.minute);
 
     setState(() {
       meetingDateTime = dateTime;
@@ -69,8 +58,8 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String? currentUserID = context.read<AuthenticationService>().getCurrentUser()
-                            ?.uid;
+    final String? currentUserID =
+        context.read<AuthenticationService>().getCurrentUser()?.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -149,42 +138,35 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: pickDateTime,
-                    child: Text (
-                      '${meetingDateTime.month}/${meetingDateTime.day}/${meetingDateTime.year}'
-                          ' ${meetingDateTime.hour}:${meetingDateTime.minute}'
-                    )
-                  ),
+                      onPressed: pickDateTime,
+                      child: Text(
+                          '${meetingDateTime.month}/${meetingDateTime.day}/${meetingDateTime.year}'
+                          ' ${meetingDateTime.hour}:${meetingDateTime.minute}')),
                   ElevatedButton(
-                    onPressed: () {
-                      db.collection("public_requests").add(
-                        {"restaurant_name": _restNameController.text.trim(),
-                        "restaurant_image": '',
-                        "restaurant_street_address": _restAddressController.text.trim(),
-                        "restaurant_city": _restCityController.text.trim(),
-                        "restaurant_state": _restStateController.text.trim(),
-                        "date_posted": Timestamp.now(),
-                        "meeting_datetime": meetingDateTime,
-                        "publisher_id": currentUserID,
-                        "accepted_users_id": []
-                        }
-                      ).then((documentSnapshot) =>
-                        db.collection("users").doc(currentUserID)
-                            .update({'posted_requests': FieldValue.arrayUnion([documentSnapshot.id])})
-                      );
-                      Navigator.pop(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MyApp.bYellow,
-                      elevation: 4
-                    ),
-                    child: Text(
-                      "Create New Public Request",
-                      style: GoogleFonts.indieFlower(
-                          fontSize: 24, color: MyApp.dGreen
-                      )
-                    )
-                  )
+                      onPressed: () {
+                        db.collection("public_requests").add({
+                          "restaurant_name": _restNameController.text.trim(),
+                          "restaurant_image": '',
+                          "restaurant_street_address":
+                              _restAddressController.text.trim(),
+                          "restaurant_city": _restCityController.text.trim(),
+                          "restaurant_state": _restStateController.text.trim(),
+                          "date_posted": Timestamp.now(),
+                          "meeting_datetime": meetingDateTime,
+                          "publisher_id": currentUserID,
+                          "accepted_users_id": []
+                        }).then((documentSnapshot) =>
+                            db.collection("users").doc(currentUserID).update({
+                              'posted_requests':
+                                  FieldValue.arrayUnion([documentSnapshot.id])
+                            }));
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: MyApp.bYellow, elevation: 4),
+                      child: Text("Create New Public Request",
+                          style: GoogleFonts.indieFlower(
+                              fontSize: 24, color: MyApp.dGreen)))
                 ],
               ),
             ),

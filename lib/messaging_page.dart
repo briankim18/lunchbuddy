@@ -176,7 +176,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                           '${takenRequestItem.user.firstName} ${takenRequestItem.user.lastName}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
-                            fontSize: 24,
+                            fontSize: 20,
                             height: .5,
                           ),
                         ),

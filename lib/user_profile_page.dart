@@ -20,33 +20,35 @@ class _UserProfilePageState extends State<UserProfilePage> {
     await Future.delayed(const Duration(seconds: 1));
 
     final currentUserID = FirebaseAuth.instance.currentUser?.uid;
-    var currentPerson;
+    Map<String, dynamic> data = {};
 
     await FirebaseFirestore.instance
         .collection("users")
         .doc(currentUserID)
         .get()
         .then((DocumentSnapshot doc) {
-      final data = doc.data() as Map<String, dynamic>;
-
-      return Person(
-          firstName: data['first_name'],
-          lastName: data['last_name'],
-          location: data['location'],
-          gender: data['gender'],
-          image: 'images/Kevin.png',
-          bio: data['bio'],
-          age: data['age'],
-          myRequests: data['posted_requests'],
-          takenRequests: data['taken_requests']);
+      data = doc.data() as Map<String, dynamic>;
     });
-    return currentPerson;
+
+    return Person(
+        firstName: data['first_name'],
+        lastName: data['last_name'],
+        location: data['location'],
+        gender: data['gender'],
+        image: 'images/Kevin.png',
+        bio: data['bio'],
+        age: int.parse(data['age']),
+        myRequests: data['posted_requests'].cast<PublicRequest>(),
+        takenRequests: data['taken_requests'].cast<PublicRequest>());
   }
 
   @override
   void initState() {
     super.initState();
     currUser = fetchData();
+    if (currUser == null) {
+      debugPrint('User is somehow null');
+    }
   }
 
   @override
@@ -319,7 +321,7 @@ class MyRequestItem extends StatelessWidget {
                           '${myRequestItem.user.firstName} ${myRequestItem.user.lastName}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
-                            fontSize: 24,
+                            fontSize: 20,
                             height: .5,
                           ),
                         ),
