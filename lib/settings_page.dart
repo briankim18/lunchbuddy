@@ -7,8 +7,7 @@ import 'package:lunch_buddy/widgets/WriteReviewScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:lunch_buddy/authentication_service.dart';
-import 'package:lunch_buddy/change_info_page.dart';
+
 
 final TextEditingController emailController = TextEditingController();
 final TextEditingController newEmailController = TextEditingController();
