@@ -1,13 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
 import 'package:lunch_buddy/person.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_picker/image_picker.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -19,41 +16,6 @@ class UserProfilePage extends StatefulWidget {
 class _UserProfilePageState extends State<UserProfilePage> {
   late Future<Person?> currUser;
   late Future<List<PublicRequest>> myRequests;
-  File? image;
-
-  Future pickImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null){
-        return;
-      }
-      final imageTemp = File(image.path);
-      setState(() => this.image = imageTemp);
-    } on PlatformException catch(e) {
-      print('Failed to select image');
-    }
-  }
-
-
-  Future<void> updateBio(String bio) {
-    final currUserID = FirebaseAuth.instance.currentUser?.uid;
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(currUserID)
-        .update({'bio': bio})
-        .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
-  }
-
-  Future<void> updateImage(String image) {
-    final currUserID = FirebaseAuth.instance.currentUser?.uid;
-    return FirebaseFirestore.instance
-        .collection("users")
-        .doc(currUserID)
-        .update({'image': image})
-        .then((value) => print("User Updated"))
-        .catchError((error) => print("Failed to update user: $error"));
-  }
 
   Future<List<PublicRequest>> fetchRequests() async {
     await Future.delayed(const Duration(seconds: 1));
@@ -113,7 +75,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 });
           }
         });
-
     return myRequestList;
   }
 
@@ -188,59 +149,37 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             ),
                           )
                               : Row(
-                                  children: [
-                                    const SizedBox(
-                                      height: 16,
-                                    ),
-                                    Stack(children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(30),
-                                        child: image != null ? Image.file(
-                                          image!,
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .height *
-                                              0.2,
-                                          width: MediaQuery.of(context)
-                                              .size
-                                              .height *
-                                              0.2,
-                                        ) :
-                                        Image.asset(
-                                          snapshot.data?.image ?? "",
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.2,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.2,
-                                        ),
-                                      ),
-                                      Positioned(
-                                          bottom: 0,
-                                          right: 4,
-                                          child: IconButton(
-                                            icon: ClipOval(
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.all(4),
-                                                color: Colors.blue,
-                                                child: const Icon(
-                                                  Icons.edit,
-                                                  color: Colors.white,
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                            onPressed: () {
-                                              pickImage();
-                                            },
-                                          )),
-                                    ]),
-                                    const SizedBox(
-                                      width: 16,
+                            children: [
+                              const SizedBox(
+                                height: 16,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.asset(
+                                  snapshot.data?.image ?? "",
+                                  height:
+                                  MediaQuery.of(context).size.height *
+                                      0.2,
+                                  width:
+                                  MediaQuery.of(context).size.height *
+                                      0.2,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 16,
+                              ),
+                              Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    '${snapshot.data?.firstName} ${snapshot.data?.lastName}',
+                                    style: GoogleFonts.indieFlower(
+                                      fontSize: 36,
+                                      color: MyApp.dGreen,
                                     ),
                                   ),
                                   Row(
@@ -277,23 +216,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           );
                         }),
                     const SizedBox(height: 12),
-                    Row(children: [
-                      Text(
-                        'Bio:',
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.indieFlower(
-                          fontSize: 20,
-                          color: MyApp.dGreen,
-                        ),
+                    Text(
+                      'Bio:',
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.indieFlower(
+                        fontSize: 20,
+                        color: MyApp.dGreen,
                       ),
-                      IconButton(
-                        icon: const Icon(
-                          Icons.edit,
-                          size: 20,
-                        ),
-                        onPressed: (){},
-                      ),
-                    ]),
+                    ),
                     FutureBuilder<Person?>(
                         future: currUser,
                         builder: (context, snapshot) {
@@ -372,29 +302,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   ],
                 ),
               ),
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.vertical,
-              //   child: Column(
-              //     children: [
-              //       Column(
-              //         children:
-              //         List.generate(
-              //           myRequests.length,
-              //           (index) => Padding(
-              //             padding: const EdgeInsets.only(
-              //                 left: 20, right: 20, top: 8, bottom: 8),
-              //             child: GestureDetector(
-              //                 child: MyRequestItem(
-              //                     myRequestItem: myRequests[index])),
-              //           ),
-              //         ),
-              //       ),
-              //       const SizedBox(
-              //         height: 96,
-              //       ),
-              //     ],
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -405,7 +312,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
 class MyRequestItem extends StatelessWidget {
   final PublicRequest myRequestItem;
-
   const MyRequestItem({
     Key? key,
     required this.myRequestItem,

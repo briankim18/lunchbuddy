@@ -12,7 +12,7 @@ final TextEditingController newEmailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
 final TextEditingController newPasswordController = TextEditingController();
 final TextEditingController confirmNewPasswordController =
-    TextEditingController();
+TextEditingController();
 
 final FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -33,7 +33,7 @@ class SettingsPage extends StatelessWidget {
           context.read<AuthenticationService>().signOut();
         },
         child:
-            Text('Notifications', style: GoogleFonts.indieFlower(fontSize: 30)),
+        Text('Notifications', style: GoogleFonts.indieFlower(fontSize: 30)),
       ),
       TextButton(
         onPressed: () {
@@ -110,38 +110,38 @@ class SettingsPage extends StatelessWidget {
                                     context
                                         .read<AuthenticationService>()
                                         .reauthenticate(
-                                            email: emailController.text.trim(),
-                                            password:
-                                                passwordController.text.trim());
+                                        email: emailController.text.trim(),
+                                        password:
+                                        passwordController.text.trim());
                                     context
                                         .read<AuthenticationService>()
                                         .updateEmail(
-                                            email:
-                                                newEmailController.text.trim())
+                                        email:
+                                        newEmailController.text.trim())
                                         .then((String? result) => (String?
-                                                result) =>
-                                            {
-                                              if (result != null &&
-                                                  result.startsWith("ERROR"))
-                                                {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                          content:
-                                                              Text(result)))
-                                                }
-                                              else
-                                                {
-                                                  db
-                                                      .collection("users")
-                                                      .doc(result)
-                                                      .set({
-                                                    "email": newEmailController
-                                                        .text
-                                                        .trim()
-                                                  }),
-                                                  Navigator.pop(context)
-                                                }
-                                            });
+                                    result) =>
+                                    {
+                                      if (result != null &&
+                                          result.startsWith("ERROR"))
+                                        {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                              content:
+                                              Text(result)))
+                                        }
+                                      else
+                                        {
+                                          db
+                                              .collection("users")
+                                              .doc(result)
+                                              .set({
+                                            "email": newEmailController
+                                                .text
+                                                .trim()
+                                          }),
+                                          Navigator.pop(context)
+                                        }
+                                    });
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -162,7 +162,7 @@ class SettingsPage extends StatelessWidget {
               });
         },
         child:
-            Text('Change email', style: GoogleFonts.indieFlower(fontSize: 30)),
+        Text('Change email', style: GoogleFonts.indieFlower(fontSize: 30)),
       ),
       TextButton(
         onPressed: () {
@@ -258,39 +258,39 @@ class SettingsPage extends StatelessWidget {
                                     context
                                         .read<AuthenticationService>()
                                         .reauthenticate(
-                                            email: emailController.text.trim(),
-                                            password:
-                                                passwordController.text.trim());
+                                        email: emailController.text.trim(),
+                                        password:
+                                        passwordController.text.trim());
                                     context
                                         .read<AuthenticationService>()
                                         .updatePassword(
-                                            password: newPasswordController.text
-                                                .trim())
+                                        password: newPasswordController.text
+                                            .trim())
                                         .then((String? result) => (String?
-                                                result) =>
-                                            {
-                                              if (result != null &&
-                                                  result.startsWith("ERROR"))
-                                                {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(SnackBar(
-                                                          content:
-                                                              Text(result)))
-                                                }
-                                              else
-                                                {
-                                                  db
-                                                      .collection("users")
-                                                      .doc(result)
-                                                      .set({
-                                                    "password":
-                                                        newPasswordController
-                                                            .text
-                                                            .trim()
-                                                  }),
-                                                  Navigator.pop(context)
-                                                }
-                                            });
+                                    result) =>
+                                    {
+                                      if (result != null &&
+                                          result.startsWith("ERROR"))
+                                        {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                              content:
+                                              Text(result)))
+                                        }
+                                      else
+                                        {
+                                          db
+                                              .collection("users")
+                                              .doc(result)
+                                              .set({
+                                            "password":
+                                            newPasswordController
+                                                .text
+                                                .trim()
+                                          }),
+                                          Navigator.pop(context)
+                                        }
+                                    });
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -338,26 +338,26 @@ class SettingsPage extends StatelessWidget {
                               .read<AuthenticationService>()
                               .deleteUser()
                               .then((String? result) => (String? result) => {
-                                    if (result != null &&
-                                        result.startsWith("ERROR"))
-                                      {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                                SnackBar(content: Text(result)))
-                                      }
-                                    else
-                                      {
-                                        db
-                                            .collection("users")
-                                            .doc(result)
-                                            .delete()
-                                            .then((value) =>
-                                                print("User Deleted"))
-                                            .catchError((error) => print(
-                                                "Failed to delete user: $error")),
-                                        Navigator.pop(context)
-                                      }
-                                  });
+                            if (result != null &&
+                                result.startsWith("ERROR"))
+                              {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(
+                                    SnackBar(content: Text(result)))
+                              }
+                            else
+                              {
+                                db
+                                    .collection("users")
+                                    .doc(result)
+                                    .delete()
+                                    .then((value) =>
+                                    print("User Deleted"))
+                                    .catchError((error) => print(
+                                    "Failed to delete user: $error")),
+                                Navigator.pop(context)
+                              }
+                          });
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
