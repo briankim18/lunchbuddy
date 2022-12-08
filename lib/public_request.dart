@@ -3,7 +3,6 @@ import 'package:lunch_buddy/person.dart';
 class PublicRequest {
   final String restName, restImage, restAddress, city, state, id;
   final DateTime datePosted, dateToMeet;
-
   final Person user;
   final List<Person> acceptedUsers;
   bool going, here;

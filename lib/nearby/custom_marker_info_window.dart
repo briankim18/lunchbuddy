@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -8,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:lunch_buddy/globals/restaurant_coords.dart';
 import 'package:lunch_buddy/new_public_request.dart';
 import 'package:google_maps_webservice/geocoding.dart';
+import '../googlesearch/googlesearch.dart';
 import '../nearby/nearbyplaces.dart';
 
 class CustomMarketInfoWindow extends StatefulWidget {
@@ -59,10 +61,16 @@ class _CustomMarketInfoWindowState extends State<CustomMarketInfoWindow> {
         globalPlaceId = results.placeId!;
         restaurantName = results.name!;
         formattedAddress = result!;
-        photoUrl = results.icon!;
+        String resultImg = await searchGoogle(restaurantName, 'isch', '0', '984a847dbf88a989d6e26f6cdcb226f46e71cad086a5568a435065afbf184895');
+        var resultsImg = json.decode(resultImg);
+        var imageResult = resultsImg['images_results'][0];
+        photoUrl = imageResult['thumbnail'];
 
-        print("-----------");
+        print("---------");
         print(photoUrl);
+        // Wait for the downloadImage() function to complete and get the image data
+        Uint8List imageData = await downloadImage(photoUrl);
+
         final split = formattedAddress.split(',');
         final split2 = formattedAddress.split(' ');
         final Map<int, String> values = {
