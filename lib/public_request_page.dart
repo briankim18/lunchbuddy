@@ -26,7 +26,6 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
   double distance = 5;
   RangeValues range = const RangeValues(18, 30);
 
-
   late Future<List<PublicRequest>> realRequests;
 
   Future<List<PublicRequest>> fetchData() async {
@@ -38,82 +37,47 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
 
     List<PublicRequest> requestList = [];
 
-    await FirebaseFirestore.instance.collection("public_requests").get()
+    await FirebaseFirestore.instance
+        .collection("public_requests")
+        .get()
         .then((QuerySnapshot qSnap) async => {
-          for (QueryDocumentSnapshot doc in qSnap.docs) {
-            requestInfo = doc.data() as Map<String, dynamic>,
-
-            await FirebaseFirestore.instance.collection("users")
-                .doc(requestInfo['publisher_id']).get()
-                .then((DocumentSnapshot userDoc) {
-                  publisherInfo = userDoc.data() as Map<String, dynamic>;
-                  publisher = Person(
-                    firstName: publisherInfo['first_name'],
-                    lastName: publisherInfo['last_name'],
-                    location: publisherInfo['location'],
-                    gender: publisherInfo['gender'],
-                    image: 'images/Kevin.png',
-                    bio: publisherInfo['bio'],
-                    age: int.parse(publisherInfo['age']),
-                    myRequests: publisherInfo['posted_requests'].cast<PublicRequest>(),
-                    takenRequests: publisherInfo['taken_requests'].cast<PublicRequest>()
-                  );
-                }),
-
-            requestList.add(
-                PublicRequest(
-                  id: doc.id,
-                  restName: requestInfo['restaurant_name'],
-                  restImage: "images/PandaExpress.png",
-                  restAddress: requestInfo['restaurant_street_address'],
-                  city: requestInfo['restaurant_city'],
-                  state: requestInfo['restaurant_state'],
-                  datePosted: DateTime.parse(requestInfo['date_posted'].toDate().toString()),
-                  dateToMeet: DateTime.parse(requestInfo['meeting_datetime'].toDate().toString()),
-                  user: publisher,
-                  acceptedUsers: []
-                )
-            ),
-          }
-        });
-    return requestList;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    realRequests = fetchData();
-  }
-
-  late Future<List<PublicRequest>> realRequests;
-
-  Future<List<PublicRequest>> fetchData() async {
-    await Future.delayed(
-        const Duration(seconds:1)
-    );
-
-    Map<String, dynamic> requestInfo;
-    List<PublicRequest> requestList = [];
-
-    await FirebaseFirestore.instance.collection("public_requests").get()
-        .then((QuerySnapshot qSnap) => {
-      for (QueryDocumentSnapshot doc in qSnap.docs) {
-        requestInfo = doc.data() as Map<String, dynamic>,
-        requestList.add(
-            PublicRequest(
-                restName: requestInfo['restaurant_name'],
-                restImage: "images/PandaExpress.png",
-                restAddress: requestInfo['restaurant_street_address'],
-                city: requestInfo['restaurant_city'],
-                state: requestInfo['restaurant_state'],
-                datePosted: DateTime.parse(requestInfo['date_posted'].toDate().toString()),
-                dateToMeet: DateTime.parse(requestInfo['meeting_datetime'].toDate().toString()),
-                user: users[0],
-                acceptedUsers: []
-            )
-        ),
-      }
-    });
+              for (QueryDocumentSnapshot doc in qSnap.docs)
+                {
+                  requestInfo = doc.data() as Map<String, dynamic>,
+                  await FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(requestInfo['publisher_id'])
+                      .get()
+                      .then((DocumentSnapshot userDoc) {
+                    publisherInfo = userDoc.data() as Map<String, dynamic>;
+                    publisher = Person(
+                        firstName: publisherInfo['first_name'],
+                        lastName: publisherInfo['last_name'],
+                        location: publisherInfo['location'],
+                        gender: publisherInfo['gender'],
+                        image: 'images/Kevin.png',
+                        bio: publisherInfo['bio'],
+                        age: int.parse(publisherInfo['age']),
+                        myRequests: publisherInfo['posted_requests']
+                            .cast<PublicRequest>(),
+                        takenRequests: publisherInfo['taken_requests']
+                            .cast<PublicRequest>());
+                  }),
+                  requestList.add(PublicRequest(
+                      id: doc.id,
+                      restName: requestInfo['restaurant_name'],
+                      restImage: "images/PandaExpress.png",
+                      restAddress: requestInfo['restaurant_street_address'],
+                      city: requestInfo['restaurant_city'],
+                      state: requestInfo['restaurant_state'],
+                      datePosted: DateTime.parse(
+                          requestInfo['date_posted'].toDate().toString()),
+                      dateToMeet: DateTime.parse(
+                          requestInfo['meeting_datetime'].toDate().toString()),
+                      user: publisher,
+                      acceptedUsers: [])),
+                }
+            });
     return requestList;
   }
 
@@ -140,14 +104,11 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     Text(
                       "Filters",
                       style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          height: 3),
+                          fontSize: 20, fontWeight: FontWeight.bold, height: 3),
                     ),
-                    Text(
-                        "Search Restaurant",
-                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
-                    ),
+                    Text("Search Restaurant",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -166,10 +127,9 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                         ),
                       ),
                     ),
-                    Text(
-                        "Search Location",
-                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
-                    ),
+                    Text("Search Location",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -188,10 +148,9 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                         ),
                       ),
                     ),
-                    Text(
-                        "From Date",
-                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
-                    ),
+                    Text("From Date",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -211,7 +170,6 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                             filled: true,
                             fillColor: Colors.white,
                           ),
-
                           onTap: () async {
                             DateTime? from = await showDatePicker(
                               context: context,
@@ -220,15 +178,14 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                               lastDate: DateTime(2100),
                             );
                             if (from != null) {
-                              fromDate.text = '${from.month}/${from.day}/${from.year}';
+                              fromDate.text =
+                                  '${from.month}/${from.day}/${from.year}';
                             }
-                          }
-                      ),
+                          }),
                     ),
-                    Text(
-                        "To Date",
-                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
-                    ),
+                    Text("To Date",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -258,13 +215,11 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                             if (to != null) {
                               toDate.text = '${to.month}/${to.day}/${to.year}';
                             }
-                          }
-                      ),
+                          }),
                     ),
-                    Text(
-                        "Distance(Miles): $distance",
-                        style: GoogleFonts.indieFlower(
-                            fontSize: 17, height: 2)),
+                    Text("Distance(Miles): $distance",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -293,13 +248,10 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                             ),
                           ),
                           Text("25,000")
-                        ]
-                    ),
-
-                    Text(
-                        "Age Range: ${range.start}-${range.end}",
-                        style: GoogleFonts.indieFlower(
-                            fontSize: 17, height: 2)),
+                        ]),
+                    Text("Age Range: ${range.start}-${range.end}",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -327,15 +279,9 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                               ),
                             ),
                           ),
-
-
                           Text("100+")
-                        ]
-                    ),
-
-
-                  ]
-              ),
+                        ]),
+                  ]),
             ),
           ),
         ),
@@ -375,27 +321,25 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                 builder: (context, snapshot) {
                   return snapshot.connectionState == ConnectionState.waiting
                       ? SizedBox(
-                    height: MediaQuery.of(context).size.height / 1.3,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
+                          height: MediaQuery.of(context).size.height / 1.3,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
                       : Column(
-                    children: List.generate(
-                      snapshot.data!.length,
-                          (index) => Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 8, bottom: 8),
-                        child: GestureDetector(
-                            child: PublicRequestItem(
-                                publicRequestItem: snapshot.data![index]
-                            )
-                        ),
-                      ),
-                    ),
-                  );
-                }
-            ),
+                          children: List.generate(
+                            snapshot.data!.length,
+                            (index) => Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 8, bottom: 8),
+                              child: GestureDetector(
+                                  child: PublicRequestItem(
+                                      publicRequestItem:
+                                          snapshot.data![index])),
+                            ),
+                          ),
+                        );
+                }),
             const SizedBox(height: 96),
           ],
         ),
@@ -418,14 +362,8 @@ class PublicRequestItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         color: randomColor(),
-        height: MediaQuery
-            .of(context)
-            .size
-            .height * 0.2,
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
+        height: MediaQuery.of(context).size.height * 0.2,
+        width: MediaQuery.of(context).size.width,
         child: Stack(
           children: [
             // This is for the image 1
@@ -472,8 +410,7 @@ class PublicRequestItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '(${publicRequestItem.city}, ${publicRequestItem
-                              .state})',
+                          '(${publicRequestItem.city}, ${publicRequestItem.state})',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
@@ -495,8 +432,7 @@ class PublicRequestItem extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '${publicRequestItem.user
-                                  .gender} ${publicRequestItem.user.age}',
+                              '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
@@ -506,8 +442,7 @@ class PublicRequestItem extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '${publicRequestItem.user
-                              .firstName} ${publicRequestItem.user.lastName}',
+                          '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 24,
@@ -515,10 +450,7 @@ class PublicRequestItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${getMeetWeekday(
-                              publicRequestItem)} ${publicRequestItem.dateToMeet
-                              .month}/${publicRequestItem.dateToMeet
-                              .day} ${getMeetTime(publicRequestItem)}',
+                          '${getMeetWeekday(publicRequestItem)} ${publicRequestItem.dateToMeet.month}/${publicRequestItem.dateToMeet.day} ${getMeetTime(publicRequestItem)}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 18,
@@ -544,11 +476,20 @@ class PublicRequestItem extends StatelessWidget {
                 onPressed: () {
                   final currID = FirebaseAuth.instance.currentUser?.uid;
 
-                  FirebaseFirestore.instance.collection("users").doc(currID)
-                  .update({'taken_requests': FieldValue.arrayUnion([publicRequestItem.id])});
+                  FirebaseFirestore.instance
+                      .collection("users")
+                      .doc(currID)
+                      .update({
+                    'taken_requests':
+                        FieldValue.arrayUnion([publicRequestItem.id])
+                  });
 
-                  FirebaseFirestore.instance.collection("public_requests").doc(publicRequestItem.id)
-                  .update({'accepted_users_id': FieldValue.arrayUnion([currID])});
+                  FirebaseFirestore.instance
+                      .collection("public_requests")
+                      .doc(publicRequestItem.id)
+                      .update({
+                    'accepted_users_id': FieldValue.arrayUnion([currID])
+                  });
                 },
                 child: const Text('Take Request'),
               ),
