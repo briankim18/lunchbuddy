@@ -6,10 +6,6 @@ import 'package:lunch_buddy/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lunch_buddy/nearby/custom_marker_info_window.dart';
-import 'package:lunch_buddy/public_request_page.dart';
-import 'package:lunch_buddy/main.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class NewPublicRequestPage extends StatefulWidget {
@@ -20,11 +16,6 @@ class NewPublicRequestPage extends StatefulWidget {
 }
 
 class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
-  final _restNameController = TextEditingController();
-  final _restAddressController = TextEditingController();
-  final _restCityController = TextEditingController();
-  final _restStateController = TextEditingController();
-
   DateTime meetingDateTime = DateTime.now();
 
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -111,7 +102,7 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                       onPressed: () {
                         db.collection("public_requests").add({
                           "restaurant_name": restaurantName,
-                          "restaurant_image": Image.network(photoUrl),
+                          "restaurant_image": "",
                           "restaurant_street_address": formattedAddress,
                           "restaurant_city": globalCity,
                           "restaurant_state": globalState.trimLeft(),
