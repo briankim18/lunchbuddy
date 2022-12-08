@@ -7,7 +7,6 @@ class PublicRequest {
   final List<Person> acceptedUsers;
   bool going, here;
 
-
   PublicRequest({
     required this.id,
     required this.restName,
@@ -40,9 +39,19 @@ getMeetWeekday(PublicRequest publicRequest) {
   return daysOfWeek[publicRequest.dateToMeet.weekday];
 }
 
+// Returns the weekday
+getWeekday(int day) {
+  return daysOfWeek[day];
+}
+
 // Hour:Minute AM/PM
 getMeetTime(PublicRequest publicRequest) {
   return publicRequest.dateToMeet.hour > 12
       ? "${publicRequest.dateToMeet.hour - 12}:${publicRequest.dateToMeet.minute} PM"
       : "${publicRequest.dateToMeet.hour}:${publicRequest.dateToMeet.minute}AM";
+}
+
+// Hour:Minute AM/PM
+getTime(int hour, int min) {
+  return hour > 12 ? "${hour - 12}:${min} PM" : "${hour}:${min}AM";
 }

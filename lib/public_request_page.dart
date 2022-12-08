@@ -106,7 +106,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     ),
                     Text("Search Restaurant",
                         style:
-                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
+                        GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -127,7 +127,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     ),
                     Text("Search Location",
                         style:
-                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
+                        GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -148,7 +148,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     ),
                     Text("From Date",
                         style:
-                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
+                        GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -177,13 +177,13 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                             );
                             if (from != null) {
                               fromDate.text =
-                                  '${from.month}/${from.day}/${from.year}';
+                              '${from.month}/${from.day}/${from.year}';
                             }
                           }),
                     ),
                     Text("To Date",
                         style:
-                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
+                        GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -217,7 +217,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     ),
                     Text("Distance(Miles): $distance",
                         style:
-                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
+                        GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -249,7 +249,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                         ]),
                     Text("Age Range: ${range.start}-${range.end}",
                         style:
-                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
+                        GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -319,24 +319,24 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                 builder: (context, snapshot) {
                   return snapshot.connectionState == ConnectionState.waiting
                       ? SizedBox(
-                          height: MediaQuery.of(context).size.height / 1.3,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
+                    height: MediaQuery.of(context).size.height / 1.3,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
                       : Column(
-                          children: List.generate(
-                            snapshot.data!.length,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 8, bottom: 8),
-                              child: GestureDetector(
-                                  child: PublicRequestItem(
-                                      publicRequestItem:
-                                          snapshot.data![index])),
-                            ),
-                          ),
-                        );
+                    children: List.generate(
+                      snapshot.data!.length,
+                          (index) => Padding(
+                        padding: const EdgeInsets.only(
+                            left: 20, right: 20, top: 8, bottom: 8),
+                        child: GestureDetector(
+                            child: PublicRequestItem(
+                                publicRequestItem:
+                                snapshot.data![index])),
+                      ),
+                    ),
+                  );
                 }),
             const SizedBox(height: 96),
           ],
@@ -492,7 +492,7 @@ class _PublicRequestItemState extends State<PublicRequestItem> {
                       .doc(currID)
                       .update({
                     'taken_requests':
-                        FieldValue.arrayUnion([publicRequestItem.id])
+                    FieldValue.arrayUnion([publicRequestItem.id])
                   });
 
                   FirebaseFirestore.instance
