@@ -346,13 +346,26 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
   }
 }
 
-class PublicRequestItem extends StatelessWidget {
-  final PublicRequest publicRequestItem;
+class PublicRequestItem extends StatefulWidget {
+  var publicRequestItem;
 
-  const PublicRequestItem({
+  PublicRequestItem({
     Key? key,
     required this.publicRequestItem,
   }) : super(key: key);
+
+  @override
+  _PublicRequestItemState createState() =>
+      new _PublicRequestItemState(publicRequestItem);
+}
+
+class _PublicRequestItemState extends State<PublicRequestItem> {
+  final PublicRequest publicRequestItem;
+
+  _PublicRequestItemState(this.publicRequestItem);
+
+  // This variable determines whether the button is disable or not
+  bool isAvailable = true;
 
   @override
   Widget build(BuildContext context) {
@@ -471,7 +484,7 @@ class PublicRequestItem extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: MyApp.mGreen,
                 ),
-                onPressed: () {
+                onPressed: isAvailable? () {
                   final currID = FirebaseAuth.instance.currentUser?.uid;
 
                   FirebaseFirestore.instance
@@ -488,7 +501,12 @@ class PublicRequestItem extends StatelessWidget {
                       .update({
                     'accepted_users_id': FieldValue.arrayUnion([currID])
                   });
-                },
+
+                  setState(() {
+                    isAvailable = false;
+                  });
+                }
+                : null,
                 child: const Text('Take Request'),
               ),
             ),
