@@ -7,6 +7,8 @@ import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
 import 'package:lunch_buddy/person.dart';
 
+final _formKey = GlobalKey<FormState>();
+
 class MessagingPage extends StatefulWidget {
   const MessagingPage({Key? key}) : super(key: key);
 
@@ -15,6 +17,14 @@ class MessagingPage extends StatefulWidget {
 }
 
 class _MessagingPageState extends State<MessagingPage> {
+  bool isSwitch = false;
+  bool? isCheckbox = false;
+  TextEditingController fromDate = TextEditingController();
+  TextEditingController toDate = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  double distance = 5;
+  RangeValues range = const RangeValues(18, 30);
+
   late Future<List<PublicRequest>> takenRequests;
 
   Future<List<PublicRequest>> fetchData() async {
@@ -84,17 +94,231 @@ class _MessagingPageState extends State<MessagingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: Container(
+          color: Colors.grey,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Filters",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          height: 3),
+                    ),
+                    Text(
+                        "Search Restaurant",
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
+                    ),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(4),
+                      ),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: "Restaurant Name",
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                        "Search Location",
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
+                    ),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(4),
+                      ),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: "Location",
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                        "From Date",
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
+                    ),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(4),
+                      ),
+                      child: TextFormField(
+                          controller: fromDate,
+                          keyboardType: TextInputType.none,
+                          decoration: const InputDecoration(
+                            //enabled: false,
+                            hintText: 'From',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 10.0),
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+
+                          onTap: () async {
+                            DateTime? from = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                            );
+                            if (from != null) {
+                              fromDate.text = '${from.month}/${from.day}/${from.year}';
+                            }
+                          }
+                      ),
+                    ),
+                    Text(
+                        "To Date",
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
+                    ),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(4),
+                      ),
+                      child: TextFormField(
+                          controller: toDate,
+                          keyboardType: TextInputType.none,
+                          decoration: const InputDecoration(
+                            //enabled: false,
+                            hintText: 'To',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 10.0),
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          onTap: () async {
+                            DateTime? to = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                            );
+                            if (to != null) {
+                              toDate.text = '${to.month}/${to.day}/${to.year}';
+                            }
+                          }
+                      ),
+                    ),
+                    Text(
+                        "Distance(Miles): $distance",
+                        style: GoogleFonts.indieFlower(
+                            fontSize: 17, height: 2)),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("0"),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                            child: Container(
+                              color: Colors.white,
+                              child: Slider(
+                                activeColor: MyApp.bGreen,
+                                value: distance,
+                                divisions: 100,
+                                min: 0,
+                                max: 25000,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    distance = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          Text("25,000")
+                        ]
+                    ),
+
+                    Text(
+                        "Age Range: ${range.start}-${range.end}",
+                        style: GoogleFonts.indieFlower(
+                            fontSize: 17, height: 2)),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("18"),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                            child: Container(
+                              color: Colors.white,
+                              child: RangeSlider(
+                                activeColor: MyApp.bGreen,
+                                values: range,
+                                divisions: 82,
+                                min: 18,
+                                max: 100,
+                                onChanged: (RangeValues values) {
+                                  setState(() {
+                                    range = values;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+
+
+                          Text("100+")
+                        ]
+                    ),
+
+
+                  ]
+              ),
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         title: const Text('Taken Requests'),
         backgroundColor: MyApp.mGreen,
         elevation: 4,
         // automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            // Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.menu),
-        ),
+        leading: Builder(builder: (context) {
+          return IconButton(
+            onPressed: () => Scaffold.of(context).openDrawer(),
+            // <-- Opens drawer.
+            icon: const Icon(Icons.menu),
+          );
+        }),
         actions: [
           IconButton(
             onPressed: () {
