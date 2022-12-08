@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
 import 'package:lunch_buddy/person.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserProfilePage extends StatefulWidget {
   const UserProfilePage({Key? key}) : super(key: key);
@@ -16,11 +19,80 @@ class UserProfilePage extends StatefulWidget {
 class _UserProfilePageState extends State<UserProfilePage> {
   late Future<Person?> currUser;
   late Future<List<PublicRequest>> myRequests;
+  File? image;
+  String bio = "";
+  final TextEditingController bioController = TextEditingController();
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null){
+        return;
+      }
+      final imageTemp = File(image.path);
+      updateImage(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch(e) {
+      print('Failed to select image');
+    }
+  }
+
+  String getImage() {
+    final currUserID = FirebaseAuth.instance.currentUser?.uid;
+    String imageURL = "";
+    Map<String,dynamic> data;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(currUserID)
+        .get().then((DocumentSnapshot snap) {
+      data = snap.data() as Map<String, dynamic>;
+      imageURL = data['image'];
+    });
+
+    return imageURL;
+  }
+
+  String getBio() {
+    final currUserID = FirebaseAuth.instance.currentUser?.uid;
+    String bio = "";
+    Map<String,dynamic> data;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(currUserID)
+        .get().then((DocumentSnapshot snap) {
+      data = snap.data() as Map<String, dynamic>;
+      bio = data['bio'];
+    });
+
+    return bio;
+  }
+
+  Future<void> updateBio(String bio) {
+    final currUserID = FirebaseAuth.instance.currentUser?.uid;
+    setState(() => this.bio = bio);
+    return FirebaseFirestore.instance
+        .collection("users")
+        .doc(currUserID)
+        .update({'bio': bio})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
+
+  Future<void> updateImage(String image) {
+    final currUserID = FirebaseAuth.instance.currentUser?.uid;
+    return FirebaseFirestore.instance
+        .collection("users")
+        .doc(currUserID)
+        .update({'image': image})
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+  }
 
   Future<List<PublicRequest>> fetchRequests() async {
     await Future.delayed(const Duration(seconds: 1));
 
     Map<String, dynamic> requestInfo;
+    Map<String, dynamic> publisherInfo;
     Map<String, dynamic> userInfo;
 
     var publisher;
@@ -35,30 +107,36 @@ class _UserProfilePageState extends State<UserProfilePage> {
         .get()
         .then((DocumentSnapshot doc) async {
       userInfo = doc.data() as Map<String, dynamic>;
-
-      for (String myRequestID in userInfo['posted_requests']) {
+      for (String takenRequestID in userInfo['posted_requests']) {
         await FirebaseFirestore.instance
             .collection("public_requests")
-            .doc(myRequestID)
+            .doc(takenRequestID)
             .get()
             .then((DocumentSnapshot docSnap) async {
           requestInfo = docSnap.data() as Map<String, dynamic>;
 
-          publisher = Person(
-              firstName: userInfo['first_name'],
-              lastName: userInfo['last_name'],
-              location: userInfo['location'],
-              gender: userInfo['gender'],
-              image: 'images/Kevin.png',
-              bio: userInfo['bio'],
-              age: int.parse(userInfo['age']),
-              myRequests:
-              userInfo['posted_requests'].cast<PublicRequest>(),
-              takenRequests:
-              userInfo['taken_requests'].cast<PublicRequest>()
-          );
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(requestInfo['publisher_id'])
+              .get()
+              .then((DocumentSnapshot userDoc) {
+            publisherInfo = userDoc.data() as Map<String, dynamic>;
+            publisher = Person(
+                firstName: publisherInfo['first_name'],
+                lastName: publisherInfo['last_name'],
+                location: publisherInfo['location'],
+                gender: publisherInfo['gender'],
+                image: 'images/Kevin.png',
+                bio: publisherInfo['bio'],
+                age: int.parse(publisherInfo['age']),
+                myRequests:
+                publisherInfo['posted_requests'].cast<PublicRequest>(),
+                takenRequests:
+                publisherInfo['taken_requests'].cast<PublicRequest>());
+          });
+
           myRequestList.add(PublicRequest(
-              id: docSnap.id,
+              id: doc.id,
               restName: requestInfo['restaurant_name'],
               restImage: "images/PandaExpress.png",
               restAddress: requestInfo['restaurant_street_address'],
@@ -69,14 +147,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
               dateToMeet: DateTime.parse(
                   requestInfo['meeting_datetime'].toDate().toString()),
               user: publisher,
-              acceptedUsers: []
-          )
-          );
+              acceptedUsers: []));
         });
       }
     });
-
-
     return myRequestList;
   }
 
@@ -115,6 +189,8 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    //image = File(getImage());
+    bio = getBio();
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -155,18 +231,53 @@ class _UserProfilePageState extends State<UserProfilePage> {
                               const SizedBox(
                                 height: 16,
                               ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: Image.asset(
-                                  snapshot.data?.image ?? "",
-                                  height:
-                                  MediaQuery.of(context).size.height *
-                                      0.2,
-                                  width:
-                                  MediaQuery.of(context).size.height *
-                                      0.2,
+                              Stack(children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(30),
+                                  child: image != null ? Image.file(
+                                    image!,
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.2,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.2,
+                                  ) :
+                                  Image.asset(
+                                    snapshot.data?.image ?? "",
+                                    height: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.2,
+                                    width: MediaQuery.of(context)
+                                        .size
+                                        .height *
+                                        0.2,
+                                  ),
                                 ),
-                              ),
+                                Positioned(
+                                    bottom: 0,
+                                    right: 4,
+                                    child: IconButton(
+                                      icon: ClipOval(
+                                        child: Container(
+                                          padding:
+                                          const EdgeInsets.all(4),
+                                          color: Colors.blue,
+                                          child: const Icon(
+                                            Icons.edit,
+                                            color: Colors.white,
+                                            size: 20,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        pickImage();
+                                      },
+                                    )),
+                              ]),
                               const SizedBox(
                                 width: 16,
                               ),
@@ -218,14 +329,46 @@ class _UserProfilePageState extends State<UserProfilePage> {
                           );
                         }),
                     const SizedBox(height: 12),
-                    Text(
-                      'Bio:',
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.indieFlower(
-                        fontSize: 20,
-                        color: MyApp.dGreen,
+                    Row(children: [
+                      Text(
+                        'Bio:',
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.indieFlower(
+                          fontSize: 20,
+                          color: MyApp.dGreen,
+                        ),
                       ),
-                    ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.edit,
+                          size: 20,
+                        ),
+                        onPressed: (){
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    title: const Text('Edit Bio'),
+                                    content: Column(
+                                      children: [
+                                        TextFormField(
+                                          controller: bioController,
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: () {
+                                              updateBio(bioController.text);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Comfirm Bio'))
+                                      ],
+                                    )
+                                );
+                              }
+                          );
+                        },
+                      ),
+                    ]),
+                    Text(bio),
                     FutureBuilder<Person?>(
                         future: currUser,
                         builder: (context, snapshot) {
@@ -314,6 +457,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
 class MyRequestItem extends StatelessWidget {
   final PublicRequest myRequestItem;
+
   const MyRequestItem({
     Key? key,
     required this.myRequestItem,
