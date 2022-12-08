@@ -17,8 +17,6 @@ class MessagingPage extends StatefulWidget {
 }
 
 class _MessagingPageState extends State<MessagingPage> {
-  bool isSwitch = false;
-  bool? isCheckbox = false;
   TextEditingController fromDate = TextEditingController();
   TextEditingController toDate = TextEditingController();
   TextEditingController ageController = TextEditingController();

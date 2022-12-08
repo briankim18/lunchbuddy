@@ -6,9 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
 import 'package:lunch_buddy/person.dart';
-import 'package:lunch_buddy/public_request.dart';
-
-import 'globals/restaurant_coords.dart';
 
 
 final _formKey = GlobalKey<FormState>();
@@ -21,8 +18,6 @@ class PublicRequestPage extends StatefulWidget {
 }
 
 class _PublicRequestPageState extends State<PublicRequestPage> {
-  bool isSwitch = false;
-  bool? isCheckbox = false;
   TextEditingController fromDate = TextEditingController();
   TextEditingController toDate = TextEditingController();
   TextEditingController ageController = TextEditingController();
@@ -69,7 +64,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                   requestList.add(PublicRequest(
                       id: doc.id,
                       restName: requestInfo['restaurant_name'],
-                      restImage: "images/PandaExpress.png",
+                      restImage: requestInfo['restaurant_image'],
                       restAddress: requestInfo['restaurant_street_address'],
                       city: requestInfo['restaurant_city'],
                       state: requestInfo['restaurant_state'],
@@ -104,7 +99,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Filters",
                       style: TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold, height: 3),
@@ -167,7 +162,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                           decoration: const InputDecoration(
                             //enabled: false,
                             hintText: 'From',
-                            contentPadding: const EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 10.0),
                             border: InputBorder.none,
                             filled: true,
@@ -202,7 +197,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                           decoration: const InputDecoration(
                             //enabled: false,
                             hintText: 'To',
-                            contentPadding: const EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 10.0),
                             border: InputBorder.none,
                             filled: true,
@@ -226,7 +221,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("0"),
+                          const Text("0"),
                           ClipRRect(
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(16),
@@ -250,7 +245,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                               ),
                             ),
                           ),
-                          Text("25,000")
+                          const Text("25,000")
                         ]),
                     Text("Age Range: ${range.start}-${range.end}",
                         style:
@@ -258,7 +253,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("18"),
+                          const Text("18"),
                           ClipRRect(
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(16),
@@ -282,7 +277,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                               ),
                             ),
                           ),
-                          Text("100+")
+                          const Text("100+")
                         ]),
                   ]),
             ),
