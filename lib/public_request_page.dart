@@ -4,7 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
+import 'package:intl/intl.dart';
 import 'package:lunch_buddy/person.dart';
+
+final _formKey = GlobalKey<FormState>();
 
 class PublicRequestPage extends StatefulWidget {
   const PublicRequestPage({Key? key}) : super(key: key);
@@ -16,6 +19,12 @@ class PublicRequestPage extends StatefulWidget {
 class _PublicRequestPageState extends State<PublicRequestPage> {
   bool isSwitch = false;
   bool? isCheckbox = false;
+  TextEditingController fromDate = TextEditingController();
+  TextEditingController toDate = TextEditingController();
+  TextEditingController ageController = TextEditingController();
+  double distance = 5;
+  RangeValues range = const RangeValues(18, 30);
+
 
   late Future<List<PublicRequest>> realRequests;
 
@@ -77,17 +86,232 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //drawerEnableOpenDragGesture: false,
+      drawer: Drawer(
+        child: Container(
+          color: Colors.grey,
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Filters",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          height: 3),
+                    ),
+                    Text(
+                        "Search Restaurant",
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
+                    ),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(4),
+                      ),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: "Restaurant Name",
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                        "Search Location",
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
+                    ),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(4),
+                      ),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          hintText: "Location",
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
+                          border: InputBorder.none,
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Text(
+                        "From Date",
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
+                    ),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(4),
+                      ),
+                      child: TextFormField(
+                          controller: fromDate,
+                          keyboardType: TextInputType.none,
+                          decoration: const InputDecoration(
+                            //enabled: false,
+                            hintText: 'From',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 10.0),
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+
+                          onTap: () async {
+                            DateTime? from = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                            );
+                            if (from != null) {
+                              fromDate.text = '${from.month}/${from.day}/${from.year}';
+                            }
+                          }
+                      ),
+                    ),
+                    Text(
+                        "To Date",
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
+                    ),
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(4),
+                        topRight: Radius.circular(16),
+                        bottomLeft: Radius.circular(16),
+                        bottomRight: Radius.circular(4),
+                      ),
+                      child: TextFormField(
+                          controller: toDate,
+                          keyboardType: TextInputType.none,
+                          decoration: const InputDecoration(
+                            //enabled: false,
+                            hintText: 'To',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 10.0),
+                            border: InputBorder.none,
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          onTap: () async {
+                            DateTime? to = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2100),
+                            );
+                            if (to != null) {
+                              toDate.text = '${to.month}/${to.day}/${to.year}';
+                            }
+                          }
+                      ),
+                    ),
+                    Text(
+                        "Distance(Miles): $distance",
+                        style: GoogleFonts.indieFlower(
+                            fontSize: 17, height: 2)),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("0"),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                            child: Container(
+                              color: Colors.white,
+                              child: Slider(
+                                activeColor: MyApp.bGreen,
+                                value: distance,
+                                divisions: 100,
+                                min: 0,
+                                max: 25000,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    distance = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          Text("25,000")
+                        ]
+                    ),
+
+                    Text(
+                        "Age Range: ${range.start}-${range.end}",
+                        style: GoogleFonts.indieFlower(
+                            fontSize: 17, height: 2)),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("18"),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                            child: Container(
+                              color: Colors.white,
+                              child: RangeSlider(
+                                activeColor: MyApp.bGreen,
+                                values: range,
+                                divisions: 82,
+                                min: 18,
+                                max: 100,
+                                onChanged: (RangeValues values) {
+                                  setState(() {
+                                    range = values;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+
+
+                          Text("100+")
+                        ]
+                    ),
+
+
+                  ]
+              ),
+            ),
+          ),
+        ),
+      ),
       appBar: AppBar(
         title: const Text('Public Requests'),
         backgroundColor: MyApp.bGreen,
         elevation: 4,
         // automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () {
-            // Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.menu),
-        ),
+        leading: Builder(builder: (context) {
+          return IconButton(
+            onPressed: () => Scaffold.of(context).openDrawer(),
+            // <-- Opens drawer.
+            icon: const Icon(Icons.menu),
+          );
+        }),
         actions: [
           IconButton(
             onPressed: () {
@@ -111,24 +335,28 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                 builder: (context, snapshot) {
                   return snapshot.connectionState == ConnectionState.waiting
                       ? SizedBox(
-                          height: MediaQuery.of(context).size.height / 1.3,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height / 1.3,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
                       : Column(
-                          children: List.generate(
-                            snapshot.data!.length,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 8, bottom: 8),
-                              child: GestureDetector(
-                                  child: PublicRequestItem(
-                                      publicRequestItem:
-                                          snapshot.data![index])),
-                            ),
+                    children: List.generate(
+                      snapshot.data!.length,
+                          (index) =>
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 8, bottom: 8),
+                            child: GestureDetector(
+                                child: PublicRequestItem(
+                                    publicRequestItem:
+                                    snapshot.data![index])),
                           ),
-                        );
+                    ),
+                  );
                 }),
             const SizedBox(height: 96),
           ],
@@ -140,6 +368,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
 
 class PublicRequestItem extends StatelessWidget {
   final PublicRequest publicRequestItem;
+
   const PublicRequestItem({
     Key? key,
     required this.publicRequestItem,
@@ -151,8 +380,14 @@ class PublicRequestItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         color: randomColor(),
-        height: MediaQuery.of(context).size.height * 0.2,
-        width: MediaQuery.of(context).size.width,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.2,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         child: Stack(
           children: [
             // This is for the image 1
@@ -199,7 +434,8 @@ class PublicRequestItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '(${publicRequestItem.city}, ${publicRequestItem.state})',
+                          '(${publicRequestItem.city}, ${publicRequestItem
+                              .state})',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
@@ -221,7 +457,8 @@ class PublicRequestItem extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
+                              '${publicRequestItem.user
+                                  .gender} ${publicRequestItem.user.age}',
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
@@ -231,7 +468,8 @@ class PublicRequestItem extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
+                          '${publicRequestItem.user
+                              .firstName} ${publicRequestItem.user.lastName}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 24,
@@ -239,7 +477,10 @@ class PublicRequestItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${getMeetWeekday(publicRequestItem)} ${publicRequestItem.dateToMeet.month}/${publicRequestItem.dateToMeet.day} ${getMeetTime(publicRequestItem)}',
+                          '${getMeetWeekday(
+                              publicRequestItem)} ${publicRequestItem.dateToMeet
+                              .month}/${publicRequestItem.dateToMeet
+                              .day} ${getMeetTime(publicRequestItem)}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 18,
