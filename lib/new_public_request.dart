@@ -60,7 +60,7 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
       context: context,
       initialTime: TimeOfDay(hour: meetingDateTime.hour, minute: meetingDateTime.minute)
   );
->>>>>>> 6659c194bbf4e9bab9d77ec6970653d3dae9b310
+>>>>>>>>> Temporary merge branch 2
 
   Future pickDateTime() async {
     DateTime? date = await pickDate();
@@ -80,7 +80,7 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
         time.hour,
         time.minute
     );
->>>>>>> 6659c194bbf4e9bab9d77ec6970653d3dae9b310
+>>>>>>>>> Temporary merge branch 2
 
     setState(() {
       meetingDateTime = dateTime;
@@ -95,7 +95,7 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
 =======
     final String? currentUserID = context.read<AuthenticationService>().getCurrentUser()
         ?.uid;
->>>>>>> 6659c194bbf4e9bab9d77ec6970653d3dae9b310
+>>>>>>>>> Temporary merge branch 2
 
     return Scaffold(
       appBar: AppBar(
@@ -290,7 +290,7 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                           )
                       )
                   )
->>>>>>> 6659c194bbf4e9bab9d77ec6970653d3dae9b310
+>>>>>>>>> Temporary merge branch 2
                 ],
               ),
             ),
