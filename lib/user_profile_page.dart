@@ -183,14 +183,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         future: currUser,
                         builder: (context, snapshot) {
                           return snapshot.connectionState ==
-                                  ConnectionState.waiting
+                              ConnectionState.waiting
                               ? SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 1.3,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )
+                            height:
+                            MediaQuery.of(context).size.height / 1.3,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
                               : Row(
                                   children: [
                                     const SizedBox(
@@ -246,52 +246,39 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                     const SizedBox(
                                       width: 16,
                                     ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.max,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '${snapshot.data?.firstName} ${snapshot.data?.lastName}',
-                                          style: GoogleFonts.indieFlower(
-                                            fontSize: 36,
-                                            color: MyApp.dGreen,
-                                          ),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 8.0, bottom: 8.0),
+                                        child: Image.asset(
+                                          genderSymbol(snapshot.data),
+                                          height: 20,
+                                          width: 20,
                                         ),
-                                        Row(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 8.0, bottom: 8.0),
-                                              child: Image.asset(
-                                                genderSymbol(snapshot.data),
-                                                height: 20,
-                                                width: 20,
-                                              ),
-                                            ),
-                                            Text(
-                                              '${snapshot.data?.gender} ${snapshot.data?.age}',
-                                              style: GoogleFonts.indieFlower(
-                                                fontSize: 20,
-                                                height: .5,
-                                              ),
-                                            ),
-                                          ],
+                                      ),
+                                      Text(
+                                        '${snapshot.data?.gender} ${snapshot.data?.age}',
+                                        style: GoogleFonts.indieFlower(
+                                          fontSize: 20,
+                                          height: .5,
                                         ),
-                                        Text(
-                                          snapshot.data?.location ?? "",
-                                          style: GoogleFonts.indieFlower(
-                                            fontSize: 20,
-                                            color: MyApp.dGreen,
-                                            height: .5,
-                                          ),
-                                        ),
-                                      ],
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    snapshot.data?.location ?? "",
+                                    style: GoogleFonts.indieFlower(
+                                      fontSize: 20,
+                                      color: MyApp.dGreen,
+                                      height: .5,
                                     ),
-                                  ],
-                                );
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
                         }),
                     const SizedBox(height: 12),
                     Row(children: [
@@ -315,22 +302,22 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         future: currUser,
                         builder: (context, snapshot) {
                           return snapshot.connectionState ==
-                                  ConnectionState.waiting
+                              ConnectionState.waiting
                               ? SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height / 1.3,
-                                  child: const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                                )
+                            height:
+                            MediaQuery.of(context).size.height / 1.3,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          )
                               : Text(
-                                  snapshot.data?.bio ?? "",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.indieFlower(
-                                    fontSize: 20,
-                                    color: MyApp.dGreen,
-                                  ),
-                                );
+                            snapshot.data?.bio ?? "",
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.indieFlower(
+                              fontSize: 20,
+                              color: MyApp.dGreen,
+                            ),
+                          );
                         })
                   ],
                 ),

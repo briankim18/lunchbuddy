@@ -1,3 +1,4 @@
+import 'dart:typed_data';
 import 'dart:ui';
 
 import '../nearby/nearbyplaces.dart';
@@ -18,4 +19,7 @@ String globalState = "";
 String globalCity = "";
 
 String photoUrl = "";
+
+
+
 
