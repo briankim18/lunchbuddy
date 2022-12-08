@@ -1,9 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:lunch_buddy/authentication_service.dart';
 import 'package:lunch_buddy/globals/restaurant_coords.dart';
-import 'package:lunch_buddy/googlesearch/googlesearch.dart';
 import 'package:lunch_buddy/home_page.dart';
 import 'package:lunch_buddy/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +17,11 @@ class NewPublicRequestPage extends StatefulWidget {
 }
 
 class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
+  final _restNameController = TextEditingController();
+  final _restAddressController = TextEditingController();
+  final _restCityController = TextEditingController();
+  final _restStateController = TextEditingController();
+
   DateTime meetingDateTime = DateTime.now();
 
   final FirebaseFirestore db = FirebaseFirestore.instance;
