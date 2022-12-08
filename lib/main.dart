@@ -26,10 +26,11 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   static const silv = Color.fromARGB(255, 139, 148, 163);
   static const aqua = Color.fromARGB(255, 140, 251, 221);
+  static const mRed = Color.fromARGB(255, 194, 1, 20);
+
   static const bRed = Color.fromARGB(255, 250, 117, 112);
   static const bPurple = Color.fromARGB(255, 178, 202, 228);
   static const bYellow = Color.fromARGB(255, 255, 255, 122);
-  static const mRed = Color.fromARGB(255, 194, 1, 20);
   static const bGreen = Color.fromARGB(255, 15, 255, 151);
   static const mGreen = Color.fromARGB(255, 6, 186, 99);
   static const dGreen = Color.fromARGB(255, 16, 57, 0);
@@ -56,15 +57,6 @@ class MyApp extends StatelessWidget {
       );
       await intent.launch();
     }
-
-// You can can also directly ask the permission about its status.
-// if (await Permission.location.isRestricted) {
-    // The OS restricts access, for example because of parental controls.
-// }
-    //     final AndroidIntent intent = new AndroidIntent(
-    //   action: 'android.settings.LOCATION_SOURCE_SETTINGS',
-    // );
-    // await intent.launch();
   }
 
   @override

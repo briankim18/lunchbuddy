@@ -100,21 +100,21 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                       color: MyApp.aqua,
                       child:
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => CustomMarketInfoWindow()),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CustomMarketInfoWindow()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
                               backgroundColor: MyApp.bYellow,
                               elevation: 4
                           ), child: Text(
-                              "Pick a Restaurant",
-                              style: GoogleFonts.indieFlower(
-                                  fontSize: 24, color: MyApp.dGreen
-                              )
+                          "Pick a Restaurant",
+                          style: GoogleFonts.indieFlower(
+                              fontSize: 24, color: MyApp.dGreen
                           )
+                      )
                       )
                   ),
                   Container(
@@ -149,14 +149,14 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                     padding: const EdgeInsets.all(10.0),
                   ),
                   ElevatedButton(
-                      onPressed: pickDateTime,
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: MyApp.bYellow,
-                          elevation: 4
-                      ), child: Text("Pick a Time and Date",
-                    style: GoogleFonts.indieFlower(
-                      fontSize: 24, color: MyApp.dGreen
-                    )
+                    onPressed: pickDateTime,
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: MyApp.bYellow,
+                        elevation: 4
+                    ), child: Text("Pick a Time and Date",
+                      style: GoogleFonts.indieFlower(
+                          fontSize: 24, color: MyApp.dGreen
+                      )
                   ),
 
                   ),
