@@ -150,7 +150,9 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                         "date_posted": Timestamp.now(),
                         "meeting_datetime": meetingDateTime,
                         "publisher_id": currentUserID,
-                        "accepted_users_id": []
+                        "accepted_users_id": [],
+                          "going": true,
+                          "here": false
                         }
                       ).then((documentSnapshot) =>
                         db.collection("users").doc(currentUserID)
