@@ -1,9 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:lunch_buddy/authentication_service.dart';
 import 'package:lunch_buddy/globals/restaurant_coords.dart';
-import 'package:lunch_buddy/googlesearch/googlesearch.dart';
 import 'package:lunch_buddy/home_page.dart';
 import 'package:lunch_buddy/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +16,11 @@ class NewPublicRequestPage extends StatefulWidget {
 }
 
 class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
+  final _restNameController = TextEditingController();
+  final _restAddressController = TextEditingController();
+  final _restCityController = TextEditingController();
+  final _restStateController = TextEditingController();
+
   DateTime meetingDateTime = DateTime.now();
 
   final FirebaseFirestore db = FirebaseFirestore.instance;
@@ -140,29 +142,7 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                     padding: const EdgeInsets.all(10.0),
                   ),
                   ElevatedButton(
-                    onPressed: () {
-                      db.collection("public_requests").add(
-                        {"restaurant_name": restaurantName,
-                        "restaurant_image": "",
-                        "restaurant_street_address": formattedAddress,
-                        "restaurant_city": globalCity,
-                        "restaurant_state": globalState.trimLeft(),
-                        "date_posted": Timestamp.now(),
-                        "meeting_datetime": meetingDateTime,
-                        "publisher_id": currentUserID,
-                        "accepted_users_id": [],
-                          "going": true,
-                          "here": false
-                        }
-                      ).then((documentSnapshot) =>
-                        db.collection("users").doc(currentUserID)
-                            .update({'posted_requests': FieldValue.arrayUnion([documentSnapshot.id])})
-                      );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                      );
-                    },
+                    onPressed: pickDateTime,
                     style: ElevatedButton.styleFrom(
                         backgroundColor: MyApp.bYellow,
                         elevation: 4

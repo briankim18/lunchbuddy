@@ -5,6 +5,7 @@ import 'package:lunch_buddy/new_public_request.dart';
 import 'package:lunch_buddy/public_request_page.dart';
 import 'package:lunch_buddy/settings_page.dart';
 import 'package:lunch_buddy/user_profile_page.dart';
+import 'package:lunch_buddy/widgets/WriteReviewScreen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

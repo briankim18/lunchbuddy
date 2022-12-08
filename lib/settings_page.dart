@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lunch_buddy/authentication_service.dart';
 import 'package:lunch_buddy/main.dart';
+import 'package:lunch_buddy/reviews.dart';
+import 'package:lunch_buddy/widgets/WriteReviewScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +14,7 @@ final TextEditingController emailController = TextEditingController();
 final TextEditingController newEmailController = TextEditingController();
 final TextEditingController passwordController = TextEditingController();
 final TextEditingController newPasswordController = TextEditingController();
+final TextEditingController newReviewController = TextEditingController();
 final TextEditingController confirmNewPasswordController =
 TextEditingController();
 
@@ -20,8 +24,19 @@ final _formKey = GlobalKey<FormState>();
 
 const int itemCount = 20;
 
-class SettingsPage extends StatelessWidget {
+String reviewMessage = '';
+
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
+  @override
+  _SettingsPage createState() => _SettingsPage();
+}
+
+class _SettingsPage extends State<SettingsPage> {
+  var reviewObj;
+  final currUserId = FirebaseAuth.instance.currentUser?.uid;
+
+  final db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -312,6 +327,50 @@ class SettingsPage extends StatelessWidget {
         },
         child: Text('Change Password',
             style: GoogleFonts.indieFlower(fontSize: 30)),
+      ),
+      TextButton(
+        onPressed: () {
+          // Use the showDialog() function to display the review dialog
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Review our App',
+                    style: GoogleFonts.indieFlower(
+                        fontSize: 24, color: MyApp.dGreen)),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // TextField to allow the user to enter the review message
+                    TextField(
+                      controller: newReviewController
+                    ),
+                    // Button to submit the review message
+                    ElevatedButton(
+                      onPressed: () {
+                        db.collection("reviews").add(
+                            {
+                              'userID': currUserId,
+                              'review': newReviewController.text.trim(),
+                            }
+                        );
+                        // Send the review message to your app for processing
+                        // ...
+
+                        // Close the dialog
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('Submit Review'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+        child: Text('Write a Review',
+            style: GoogleFonts.indieFlower(
+                fontSize: 28, color: Colors.green)),
       ),
       TextButton(
         style: ButtonStyle(
