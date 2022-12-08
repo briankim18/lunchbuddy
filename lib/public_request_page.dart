@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:lunch_buddy/main.dart';
 import 'package:lunch_buddy/public_request.dart';
-import 'package:intl/intl.dart';
 import 'package:lunch_buddy/person.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -76,44 +75,6 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
             ),
           }
         });
-    return requestList;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    realRequests = fetchData();
-  }
-
-  late Future<List<PublicRequest>> realRequests;
-
-  Future<List<PublicRequest>> fetchData() async {
-    await Future.delayed(
-        const Duration(seconds:1)
-    );
-
-    Map<String, dynamic> requestInfo;
-    List<PublicRequest> requestList = [];
-
-    await FirebaseFirestore.instance.collection("public_requests").get()
-        .then((QuerySnapshot qSnap) => {
-      for (QueryDocumentSnapshot doc in qSnap.docs) {
-        requestInfo = doc.data() as Map<String, dynamic>,
-        requestList.add(
-            PublicRequest(
-                restName: requestInfo['restaurant_name'],
-                restImage: "images/PandaExpress.png",
-                restAddress: requestInfo['restaurant_street_address'],
-                city: requestInfo['restaurant_city'],
-                state: requestInfo['restaurant_state'],
-                datePosted: DateTime.parse(requestInfo['date_posted'].toDate().toString()),
-                dateToMeet: DateTime.parse(requestInfo['meeting_datetime'].toDate().toString()),
-                user: users[0],
-                acceptedUsers: []
-            )
-        ),
-      }
-    });
     return requestList;
   }
 
