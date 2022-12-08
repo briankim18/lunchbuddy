@@ -13,11 +13,6 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class DummyWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) => const SignUpPage();
-}
-
 class _SignUpPageState extends State<SignUpPage> {
   late String gender;
 
@@ -40,17 +35,6 @@ class _SignUpPageState extends State<SignUpPage> {
   void initState() {
     super.initState();
     gender = genderList[0];
-  }
-
-  // This is the trick!
-  void _reset() {
-    Navigator.pushReplacement(
-      context,
-      PageRouteBuilder(
-        transitionDuration: Duration.zero,
-        pageBuilder: (_, __, ___) => DummyWidget(),
-      ),
-    );
   }
 
   @override
@@ -414,7 +398,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       ClipRRect(
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(4),
@@ -472,54 +456,6 @@ class _SignUpPageState extends State<SignUpPage> {
                             backgroundColor: MyApp.bYellow,
                             elevation: 4,
                           ),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Only allow signing up when all validations passed
-                              if (_formKey.currentState!.validate()) {
-                                context
-                                    .read<AuthenticationService>()
-                                    .signUp(
-                                        email: emailController.text.trim(),
-                                        password:
-                                            passwordController.text.trim())
-                                    .then((String? result) => {
-                                          if (result != null &&
-                                              result.startsWith("ERROR"))
-                                            {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(SnackBar(
-                                                      content: Text(result)))
-                                            }
-                                          else
-                                            {
-                                              db
-                                                  .collection("users")
-                                                  .doc(result)
-                                                  .set({
-                                                "email":
-                                                    emailController.text.trim(),
-                                                "username": usernameController
-                                                    .text
-                                                    .trim(),
-                                                "first_name":
-                                                    firstnameController.text
-                                                        .trim(),
-                                                "last_name": lastnameController
-                                                    .text
-                                                    .trim(),
-                                                "age":
-                                                    ageController.text.trim(),
-                                                "gender": gender
-                                              }),
-                                              Navigator.pop(context)
-                                            }
-                                        });
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: MyApp.bYellow,
-                              elevation: 4,
-                            ),
                             child: Text(
                               "Create New Account",
                               style: GoogleFonts.indieFlower(
@@ -527,7 +463,6 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                           ),
                         ),
-                      ),
                       const SizedBox(height: 10),
                     ],
                   ),
