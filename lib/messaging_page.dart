@@ -104,17 +104,14 @@ class _MessagingPageState extends State<MessagingPage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Filters",
                       style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          height: 3),
+                          fontSize: 20, fontWeight: FontWeight.bold, height: 3),
                     ),
-                    Text(
-                        "Search Restaurant",
-                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
-                    ),
+                    Text("Search Restaurant",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -125,7 +122,7 @@ class _MessagingPageState extends State<MessagingPage> {
                       child: TextFormField(
                         decoration: const InputDecoration(
                           hintText: "Restaurant Name",
-                          contentPadding: const EdgeInsets.symmetric(
+                          contentPadding: EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 10.0),
                           border: InputBorder.none,
                           filled: true,
@@ -133,10 +130,9 @@ class _MessagingPageState extends State<MessagingPage> {
                         ),
                       ),
                     ),
-                    Text(
-                        "Search Location",
-                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
-                    ),
+                    Text("Search Location",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -147,7 +143,7 @@ class _MessagingPageState extends State<MessagingPage> {
                       child: TextFormField(
                         decoration: const InputDecoration(
                           hintText: "Location",
-                          contentPadding: const EdgeInsets.symmetric(
+                          contentPadding: EdgeInsets.symmetric(
                               vertical: 3.0, horizontal: 10.0),
                           border: InputBorder.none,
                           filled: true,
@@ -155,10 +151,9 @@ class _MessagingPageState extends State<MessagingPage> {
                         ),
                       ),
                     ),
-                    Text(
-                        "From Date",
-                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
-                    ),
+                    Text("From Date",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -172,13 +167,12 @@ class _MessagingPageState extends State<MessagingPage> {
                           decoration: const InputDecoration(
                             //enabled: false,
                             hintText: 'From',
-                            contentPadding: const EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 10.0),
                             border: InputBorder.none,
                             filled: true,
                             fillColor: Colors.white,
                           ),
-
                           onTap: () async {
                             DateTime? from = await showDatePicker(
                               context: context,
@@ -187,15 +181,14 @@ class _MessagingPageState extends State<MessagingPage> {
                               lastDate: DateTime(2100),
                             );
                             if (from != null) {
-                              fromDate.text = '${from.month}/${from.day}/${from.year}';
+                              fromDate.text =
+                                  '${from.month}/${from.day}/${from.year}';
                             }
-                          }
-                      ),
+                          }),
                     ),
-                    Text(
-                        "To Date",
-                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
-                    ),
+                    Text("To Date",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(4),
@@ -209,7 +202,7 @@ class _MessagingPageState extends State<MessagingPage> {
                           decoration: const InputDecoration(
                             //enabled: false,
                             hintText: 'To',
-                            contentPadding: const EdgeInsets.symmetric(
+                            contentPadding: EdgeInsets.symmetric(
                                 vertical: 3.0, horizontal: 10.0),
                             border: InputBorder.none,
                             filled: true,
@@ -225,17 +218,15 @@ class _MessagingPageState extends State<MessagingPage> {
                             if (to != null) {
                               toDate.text = '${to.month}/${to.day}/${to.year}';
                             }
-                          }
-                      ),
+                          }),
                     ),
-                    Text(
-                        "Distance(Miles): $distance",
-                        style: GoogleFonts.indieFlower(
-                            fontSize: 17, height: 2)),
+                    Text("Distance(Miles): $distance",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("0"),
+                          const Text("0"),
                           ClipRRect(
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(16),
@@ -259,18 +250,15 @@ class _MessagingPageState extends State<MessagingPage> {
                               ),
                             ),
                           ),
-                          Text("25,000")
-                        ]
-                    ),
-
-                    Text(
-                        "Age Range: ${range.start}-${range.end}",
-                        style: GoogleFonts.indieFlower(
-                            fontSize: 17, height: 2)),
+                          const Text("25,000")
+                        ]),
+                    Text("Age Range: ${range.start}-${range.end}",
+                        style:
+                            GoogleFonts.indieFlower(fontSize: 17, height: 2)),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("18"),
+                          const Text("18"),
                           ClipRRect(
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(16),
@@ -294,15 +282,9 @@ class _MessagingPageState extends State<MessagingPage> {
                               ),
                             ),
                           ),
-
-
-                          Text("100+")
-                        ]
-                    ),
-
-
-                  ]
-              ),
+                          const Text("100+")
+                        ]),
+                  ]),
             ),
           ),
         ),
@@ -342,24 +324,24 @@ class _MessagingPageState extends State<MessagingPage> {
                 builder: (context, snapshot) {
                   return snapshot.connectionState == ConnectionState.waiting
                       ? SizedBox(
-                    height: MediaQuery.of(context).size.height / 1.3,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  )
+                          height: MediaQuery.of(context).size.height / 1.3,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
                       : Column(
-                    children: List.generate(
-                      snapshot.data!.length,
-                          (index) => Padding(
-                        padding: const EdgeInsets.only(
-                            left: 20, right: 20, top: 8, bottom: 8),
-                        child: GestureDetector(
-                            child: TakenRequestItem(
-                                publicRequestItem:
-                                snapshot.data![index])),
-                      ),
-                    ),
-                  );
+                          children: List.generate(
+                            snapshot.data!.length,
+                            (index) => Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 8, bottom: 8),
+                              child: GestureDetector(
+                                  child: TakenRequestItem(
+                                      publicRequestItem:
+                                          snapshot.data![index])),
+                            ),
+                          ),
+                        );
                 }),
             const SizedBox(
               height: 96,
@@ -449,7 +431,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                             height: .5,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         Row(
@@ -612,6 +594,7 @@ class _TakenRequestItemState extends State<TakenRequestItem> {
                                           ),
                                           onPressed: () {
                                             // Add stuff to delete context
+
                                             Navigator.pop(context);
                                           },
                                           child: const Text('Delete'),
