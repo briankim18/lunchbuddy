@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lunch_buddy/authentication_service.dart';
 import 'package:lunch_buddy/main.dart';
+import 'package:lunch_buddy/widgets/WriteReviewScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -323,6 +324,19 @@ class SettingsPage extends StatelessWidget {
             },
             child: Text('Change Password',
                 style: GoogleFonts.indieFlower(fontSize: 30)),
+          ),
+          TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.green),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => WriteReviewScreen()),
+              );
+            },
+            child: Text(
+                'Review the App', style: GoogleFonts.indieFlower(fontSize: 30)),
           ),
           TextButton(
             style: ButtonStyle(
