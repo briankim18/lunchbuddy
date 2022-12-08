@@ -22,7 +22,8 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
   TextEditingController fromDate = TextEditingController();
   TextEditingController toDate = TextEditingController();
   TextEditingController ageController = TextEditingController();
-
+  double distance = 5;
+  RangeValues range = const RangeValues(18, 30);
 
 
   late Future<List<PublicRequest>> realRequests;
@@ -36,24 +37,25 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
     await FirebaseFirestore.instance
         .collection("public_requests")
         .get()
-        .then((QuerySnapshot qSnap) => {
-              for (QueryDocumentSnapshot doc in qSnap.docs)
-                {
-                  requestInfo = doc.data() as Map<String, dynamic>,
-                  requestList.add(PublicRequest(
-                      restName: requestInfo['restaurant_name'],
-                      restImage: "images/PandaExpress.png",
-                      restAddress: requestInfo['restaurant_street_address'],
-                      city: requestInfo['restaurant_city'],
-                      state: requestInfo['restaurant_state'],
-                      datePosted: DateTime.parse(
-                          requestInfo['date_posted'].toDate().toString()),
-                      dateToMeet: DateTime.parse(
-                          requestInfo['meeting_datetime'].toDate().toString()),
-                      user: users[0],
-                      acceptedUsers: [])),
-                }
-            });
+        .then((QuerySnapshot qSnap) =>
+    {
+      for (QueryDocumentSnapshot doc in qSnap.docs)
+        {
+          requestInfo = doc.data() as Map<String, dynamic>,
+          requestList.add(PublicRequest(
+              restName: requestInfo['restaurant_name'],
+              restImage: "images/PandaExpress.png",
+              restAddress: requestInfo['restaurant_street_address'],
+              city: requestInfo['restaurant_city'],
+              state: requestInfo['restaurant_state'],
+              datePosted: DateTime.parse(
+                  requestInfo['date_posted'].toDate().toString()),
+              dateToMeet: DateTime.parse(
+                  requestInfo['meeting_datetime'].toDate().toString()),
+              user: users[0],
+              acceptedUsers: [])),
+        }
+    });
     return requestList;
   }
 
@@ -80,13 +82,13 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     Text(
                       "Filters",
                       style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                           height: 3),
                     ),
                     Text(
                         "Search Restaurant",
-                        style: GoogleFonts.indieFlower(fontSize: 20, height: 2)
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
                     ),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -97,7 +99,9 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                       ),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                          labelText: "Restaurant Name",
+                          hintText: "Restaurant Name",
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
                           border: InputBorder.none,
                           filled: true,
                           fillColor: Colors.white,
@@ -106,7 +110,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     ),
                     Text(
                         "Search Location",
-                        style: GoogleFonts.indieFlower(fontSize: 20, height: 2)
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
                     ),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -117,7 +121,9 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                       ),
                       child: TextFormField(
                         decoration: const InputDecoration(
-                          labelText: "Location",
+                          hintText: "Location",
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 3.0, horizontal: 10.0),
                           border: InputBorder.none,
                           filled: true,
                           fillColor: Colors.white,
@@ -126,7 +132,7 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                     ),
                     Text(
                         "From Date",
-                        style: GoogleFonts.indieFlower(fontSize: 20, height: 2)
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
                     ),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -140,6 +146,9 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                           keyboardType: TextInputType.none,
                           decoration: const InputDecoration(
                             //enabled: false,
+                            hintText: 'From',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 10.0),
                             border: InputBorder.none,
                             filled: true,
                             fillColor: Colors.white,
@@ -153,15 +162,14 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                               lastDate: DateTime(2100),
                             );
                             if (from != null) {
-                              fromDate.text = DateFormat("mm-dd-yyyy").format(
-                                  from);
+                              fromDate.text = '${from.month}/${from.day}/${from.year}';
                             }
                           }
                       ),
                     ),
                     Text(
                         "To Date",
-                        style: GoogleFonts.indieFlower(fontSize: 20, height: 2)
+                        style: GoogleFonts.indieFlower(fontSize: 17, height: 2)
                     ),
                     ClipRRect(
                       borderRadius: const BorderRadius.only(
@@ -175,11 +183,13 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                           keyboardType: TextInputType.none,
                           decoration: const InputDecoration(
                             //enabled: false,
+                            hintText: 'To',
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 3.0, horizontal: 10.0),
                             border: InputBorder.none,
                             filled: true,
                             fillColor: Colors.white,
                           ),
-
                           onTap: () async {
                             DateTime? to = await showDatePicker(
                               context: context,
@@ -188,33 +198,84 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                               lastDate: DateTime(2100),
                             );
                             if (to != null) {
-                              toDate.text = DateFormat("mm-dd-yyyy").format(
-                                  to);
+                              toDate.text = '${to.month}/${to.day}/${to.year}';
                             }
                           }
                       ),
                     ),
                     Text(
-                        "Distance",
-                        style: GoogleFonts.indieFlower(fontSize: 20, height: 2)),
-                    ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(16),
-                        bottomLeft: Radius.circular(16),
-                        bottomRight: Radius.circular(4),
-                      ),
-                      child: TextFormField(
-                        controller: ageController,
-                        keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(
-                          labelText: "Distance",
-                          border: InputBorder.none,
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                      ),
+                        "Distance(Miles): $distance",
+                        style: GoogleFonts.indieFlower(
+                            fontSize: 17, height: 2)),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("0"),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                            child: Container(
+                              color: Colors.white,
+                              child: Slider(
+                                activeColor: MyApp.bGreen,
+                                value: distance,
+                                divisions: 100,
+                                min: 0,
+                                max: 25000,
+                                onChanged: (double value) {
+                                  setState(() {
+                                    distance = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                          Text("25,000")
+                        ]
                     ),
+
+                    Text(
+                        "Age Range: ${range.start}-${range.end}",
+                        style: GoogleFonts.indieFlower(
+                            fontSize: 17, height: 2)),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("18"),
+                          ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                            child: Container(
+                              color: Colors.white,
+                              child: RangeSlider(
+                                activeColor: MyApp.bGreen,
+                                values: range,
+                                divisions: 82,
+                                min: 18,
+                                max: 100,
+                                onChanged: (RangeValues values) {
+                                  setState(() {
+                                    range = values;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+
+
+                          Text("100+")
+                        ]
+                    ),
+
+
                   ]
               ),
             ),
@@ -256,24 +317,28 @@ class _PublicRequestPageState extends State<PublicRequestPage> {
                 builder: (context, snapshot) {
                   return snapshot.connectionState == ConnectionState.waiting
                       ? SizedBox(
-                          height: MediaQuery.of(context).size.height / 1.3,
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        )
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height / 1.3,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
                       : Column(
-                          children: List.generate(
-                            snapshot.data!.length,
-                            (index) => Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 8, bottom: 8),
-                              child: GestureDetector(
-                                  child: PublicRequestItem(
-                                      publicRequestItem:
-                                          snapshot.data![index])),
-                            ),
+                    children: List.generate(
+                      snapshot.data!.length,
+                          (index) =>
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 20, right: 20, top: 8, bottom: 8),
+                            child: GestureDetector(
+                                child: PublicRequestItem(
+                                    publicRequestItem:
+                                    snapshot.data![index])),
                           ),
-                        );
+                    ),
+                  );
                 }),
             const SizedBox(height: 96),
           ],
@@ -297,8 +362,14 @@ class PublicRequestItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Container(
         color: randomColor(),
-        height: MediaQuery.of(context).size.height * 0.2,
-        width: MediaQuery.of(context).size.width,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.2,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         child: Stack(
           children: [
             // This is for the image 1
@@ -345,7 +416,8 @@ class PublicRequestItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '(${publicRequestItem.city}, ${publicRequestItem.state})',
+                          '(${publicRequestItem.city}, ${publicRequestItem
+                              .state})',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 16,
@@ -367,7 +439,8 @@ class PublicRequestItem extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '${publicRequestItem.user.gender} ${publicRequestItem.user.age}',
+                              '${publicRequestItem.user
+                                  .gender} ${publicRequestItem.user.age}',
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.indieFlower(
                                 fontSize: 20,
@@ -377,7 +450,8 @@ class PublicRequestItem extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          '${publicRequestItem.user.firstName} ${publicRequestItem.user.lastName}',
+                          '${publicRequestItem.user
+                              .firstName} ${publicRequestItem.user.lastName}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 24,
@@ -385,7 +459,10 @@ class PublicRequestItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${getMeetWeekday(publicRequestItem)} ${publicRequestItem.dateToMeet.month}/${publicRequestItem.dateToMeet.day} ${getMeetTime(publicRequestItem)}',
+                          '${getMeetWeekday(
+                              publicRequestItem)} ${publicRequestItem.dateToMeet
+                              .month}/${publicRequestItem.dateToMeet
+                              .day} ${getMeetTime(publicRequestItem)}',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.indieFlower(
                             fontSize: 18,
