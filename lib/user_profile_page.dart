@@ -19,27 +19,27 @@ class _UserProfilePageState extends State<UserProfilePage> {
   Future<Person?> fetchData() async {
     await Future.delayed(const Duration(seconds: 1));
 
-    final currentUserID = FirebaseAuth.instance.currentUser?.uid;
+    final currentUserID =  FirebaseAuth.instance.currentUser?.uid;
     Map<String, dynamic> data = {};
 
-    await FirebaseFirestore.instance
-        .collection("users")
-        .doc(currentUserID)
-        .get()
-        .then((DocumentSnapshot doc) {
-      data = doc.data() as Map<String, dynamic>;
-    });
+    await FirebaseFirestore.instance.collection("users").doc(currentUserID).get().then(
+        (DocumentSnapshot doc) {
+          data = doc.data() as Map<String, dynamic>;
+        }
+    );
 
-    return Person(
-        firstName: data['first_name'],
-        lastName: data['last_name'],
-        location: data['location'],
-        gender: data['gender'],
-        image: 'images/Kevin.png',
-        bio: data['bio'],
-        age: int.parse(data['age']),
-        myRequests: data['posted_requests'].cast<PublicRequest>(),
-        takenRequests: data['taken_requests'].cast<PublicRequest>());
+      return Person(
+          firstName: data['first_name'],
+          lastName: data['last_name'],
+          location: data['location'],
+          gender: data['gender'],
+          image: 'images/Kevin.png',
+          bio: data['bio'],
+          age: data['age'],
+          myRequests: data['posted_requests'],
+          takenRequests: data['taken_requests']);
+    });
+    return currentPerson;
   }
 
   @override
@@ -93,14 +93,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                     const SizedBox(
                                       height: 16,
                                     ),
-                                    // ClipRRect(
-                                    //   borderRadius: BorderRadius.circular(12),
-                                    //   child: Image.asset(
-                                    //     snapshot.data?.image ?? "",
-                                    //     height: MediaQuery.of(context).size.height * 0.2,
-                                    //     width: MediaQuery.of(context).size.height * 0.2,
-                                    //   ),
-                                    // ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.asset(
+                                        snapshot.data?.image ?? "",
+                                        height: MediaQuery.of(context).size.height * 0.2,
+                                        width: MediaQuery.of(context).size.height * 0.2,
+                                      ),
+                                    ),
                                     const SizedBox(
                                       width: 16,
                                     ),
@@ -195,28 +195,28 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   color: MyApp.dGreen,
                 ),
               ),
-              SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    Column(
-                      children: List.generate(
-                        publicRequests.length,
-                        (index) => Padding(
-                          padding: const EdgeInsets.only(
-                              left: 20, right: 20, top: 8, bottom: 8),
-                          child: GestureDetector(
-                              child: MyRequestItem(
-                                  myRequestItem: publicRequests[index])),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 96,
-                    ),
-                  ],
-                ),
-              ),
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.vertical,
+              //   child: Column(
+              //     children: [
+              //       Column(
+              //         children: List.generate(
+              //           publicRequests.length,
+              //           (index) => Padding(
+              //             padding: const EdgeInsets.only(
+              //                 left: 20, right: 20, top: 8, bottom: 8),
+              //             child: GestureDetector(
+              //                 child: MyRequestItem(
+              //                     myRequestItem: publicRequests[index])),
+              //           ),
+              //         ),
+              //       ),
+              //       const SizedBox(
+              //         height: 96,
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -293,7 +293,7 @@ class MyRequestItem extends StatelessWidget {
                             height: .5,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 4,
                         ),
                         Row(

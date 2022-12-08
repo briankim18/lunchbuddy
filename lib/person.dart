@@ -23,9 +23,9 @@ class Person {
 // Changes symbol based on gender
 genderSymbol(Person? user) {
   var g = user?.gender;
-  if (g == 'Male') {
+  if (g == "Maleale") {
     return 'images/Male.png';
-  } else if (g == 'Female') {
+  } else if (g == "Femaleemale") {
     return 'images/Female.png';
   } else {
     return 'images/LGBTQ.png';
