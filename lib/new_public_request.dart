@@ -7,6 +7,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lunch_buddy/nearby/custom_marker_info_window.dart';
 import 'package:lunch_buddy/public_request_page.dart';
+import 'package:lunch_buddy/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class NewPublicRequestPage extends StatefulWidget {
@@ -101,22 +104,6 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                             );
                           }, child: Text("Pick a Restaurant"),
                       )
-
-                    // TextFormField(
-                    //   controller: _restNameController,
-                    //   validator: (String? value) {
-                    //     if (value != null && value.isEmpty) {
-                    //       return "The restaurant name cannot be empty.";
-                    //     }
-                    //     return null;
-                    //   },
-                    //   decoration: const InputDecoration(
-                    //     labelText: 'Restaurant Name',
-                    //     prefixIcon: Icon(Icons.restaurant),
-                    //     border: OutlineInputBorder(),
-                    //   ),
-                    // ),
-
                   ),
                   Text("Picked Restaurant Name: "),
                   Text(restaurantName),
@@ -127,53 +114,9 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
                   Container(
                     padding: const EdgeInsets.all(10.0),
                   ),
-                  // TextFormField(
-                  //   controller: _restAddressController,
-                  //   validator: (String? value) {
-                  //     if (value != null && value.isEmpty) {
-                  //       return "Restaurant street address cannot be empty.";
-                  //     }
-                  //     return null;
-                  //   },
-                  //   decoration: const InputDecoration(
-                  //     labelText: 'Street Address',
-                  //     prefixIcon: Icon(Icons.map),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-                  // TextFormField(
-                  //   controller: _restCityController,
-                  //   validator: (String? value) {
-                  //     if (value != null && value.isEmpty) {
-                  //       return "Restaurant city cannot be empty.";
-                  //     }
-                  //     return null;
-                  //   },
-                  //   decoration: const InputDecoration(
-                  //     labelText: 'City',
-                  //     prefixIcon: Icon(Icons.location_city),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-                  // TextFormField(
-                  //   controller: _restStateController,
-                  //   validator: (String? value) {
-                  //     if (value != null && value.isEmpty) {
-                  //       return "Restaurant state cannot be empty.";
-                  //     }
-                  //     return null;
-                  //   },
-                  //   decoration: const InputDecoration(
-                  //     labelText: 'State',
-                  //     prefixIcon: Icon(Icons.location_city),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
                   ElevatedButton(
                     onPressed: pickDateTime,
                     child: Text ("Pick a Time And Date")
-                      //'${meetingDateTime.month}/${meetingDateTime.day}/${meetingDateTime.year}'
-                    //                           ' ${meetingDateTime.hour}:${meetingDateTime.minute}'
                   ),
                   Text("Picked Time:  "+'${meetingDateTime.month}/${meetingDateTime.day}/${meetingDateTime.year}'
                       ' ${meetingDateTime.hour}:${meetingDateTime.minute}'),
@@ -214,18 +157,6 @@ class _NewPublicRequestPageState extends State<NewPublicRequestPage> {
               ),
             ),
           )),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     // if (_formKey.currentState!.validate()) {
-      //     debugPrint(
-      //         '${_restNameController.text.trim()} ${_lastNameController.text.trim()}');
-      //     Navigator.pop(context);
-      //     // }
-      //   },
-      //   backgroundColor: MyApp.bGreen,
-      //   elevation: 4.0,
-      //   child: const Icon(Icons.add),
-      // ),
     );
   }
 }

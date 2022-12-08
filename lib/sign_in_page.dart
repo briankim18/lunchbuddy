@@ -13,6 +13,9 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double screenHeight = MediaQuery.of(context).size.height;
+    final double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -26,11 +29,10 @@ class SignInPage extends StatelessWidget {
           backgroundColor: const Color.fromARGB(255, 15, 255, 151),
           body: Center(
               child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 30),
                 Row(
                   children: [
                     SizedBox(
@@ -77,7 +79,7 @@ class SignInPage extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SignUpPage()));
+                                  builder: (context) => const SignUpPage()));
                         },
                         style: ElevatedButton.styleFrom(
                           // padding: const EdgeInsets.all(10),
@@ -94,14 +96,14 @@ class SignInPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text("Lunch Buddy",
                     style: GoogleFonts.indieFlower(fontSize: 50)),
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text("Username",
+                  child: Text("Email",
                       style: GoogleFonts.indieFlower(fontSize: 20, height: 2)),
                 ),
                 ClipRRect(
@@ -116,7 +118,7 @@ class SignInPage extends StatelessWidget {
                     decoration: const InputDecoration(
                       contentPadding: EdgeInsets.all(12),
                       isDense: true,
-                      labelText: "Username",
+                      labelText: "Email",
                       border: InputBorder.none,
                       filled: true,
                       fillColor: Colors.white,
@@ -148,7 +150,7 @@ class SignInPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(4),
@@ -158,10 +160,23 @@ class SignInPage extends StatelessWidget {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      context.read<AuthenticationService>().signIn(
+                      context
+                          .read<AuthenticationService>()
+                          .signIn(
                             email: emailController.text.trim(),
                             password: passwordController.text.trim(),
-                          );
+                          )
+                          .then((String? result) => {
+                                if (result != null &&
+                                    result.startsWith("ERROR"))
+                                  {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(result),
+                                      ),
+                                    ),
+                                  }
+                              });
                     },
                     style: ElevatedButton.styleFrom(
                       // padding: const EdgeInsets.all(10),
@@ -178,7 +193,7 @@ class SignInPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 ClipRRect(
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(4),
@@ -206,7 +221,7 @@ class SignInPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Align(
                     alignment: Alignment.centerLeft,
                     child: Image.asset(

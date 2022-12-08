@@ -17,9 +17,7 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 0;
   List<Widget> pages = const [
     PublicRequestPage(),
-    // MapSampleState(),
     //CustomMarketInfoWindow(),
-    //LocationScreen(),
     MessagingPage(),
     HomePage(),
     UserProfilePage(),
