@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// Class that is used to provide Firebase authentication services
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth;
 
@@ -11,10 +12,12 @@ class AuthenticationService {
     return _firebaseAuth.currentUser;
   }
 
+  // Logs a user out of the app
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }
 
+  // Attempts to sign into the app
   Future<String?> signIn(
       {required String email, required String password}) async {
     String? errorMessage;
@@ -23,6 +26,7 @@ class AuthenticationService {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
       return "Signed in";
+
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "invalid-email":
@@ -34,7 +38,7 @@ class AuthenticationService {
         case "user-not-found":
           errorMessage = "ERROR: This user is not found. Please try again.";
           break;
-        case "invalid-password":
+        case "wrong-password":
           errorMessage = "ERROR: This password is incorrect. Please try again.";
           break;
         default:
@@ -42,20 +46,22 @@ class AuthenticationService {
       }
     }
 
-    if (errorMessage != null) {
-      return errorMessage;
-    }
+    return errorMessage;
+
   }
 
+  /// Performs signing up for a new user
   Future<String?> signUp(
       {required String email, required String password}) async {
     UserCredential? credential;
     String? errorMessage;
 
+    // Attempts to sign up
     try {
       credential = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
     } on FirebaseAuthException catch (e) {
+      // Handles errors
       switch (e.code) {
         case "email-already-in-use":
           errorMessage =
@@ -73,6 +79,7 @@ class AuthenticationService {
       }
     }
 
+    // Returns the error message if there is one
     if (errorMessage != null) {
       return errorMessage;
     }
@@ -80,48 +87,48 @@ class AuthenticationService {
     return credential?.user?.uid;
   }
 
+  /// Attempts to update a user's email
   Future<String?> updateEmail({required String email}) async {
     try {
       await getCurrentUser()?.updateEmail(email);
-    } on FirebaseAuthException catch (e) {
-      print("Fail");
+    } on FirebaseAuthException {
       return "ERROR: Reauthentication required";
     }
-    print("Successful email update!");
+
     return "Updated email";
   }
 
+  /// Updates a user's password
   Future<String?> updatePassword({required String password}) async {
-    print("oh no");
     try {
       await getCurrentUser()?.updatePassword(password);
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
+    } on FirebaseAuthException {
       return "ERROR: Reauthentication required";
     }
-    print("Successful password change!");
+
     return "Updated password";
   }
 
+  /// Deletes a user from the database
   Future<String?> deleteUser() async {
     try {
       await getCurrentUser()?.delete();
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
+    } on FirebaseAuthException {
       return "ERROR: Reauthentication required";
     }
+
     return "Deleted user";
   }
 
+  /// Re-authenticates a user when trying to change email or password
   Future<String?> reauthenticate({required String email, required String password}) async {
     try {
       AuthCredential credential = EmailAuthProvider.credential(email: email, password: password);
       await getCurrentUser()?.reauthenticateWithCredential(credential);
-    } on FirebaseAuthException catch (e) {
-      print(e.message);
+    } on FirebaseAuthException {
       return "ERROR: Invalid credentials";
     }
-    print("Successful authenticate!");
+
     return "Reauthenticated";
   }
 }

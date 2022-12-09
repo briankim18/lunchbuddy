@@ -2,8 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lunch_buddy/authentication_service.dart';
 import 'package:lunch_buddy/main.dart';
-import 'package:lunch_buddy/reviews.dart';
-import 'package:lunch_buddy/widgets/WriteReviewScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,7 +30,6 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPage extends State<SettingsPage> {
-  var reviewObj;
   final currUserId = FirebaseAuth.instance.currentUser?.uid;
 
   final db = FirebaseFirestore.instance;
@@ -40,22 +37,15 @@ class _SettingsPage extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(height: 30),
+      const SizedBox(height: 30),
       Text("Settings", style: GoogleFonts.indieFlower(fontSize: 50)),
-      TextButton(
-        onPressed: () {
-          context.read<AuthenticationService>().signOut();
-        },
-        child:
-        Text('Notifications', style: GoogleFonts.indieFlower(fontSize: 30)),
-      ),
       TextButton(
         onPressed: () {
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Change Email'),
+                  title: const Text('Change Email'),
                   content: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Form(
@@ -72,7 +62,7 @@ class _SettingsPage extends State<SettingsPage> {
                                 return null;
                               },
                               decoration: const InputDecoration(
-                                labelText: "Old Email",
+                                labelText: "Current Email",
                                 border: InputBorder.none,
                                 filled: true,
                                 fillColor: Colors.white,
@@ -88,7 +78,7 @@ class _SettingsPage extends State<SettingsPage> {
                                 return null;
                               },
                               decoration: const InputDecoration(
-                                labelText: "Old Password",
+                                labelText: "Current Password",
                                 border: InputBorder.none,
                                 filled: true,
                                 fillColor: Colors.white,
@@ -119,7 +109,6 @@ class _SettingsPage extends State<SettingsPage> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   // Only allow signing up when all validations passed
-                                  bool valid = false;
                                   if (_formKey.currentState!.validate()) {
                                     context
                                         .read<AuthenticationService>()
@@ -152,7 +141,8 @@ class _SettingsPage extends State<SettingsPage> {
                                             "email": newEmailController
                                                 .text
                                                 .trim()
-                                          }),
+                                              }),
+
                                           Navigator.pop(context)
                                         }
                                     });
@@ -184,7 +174,7 @@ class _SettingsPage extends State<SettingsPage> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('Change Password'),
+                  title: const Text('Change Password'),
                   content: Padding(
                     padding: const EdgeInsets.all(10),
                     child: Form(
@@ -347,19 +337,18 @@ class _SettingsPage extends State<SettingsPage> {
                     // Button to submit the review message
                     ElevatedButton(
                       onPressed: () {
+                        // Send the review message to your app for processing
                         db.collection("reviews").add(
                             {
                               'userID': currUserId,
                               'review': newReviewController.text.trim(),
                             }
                         );
-                        // Send the review message to your app for processing
-                        // ...
 
                         // Close the dialog
                         Navigator.of(context).pop();
                       },
-                      child: Text('Submit Review'),
+                      child: const Text('Submit Review'),
                     ),
                   ],
                 ),
@@ -389,7 +378,7 @@ class _SettingsPage extends State<SettingsPage> {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                    title: Text("Are you sure?"),
+                    title: const Text("Are you sure?"),
                     content: ElevatedButton(
                         onPressed: () {
                           context
@@ -421,7 +410,7 @@ class _SettingsPage extends State<SettingsPage> {
                           backgroundColor: Colors.red,
                           elevation: 4,
                         ),
-                        child: Text("Yes")));
+                        child: const Text("Yes")));
               });
         },
         child: Text('Delete Account',

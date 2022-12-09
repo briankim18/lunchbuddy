@@ -1,11 +1,11 @@
 import 'package:lunch_buddy/public_request.dart';
 
+/// Represents a user
 class Person {
   final String firstName, lastName, location, gender, image, bio;
   final int age;
   final List<PublicRequest> myRequests;
   final List<PublicRequest> takenRequests;
-  // List of publicRequests taken
 
   Person({
     required this.firstName,

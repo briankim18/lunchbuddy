@@ -53,5 +53,5 @@ getMeetTime(PublicRequest publicRequest) {
 
 // Hour:Minute AM/PM
 getTime(int hour, int min) {
-  return hour > 12 ? "${hour - 12}:${min} PM" : "${hour}:${min}AM";
+  return hour > 12 ? "${hour - 12}:$min PM" : "$hour:${min}AM";
 }
